@@ -45,10 +45,15 @@ class IntentClassifier:
         prompt_template = self.template + additional
         return prompt_template
                 
-    async def predict(self, prompt: str) -> str:
+    async def predict(self, prompt: str):
         full_prompt = self._prepare_for_predict(prompt)
         prediction = await self.model.generate_text(full_prompt)
         json_string = prediction.replace('\\n', '\n').replace('\\"', '"')
 
-        intent_json = json.loads(json_string)
-        return intent_json
+        try:
+            intent_json = json.loads(json_string)
+            return intent_json
+        except Exception as e:
+            print(e)
+            return {'intent': 'tidak relevan', 'entity': 'null', 'jenis': 'error', 'digit': 'null'}
+ 
