@@ -18,7 +18,7 @@ class IntentClassifier:
         self._load_template()
 
     def _load_template(self):
-        examples_file_path = get_path("chatbot\data\intent-prompt-examples.csv")
+        examples_file_path = get_path("chatbot\\templates\intent-prompt-examples.csv")
 
         with open(examples_file_path, 'r', newline='') as csvfile:
             csv_reader = csv.reader(csvfile, delimiter=";")
@@ -31,7 +31,7 @@ class IntentClassifier:
                 self.template.append(example_input)
                 self.template.append(example_output)
 
-        template_file_path = get_path("chatbot\data\intent-prompt-template.txt")
+        template_file_path = get_path("chatbot\\templates\intent-prompt-template.txt")
 
         with open(template_file_path, 'r') as template_file:
             file_content = template_file.read()

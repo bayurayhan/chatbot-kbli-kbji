@@ -26,8 +26,23 @@ class Router(APIRouter):
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         prediction = await self.intent_classifier.predict(text)
 
+        # Handle the intent
+        if prediction["intent"] == Intent.MENCARI_KODE:
+            await self.handleMencariKode(prediction, chat_id, text)
+
         # generated_response = self.text_generator.generate(text)
 
         # await self.bot.to(chat_id).send_text(generated_response)
         
         return ""
+    
+    async def handleMencariKode(self, prediction: dict, chat_id, text):
+        query = prediction["entity"]
+        type = prediction["jenis"]
+        digit = prediction["digit"]
+
+        response = await self.text_generator.generate(f"""Informasikan ke user bahwa kamu (Chatbot) sedang mencari kode yang dimaksudkan user di database.
+user: {text}
+chatbot: """)
+
+        await self.bot.to(chat_id).send_text(response)
