@@ -4,6 +4,7 @@ from .Model import GenerativeModel
 from .utils import get_path
 import csv
 import json
+from .templates import templates
 
 class Intent(str, Enum):
     MENCARI_KODE = "mencari kode"
@@ -31,10 +32,7 @@ class IntentClassifier:
                 self.template.append(example_input)
                 self.template.append(example_output)
 
-        template_file_path = get_path("chatbot\\templates\intent-prompt-template.txt")
-
-        with open(template_file_path, 'r') as template_file:
-            file_content = template_file.read()
+        file_content = templates.prompt_template() 
 
         self.template = [file_content] + self.template
     
