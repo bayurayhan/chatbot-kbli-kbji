@@ -1,3 +1,4 @@
+import logging
 import os
 import google.generativeai as genai
 from google.generativeai import GenerationConfig
@@ -41,4 +42,5 @@ class Gemini(GenerativeModel):
         except Exception as e:
             error_message = f"Error generating text with Gemini: {e}"
             # Log or handle the error appropriately here
+            logging.error(error_message)
             return "Error generating text"

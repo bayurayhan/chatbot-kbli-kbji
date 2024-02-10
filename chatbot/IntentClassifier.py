@@ -1,4 +1,5 @@
 from enum import Enum
+import logging
 from .Model import GenerativeModel
 from .utils import get_path
 import csv
@@ -54,6 +55,6 @@ class IntentClassifier:
             intent_json = json.loads(json_string)
             return intent_json
         except Exception as e:
-            print(e)
+            logging.error(e)
             return {'intent': 'tidak relevan', 'entity': 'null', 'jenis': 'error', 'digit': 'null'}
  
