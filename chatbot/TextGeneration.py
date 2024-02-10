@@ -4,5 +4,5 @@ class TextGeneration:
     def __init__(self, model: GenerativeModel):
         self.model = model
 
-    def generate(self, prompt: str):
-        return self.model.generate_text(prompt)
+    async def generate(self, prompt: str):
+        return await self.model.generate_text(prompt)

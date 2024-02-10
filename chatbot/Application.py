@@ -14,6 +14,7 @@ class Application:
 
         self.router = Router(
             telegram_bot=TelegramBot(),
+            intent_classifier=self.intent_classifier,
             text_generator=self.text_generator)
         self.register_endpoints()
 
