@@ -11,3 +11,17 @@ class GenerativeModel(ABC):
         Returns:
             The generated text string.
         """
+
+class EmbeddingModel(ABC):
+    @abstractmethod
+    async def get_embedding(self, text: str):
+        """
+        Abstract method to get the embedding of a given text.
+
+        Parameters:
+            text (str): The input text for which embedding is required.
+
+        Returns:
+            Any: The embedding of the input text.
+        """
+    
