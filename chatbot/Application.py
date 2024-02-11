@@ -35,18 +35,6 @@ class Application:
 
     @staticmethod
     def configure_logging():
-        # logging.basicConfig(
-        #     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-        # )
-
-        # file_handler = logging.FileHandler(get_path("app.log"))
-        # file_handler.setLevel(logging.INFO)
-
-        # formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-        # file_handler.setFormatter(formatter)
-
-        # logging.getLogger("").addHandler(file_handler)
-
         root_logger = logging.getLogger()
         root_logger.setLevel(logging.DEBUG)  # Set root logger level to DEBUG
         # Create a RotatingFileHandler for the root logger with a maximum file size of 1 MB
@@ -64,6 +52,7 @@ class Application:
         app_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         app_file_handler.setFormatter(app_formatter)
         app_logger.addHandler(app_file_handler)
+
         app_stream_handler = logging.StreamHandler()
         app_stream_handler.setLevel(logging.INFO)  # Set stream handler level to INFO
         app_stream_formatter = logging.Formatter('%(levelname)s - %(message)s')

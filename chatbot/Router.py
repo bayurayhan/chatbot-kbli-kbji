@@ -9,7 +9,7 @@ import json
 
 
 class Router(APIRouter):
-    def __init__(self, telegram_bot: TelegramBot, text_generator: TextGeneration, intent_classifier: IntentClassifier):
+    def __init__(self, telegram_bot: TelegramBot, text_generator: TextGeneration, intent_classifier: IntentClassifier ):
         super().__init__(prefix="/api")
         self.bot = telegram_bot
         self.text_generator = text_generator

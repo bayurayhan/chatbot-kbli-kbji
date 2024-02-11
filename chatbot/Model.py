@@ -14,14 +14,14 @@ class GenerativeModel(ABC):
 
 class EmbeddingModel(ABC):
     @abstractmethod
-    async def get_embedding(self, text: str):
+    async def get_embedding(self, documents: str | list[str]) -> list:
         """
         Abstract method to get the embedding of a given text.
 
         Parameters:
-            text (str): The input text for which embedding is required.
+            text (str|list): The input text for which embedding is required.
 
         Returns:
-            Any: The embedding of the input text.
+            list
         """
     

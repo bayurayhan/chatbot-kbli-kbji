@@ -1,6 +1,7 @@
 import os
-import openai
+from langchain_openai import OpenAIEmbeddings as LangChainOpenAIEmbeddings
 from ..Model import EmbeddingModel
+from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 
 class OpenAIEmbedding(EmbeddingModel):
@@ -9,10 +10,10 @@ class OpenAIEmbedding(EmbeddingModel):
         if api_key == "":
             raise RuntimeError("Please fill OPENAI_API_KEY in .env file!")
 
-        self.embedding_model = "text-embedding-3-large"
-        self.openai_client = openai.OpenAI(api_key=api_key)
-
-    async def get_embedding(self, text: str):
-        response = self.openai_client.embeddings.create(input=[text], model=self.embedding_model)
-        print(response)
-        # return response["embedding"]
+        self.embedding_model_name = "text-embedding-ada-002"
+        self.model = LangChainOpenAIEmbeddings(model=self.embedding_model_name)
+    
+    async def get_embedding(self, documents: str | list[str]) -> list:
+        if isinstance(documents, list):
+            embeddings = self.model.embed_documents(documents)
+            return embeddings

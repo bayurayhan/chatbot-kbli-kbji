@@ -4,6 +4,8 @@ import google.generativeai as genai
 from google.generativeai import GenerationConfig
 from ..Model import GenerativeModel
 
+logger = logging.getLogger("app")
+
 class Gemini(GenerativeModel):
     def __init__(self):
         google_api_key = os.environ.get("GOOGLE_API_KEY")
@@ -42,5 +44,5 @@ class Gemini(GenerativeModel):
         except Exception as e:
             error_message = f"Error generating text with Gemini: {e}"
             # Log or handle the error appropriately here
-            logging.error(error_message)
+            logger.error(error_message)
             return "Error generating text"
