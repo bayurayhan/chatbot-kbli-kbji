@@ -1,11 +1,15 @@
+import logging
 from chatbot.Application import Application
 from chatbot.TelegramBot import TelegramBot
 from dotenv import load_dotenv
 from fastapi import FastAPI
 import os
 
+Application.configure_logging()
+logger = logging.getLogger("app")
+
 load_dotenv()
-print(".env file loaded!")
+logger.info(".env file loaded!")
 
 server = FastAPI()
 app = Application(server)
@@ -16,5 +20,5 @@ PORT = int(os.environ.get("SERVER_PORT", 8000))
 # Run the FastAPI server
 if __name__ == "__main__":
     import uvicorn
-    print("Starting application...")
-    uvicorn.run("main:server", host=HOST, port=PORT, reload=True)
+    logger.info("Starting application...")
+    uvicorn.run("main:server", host=HOST, port=PORT, reload=False)
