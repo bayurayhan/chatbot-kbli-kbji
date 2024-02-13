@@ -1,7 +1,3 @@
-# TODO: Implement semantic search using Embedding
-# 1. Find the right library to help me doing this
-# 2. Create abstraction for sure
-# 3. Find way how to handle the data. Our data is a sqlite database
 import logging
 from .utils import get_path
 import os
@@ -10,7 +6,9 @@ import numpy as np
 import pandas as pd
 from tqdm.auto import tqdm
 import asyncio
-import sys
+from langchain_community.document_loaders import CSVLoader
+from langchain_community.vectorstores.faiss import FAISS
+from langchain.text_splitter import TokenTextSplitter, CharacterTextSplitter
 
 logger = logging.getLogger("app")
 
@@ -20,20 +18,22 @@ class SemanticSearch:
         self.db_path = get_path(os.path.join("chatbot", "data", "baku.db"))
         self.embedding_model = embedding_model
 
-        # FIXME: For Testing
-        embedded_file_path = get_path(os.path.join("chatbot", "data", "EMBEDDED"))
+        embedded_file_path = get_path(os.path.join("chatbot", "data", ".EMBEDDED"))
         if not os.path.exists(embedded_file_path):
             logger.info(
                 "Creating embedding for the database. This may take some time..."
             )
-            self._embedding_database()
-            self.create_embedded_file(embedded_file_path)
+            self._embed_database()
+            self._create_embedded_file(embedded_file_path)
 
-    def _embedding_database(self):
+        # FIXME: Test
+        db = self._load_embedding_data("kbli2020")
+        print(db.similarity_search("tukang bangunan"))
+
+
+    def _embed_database(self):
         asyncio.run(self._process_embedding("kbli2020"))
         # asyncio.run(self._process_embedding("kbji2014"))
-
-        self.close_connection()
 
     async def _process_embedding(self, data_name: str):
         try:
@@ -51,15 +51,15 @@ class SemanticSearch:
                 dtype=column_types,
             )
 
-            df["deskripsi"] = df["deskripsi"].fillna('unknown')
+            df["deskripsi"] = df["deskripsi"].fillna("unknown")
 
-            logger.info(f"Embedding {data_name}...")
             df["judul_deskripsi"] = df["judul"] + "\n" + df["deskripsi"]
-            df["judul_deskripsi_embedding"] = await self.embedding_model.get_embedding(
-                df["judul_deskripsi"].to_list()
-            )
+            # df["judul_deskripsi_embedding"] = await self.embedding_model.get_embedding(
+            #     df["judul_deskripsi"].to_list()
+            # )
 
-            del df["judul_deskripsi"]
+            # del df["judul_deskripsi"]
+            df = df["judul"]
             df.to_csv(
                 get_path(os.path.join("chatbot", "data", f"{data_name}_embedding.csv")),
                 index=False,
@@ -72,7 +72,7 @@ class SemanticSearch:
                 "Error when embedding the database, please check the log file."
             )
 
-    def _load_embedding_data(self, csv_file_path: str) -> np.ndarray:
+    def _load_embedding_data(self, data_name=None) -> FAISS:
         """
         Loading the csv file that containing all data that already been
         embedded. If the file is not already existed, do embed_dataset function.
@@ -83,8 +83,25 @@ class SemanticSearch:
         Return:
             Numpy array of the loaded embedding
         """
-        pass
+        faiss_folder = os.path.join("chatbot", "data", f"{data_name}_faiss_index")
 
+        if not os.path.exists(faiss_folder):
+            logger.info("Load the documents...")
+            loader = CSVLoader(
+                get_path(os.path.join("chatbot", "data", f"{data_name}_embedding.csv")),
+            )
+            documents = loader.load()
+
+            # # Load to FAISS database
+            db = FAISS.from_documents(documents, self.embedding_model.get_model())
+            db.save_local(
+                get_path(os.path.join("chatbot", "data", f"{data_name}_faiss_index"))
+            )
+            return db
+        
+        db = FAISS.load_local(faiss_folder, self.embedding_model.get_model())
+        return db
+        
     @staticmethod
     def cosine_similarity(embedding1: list, embedding2: list) -> float:
         """
@@ -107,10 +124,6 @@ class SemanticSearch:
         else:
             return dot_product / (magnitude1 * magnitude2)
 
-    def create_embedded_file(self, file_path: str):
+    def _create_embedded_file(self, file_path: str):
         with open(file_path, "w"):
             pass
-
-    def close_connection(self):
-        if self.conn:
-            self.conn.close()

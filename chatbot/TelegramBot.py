@@ -29,7 +29,7 @@ class TelegramBot:
     def get_url(self, path):
         return urljoin(self.url_path, path)
 
-    def to(self, chat_id: int | str) -> Self:
+    def to(self, chat_id: any) -> Self:
         self.chat_id = chat_id
         return self
 

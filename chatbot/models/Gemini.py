@@ -23,7 +23,7 @@ class Gemini(GenerativeModel):
         self.model = genai.GenerativeModel(model_name=self.model_name,
                               generation_config=self.generation_config)
 
-    async def generate_text(self, prompt: str|list) -> str:
+    async def generate_text(self, prompt: any) -> str:
         """Generates text using the Google Gemini model with error handling.
 
         Args:

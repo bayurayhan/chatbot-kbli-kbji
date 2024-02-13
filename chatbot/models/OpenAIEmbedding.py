@@ -13,7 +13,10 @@ class OpenAIEmbedding(EmbeddingModel):
         self.embedding_model_name = "text-embedding-ada-002"
         self.model = LangChainOpenAIEmbeddings(model=self.embedding_model_name)
     
-    async def get_embedding(self, documents: str | list[str]) -> list:
+    async def get_embedding(self, documents: any) -> list:
         if isinstance(documents, list):
             embeddings = self.model.embed_documents(documents)
             return embeddings
+
+    def get_model(self):
+        return self.model

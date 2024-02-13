@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class GenerativeModel(ABC):
     @abstractmethod
-    async def generate_text(self, prompt: str|list) -> str:
+    async def generate_text(self, prompt: any) -> str:
         """Generates text based on a given prompt with optional control over length and creativity.
 
         Args:
@@ -14,7 +14,7 @@ class GenerativeModel(ABC):
 
 class EmbeddingModel(ABC):
     @abstractmethod
-    async def get_embedding(self, documents: str | list[str]) -> list:
+    async def get_embedding(self, documents: any) -> list:
         """
         Abstract method to get the embedding of a given text.
 
@@ -25,3 +25,8 @@ class EmbeddingModel(ABC):
             list
         """
     
+    @abstractmethod
+    def get_model(self):
+        """
+        Get the model object from the source API
+        """
