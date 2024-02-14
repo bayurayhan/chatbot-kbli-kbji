@@ -62,6 +62,7 @@ dependencies:
       - idna==3.6
       - jsonpatch==1.33
       - jsonpointer==2.4
+      - langchain==0.1.6
       - langchain-community==0.0.19
       - langchain-core==0.1.22
       - langchain-openai==0.0.5

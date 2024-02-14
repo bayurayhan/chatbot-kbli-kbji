@@ -95,11 +95,11 @@ class SemanticSearch:
             # )
 
             # del df["judul_deskripsi"]
-            df_new = pd.DataFrame()
-            df_new["nama lapangan usaha"] = df["judul"]
-            df_new["deskripsi"] = df["deskripsi"]
+            # df_new = pd.DataFrame()
+            # df_new["nama lapangan usaha"] = df["judul"]
+            # df_new["deskripsi"] = df["deskripsi"]
 
-            df_new.to_csv(
+            df.to_csv(
                 get_path(os.path.join("chatbot", "data", f"{data_name}_embedding.csv")),
                 index=False,
             )
