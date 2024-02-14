@@ -128,7 +128,8 @@ class SemanticSearch:
             logger.info("Load the documents...")
             loader = CSVLoader(
                 get_path(os.path.join("chatbot", "data", f"{data_name}_embedding.csv")),
-                source_column="nama lapangan usaha",
+                source_column="judul",
+                metadata_columns=["judul", "deskripsi"]
             )
             documents = loader.load()
 
