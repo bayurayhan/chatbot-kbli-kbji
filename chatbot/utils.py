@@ -20,5 +20,5 @@ def read_specific_row(filename, row_number):
     return specific_row
 
 def escape_characters(input_string):
-    escaped_string = re.sub(r'([.\-_])', r'\\\1', input_string)
+    escaped_string = re.sub(r'([_\*\[\]\(\)~`\>#\+\-=\|{}\.!])', r'\\\1', input_string)
     return escaped_string
