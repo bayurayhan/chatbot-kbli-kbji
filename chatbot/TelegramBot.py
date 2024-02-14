@@ -36,7 +36,7 @@ class TelegramBot:
 
     async def send_text(self, message: str):
         return await self.send_api_request(
-            "POST", "sendMessage", data={"text": escape_characters(message), "parse_mode": "MarkdownV2"}
+            "POST", "sendMessage", data={"text": escape_characters(message)}
         )
 
     async def send_action(self, action: str):
@@ -46,7 +46,7 @@ class TelegramBot:
 
     async def send_api_request(self, method, name, data):
         res = requests.api.request(
-            method, self.get_url(name), data={"chat_id": self.chat_id, **data}
+            method, self.get_url(name), data={"chat_id": self.chat_id, "parse_mode": "MarkdownV2", **data}
         )
 
         if res.status_code == 200:

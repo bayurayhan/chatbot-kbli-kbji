@@ -10,7 +10,7 @@ class OpenAIEmbedding(EmbeddingModel):
         if api_key == "":
             raise RuntimeError("Please fill OPENAI_API_KEY in .env file!")
 
-        self.embedding_model_name = "text-embedding-ada-002"
+        self.embedding_model_name = "text-embedding-3-large"
         self.model = LangChainOpenAIEmbeddings(model=self.embedding_model_name)
     
     async def get_embedding(self, documents: any) -> list:

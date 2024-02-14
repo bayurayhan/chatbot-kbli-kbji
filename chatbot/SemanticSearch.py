@@ -57,13 +57,13 @@ class SemanticSearch:
             processed_query = f"{digit} digit\n" + processed_query
         
         db = self._load_embedding_data("kbli2020")
+        # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         results = db.similarity_search_with_score(processed_query, k=5)
 
         results_string = []
 
         for i, (doc, score) in enumerate(results):
-            data_row = read_specific_row(get_path(os.path.join("chatbot", "data", f"kbli2020.csv")), int(doc.metadata["row"]))
-            results_string.append(f"{i + 1}. [{data_row['kode']}] {doc.metadata['judul']}")
+            results_string.append(f"{i + 1}. [{doc.metadata['kode']}] {doc.metadata['source']}")
 
         return results_string
 
@@ -129,7 +129,7 @@ class SemanticSearch:
             loader = CSVLoader(
                 get_path(os.path.join("chatbot", "data", f"{data_name}_embedding.csv")),
                 source_column="judul",
-                metadata_columns=["judul", "deskripsi"]
+                metadata_columns=["kode"]
             )
             documents = loader.load()
 
