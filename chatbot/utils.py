@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 
 def get_project_directory():
     current_file_path = os.path.abspath(__file__)
@@ -11,3 +12,8 @@ def get_path(path: str):
     """
     project_dir = get_project_directory()
     return os.path.join(project_dir, path)
+
+def read_specific_row(filename, row_number):
+    df = pd.read_csv(filename)
+    specific_row = df.iloc[row_number]
+    return specific_row

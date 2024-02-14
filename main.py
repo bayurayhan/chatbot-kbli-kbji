@@ -21,4 +21,4 @@ PORT = int(os.environ.get("SERVER_PORT", 8000))
 if __name__ == "__main__":
     import uvicorn
     logger.info("Starting application...")
-    uvicorn.run("main:server", host=HOST, port=PORT, reload=False)
+    uvicorn.run("main:server", host=HOST, port=PORT, reload=True)

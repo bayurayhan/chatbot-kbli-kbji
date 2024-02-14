@@ -1,7 +1,8 @@
 import logging
-from .utils import get_path
+from .utils import get_path, read_specific_row
 import os
-from .Model import EmbeddingModel
+from .Model import EmbeddingModel, GenerativeModel
+from .TextGeneration import TextGeneration
 import numpy as np
 import pandas as pd
 from tqdm.auto import tqdm
@@ -9,14 +10,21 @@ import asyncio
 from langchain_community.document_loaders import CSVLoader
 from langchain_community.vectorstores.faiss import FAISS
 from langchain.text_splitter import TokenTextSplitter, CharacterTextSplitter
+from .templates import prompt_templates
 
 logger = logging.getLogger("app")
 
 
 class SemanticSearch:
-    def __init__(self, embedding_model: EmbeddingModel):
+    def __init__(self, embedding_model: EmbeddingModel, text_generator: TextGeneration):
+        """Initialize the class
+
+        Args:
+            embedding_model (EmbeddingModel): _description_
+        """
         self.db_path = get_path(os.path.join("chatbot", "data", "baku.db"))
         self.embedding_model = embedding_model
+        self.text_generator = text_generator
 
         embedded_file_path = get_path(os.path.join("chatbot", "data", ".EMBEDDED"))
         if not os.path.exists(embedded_file_path):
@@ -26,10 +34,38 @@ class SemanticSearch:
             self._embed_database()
             self._create_embedded_file(embedded_file_path)
 
-        # FIXME: Test
         db = self._load_embedding_data("kbli2020")
-        print(db.similarity_search("tukang bangunan"))
+    
+    async def _preprocessing_query(self, query: str) -> str:
+        templated = prompt_templates.preprocessing_query(query)
+        processed_query = await self.text_generator.generate(templated)
+        logger.debug(processed_query)
+        return processed_query
 
+    async def embedding_query_to_text(self, query: str, digit: int = None):
+        """
+        Embed query into text string
+
+        Args:
+            query (str): _description_
+
+        Returns:
+            list (str): List of outputs ready to print.
+        """
+        processed_query = await self._preprocessing_query(query)
+        if digit:
+            processed_query = f"{digit} digit\n" + processed_query
+        
+        db = self._load_embedding_data("kbli2020")
+        results = db.similarity_search_with_score(processed_query, k=5)
+
+        results_string = []
+
+        for i, (doc, score) in enumerate(results):
+            data_row = read_specific_row(get_path("chatbot\data\kbli2020.csv"), int(doc.metadata["row"]))
+            results_string.append(f"{i + 1}. [{data_row['kode']}] {doc.metadata['judul']}")
+
+        return results_string
 
     def _embed_database(self):
         asyncio.run(self._process_embedding("kbli2020"))
@@ -53,14 +89,17 @@ class SemanticSearch:
 
             df["deskripsi"] = df["deskripsi"].fillna("unknown")
 
-            df["judul_deskripsi"] = df["judul"] + "\n" + df["deskripsi"]
+            # df["judul_deskripsi"] = df["judul"] + "\n" + df["deskripsi"]
             # df["judul_deskripsi_embedding"] = await self.embedding_model.get_embedding(
             #     df["judul_deskripsi"].to_list()
             # )
 
             # del df["judul_deskripsi"]
-            df = df["judul"]
-            df.to_csv(
+            df_new = pd.DataFrame()
+            df_new["nama lapangan usaha"] = df["judul"]
+            df_new["deskripsi"] = df["deskripsi"]
+
+            df_new.to_csv(
                 get_path(os.path.join("chatbot", "data", f"{data_name}_embedding.csv")),
                 index=False,
             )
@@ -89,6 +128,7 @@ class SemanticSearch:
             logger.info("Load the documents...")
             loader = CSVLoader(
                 get_path(os.path.join("chatbot", "data", f"{data_name}_embedding.csv")),
+                source_column="nama lapangan usaha",
             )
             documents = loader.load()
 
@@ -98,31 +138,9 @@ class SemanticSearch:
                 get_path(os.path.join("chatbot", "data", f"{data_name}_faiss_index"))
             )
             return db
-        
+
         db = FAISS.load_local(faiss_folder, self.embedding_model.get_model())
         return db
-        
-    @staticmethod
-    def cosine_similarity(embedding1: list, embedding2: list) -> float:
-        """
-        Calculate the cosine similarity between two embeddings.
-
-        Parameters:
-            embedding1 (list): The first embedding.
-            embedding2 (list): The second embedding.
-
-        Returns:
-            float: The cosine similarity score between the two embeddings.
-        """
-        embedding1 = np.array(embedding1)
-        embedding2 = np.array(embedding2)
-        dot_product = np.dot(embedding1, embedding2)
-        magnitude1 = np.linalg.norm(embedding1)
-        magnitude2 = np.linalg.norm(embedding2)
-        if magnitude1 == 0 or magnitude2 == 0:
-            return 0
-        else:
-            return dot_product / (magnitude1 * magnitude2)
 
     def _create_embedded_file(self, file_path: str):
         with open(file_path, "w"):

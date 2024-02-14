@@ -1,4 +1,4 @@
-def prompt_template():
+def intent_classification():
     return """Berikan label intent, entity dan jenis klasifikasi pada pesan user dari sebuah percakapan. Jawab  dengan nama dari intent, entity, jenis klasifikasi dan jumlah digit (jika ada/diperlukan).
 
 Intent yang digunakan harus salah satu dari berikut : 
@@ -13,3 +13,18 @@ Jenis klasifikasi yang digunakan harus salah satu dari berikut :
 
 Jawab menggunakan format JSON!
 """
+
+def preprocessing_query(query: str) -> str:
+    return f"""Berikan definisi untuk kata benda profesi berikut! Jika terjadi typo (salah ketik), perbaiki kata tersebut! Kata yang masuk adalah kata benda untuk profesi.
+profesi: {query}
+definisi: """
+
+def for_mencari_kode(search_outputs: str, user_text: str, type: str, query: str) -> str:
+    return f"""Anda adalah Chatbot untuk Sistem Informasi KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+
+User meminta untuk melakukan pencarian kode {type}. Beritahu user hasil pencarian berikut dengan santai dan sopan. Sertakan juga semua list berikut!
+
+{search_outputs}
+
+user: {user_text}
+chatbot: """

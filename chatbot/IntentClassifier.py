@@ -5,7 +5,7 @@ from .Model import GenerativeModel
 from .utils import get_path
 import csv
 import json
-from .templates import templates
+from .templates import prompt_templates
 
 
 class Intent(str, Enum):
@@ -37,7 +37,7 @@ class IntentClassifier:
                 self.template.append(example_input)
                 self.template.append(example_output)
 
-        file_content = templates.prompt_template()
+        file_content = prompt_templates.intent_classification()
 
         self.template = [file_content] + self.template
 

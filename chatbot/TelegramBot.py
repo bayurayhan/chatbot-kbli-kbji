@@ -35,7 +35,7 @@ class TelegramBot:
 
     async def send_text(self, message: str):
         return await self.send_api_request(
-            "POST", "sendMessage", data={"text": message}
+            "POST", "sendMessage", data={"text": message, "parse_mode": "Markdown"}
         )
 
     async def send_action(self, action: str):
