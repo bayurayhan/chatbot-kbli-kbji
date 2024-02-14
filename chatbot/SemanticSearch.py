@@ -62,7 +62,7 @@ class SemanticSearch:
         results_string = []
 
         for i, (doc, score) in enumerate(results):
-            data_row = read_specific_row(get_path("chatbot\data\kbli2020.csv"), int(doc.metadata["row"]))
+            data_row = read_specific_row(get_path(os.path.join("chatbot", "data", f"kbli2020.csv")), int(doc.metadata["row"]))
             results_string.append(f"{i + 1}. [{data_row['kode']}] {doc.metadata['judul']}")
 
         return results_string
