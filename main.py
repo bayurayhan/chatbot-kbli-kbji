@@ -21,4 +21,10 @@ PORT = int(os.environ.get("SERVER_PORT", 8000))
 if __name__ == "__main__":
     import uvicorn
     logger.info("Starting application...")
-    uvicorn.run("main:server", host=HOST, port=PORT, reload=True)
+    SSL_CERT = os.environ.get("SSL_CERT")
+    SSL_KEY = os.environ.get("SSL_KEY")
+    DEBUG = os.environ.get("DEBUG")
+    if SSL_CERT and SSL_KEY:
+        uvicorn.run("main:server", host=HOST, port=PORT, reload=(DEBUG == "true"))
+    else:
+        uvicorn.run("main:server", host=HOST, port=PORT, reload=(DEBUG == "true"), ssl_certfile=SSL_CERT, ssl_keyfile=SSL_KEY)
