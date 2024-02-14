@@ -3,6 +3,7 @@ from urllib.parse import urljoin
 import requests
 from typing_extensions import Self
 from enum import Enum
+from .utils import escape_characters
 
 
 class TelegramAction(str, Enum):
@@ -35,7 +36,7 @@ class TelegramBot:
 
     async def send_text(self, message: str):
         return await self.send_api_request(
-            "POST", "sendMessage", data={"text": message, "parse_mode": "Markdown"}
+            "POST", "sendMessage", data={"text": escape_characters(message), "parse_mode": "MarkdownV2"}
         )
 
     async def send_action(self, action: str):

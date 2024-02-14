@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 
 def get_project_directory():
@@ -17,3 +18,7 @@ def read_specific_row(filename, row_number):
     df = pd.read_csv(filename)
     specific_row = df.iloc[row_number]
     return specific_row
+
+def escape_characters(input_string):
+    escaped_string = re.sub(r'([.\-_])', r'\\\1', input_string)
+    return escaped_string
