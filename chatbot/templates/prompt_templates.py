@@ -16,6 +16,7 @@ Jawab menggunakan format JSON!
 
 def preprocessing_query(query: str) -> str:
     return f"""Berikan definisi untuk kata benda profesi berikut! Jika terjadi typo (salah ketik), perbaiki kata tersebut! Kata yang masuk adalah kata benda untuk profesi.
+
 profesi: {query}
 definisi: """
 
