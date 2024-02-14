@@ -23,7 +23,7 @@ if __name__ == "__main__":
     SSL_CERT = os.environ.get("SSL_CERT")
     SSL_KEY = os.environ.get("SSL_KEY")
     DEBUG = os.environ.get("DEBUG")
-    if SSL_CERT and SSL_KEY:
+    if not SSL_CERT and SSL_KEY:
         logger.info("Starting application in HTTP mode...")
         uvicorn.run("main:server", host=HOST, port=PORT, reload=(DEBUG == "true"))
     else:
