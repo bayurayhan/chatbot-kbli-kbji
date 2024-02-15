@@ -58,7 +58,7 @@ class SemanticSearch:
         
         db = self._load_embedding_data("kbli2020")
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
-        results = db.similarity_search_with_score(processed_query, k=5)
+        results = db.similarity_search_with_score(processed_query, k=10)
 
         results_string = []
 
@@ -68,8 +68,12 @@ class SemanticSearch:
         return results_string
 
     def _embed_database(self):
-        asyncio.run(self._process_embedding("kbli2020"))
+        # asyncio.run(self._process_embedding("kbli2020"))
         # asyncio.run(self._process_embedding("kbji2014"))
+        logger.info("Embedding the database")
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self._process_embedding("kbli2020"))
+        logger.info("Finished embedding the database!")
 
     async def _process_embedding(self, data_name: str):
         try:
