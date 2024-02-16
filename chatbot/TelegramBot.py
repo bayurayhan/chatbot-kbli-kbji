@@ -3,8 +3,9 @@ from urllib.parse import urljoin
 import requests
 from typing_extensions import Self
 from enum import Enum
-from .utils import escape_characters
+from .utils import remove_trailing_asterisks, escape_characters
 
+PARSE_MODE = "MarkdownV2"
 
 class TelegramAction(str, Enum):
     CHOOSE_STICKER = "choose_sticker"
@@ -36,7 +37,17 @@ class TelegramBot:
 
     async def send_text(self, message: str):
         return await self.send_api_request(
-            "POST", "sendMessage", data={"text": message}
+            "POST", "sendMessage", data={"text": escape_characters(message), "parse_mode": PARSE_MODE}
+        )
+    
+    async def edit_message(self, message_id: int, message: str):
+        return await self.send_api_request(
+            "POST", "editMessageText", data={"text": message, "message_id": message_id, "parse_mode": PARSE_MODE}   
+        )
+
+    async def delete_message(self, message_id: int):
+        return await self.send_api_request(
+            "POST", "deleteMessage", data={"message_id": message_id}   
         )
 
     async def send_action(self, action: str):
@@ -46,10 +57,10 @@ class TelegramBot:
 
     async def send_api_request(self, method, name, data):
         res = requests.api.request(
-            method, self.get_url(name), data={"chat_id": self.chat_id, "parse_mode": "Markdown", **data}
+            method, self.get_url(name), data={"chat_id": self.chat_id, **data}
         )
 
         if res.status_code == 200:
-            return res
+            return res.json()
 
         raise res.raise_for_status()

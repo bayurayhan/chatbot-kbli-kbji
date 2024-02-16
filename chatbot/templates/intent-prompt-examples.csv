@@ -5,3 +5,10 @@ Apa kode KBJI dari pembuat tahu;{\n  \"intent\": \"mencari kode\",\n  \"entity\"
 Tahun berapa Indonesia merdeka;{\n  \"intent\": \"tidak relevan\",\n  \"entity\": \"null\",\n  \"jenis\": \"null\",\n  \"digit\": \"null\"\n}
 apa saja turunan dari kode KBLI 46515;{\n  \"intent\": \"menjelaskan kode\",\n  \"entity\": \"4651\",\n  \"jenis\": \"KBLI\",\n  \"digit\": 5\n}
 Bagaimana cara memasak sayur?;{\n  \"intent\": \"tidak relevan\",\n  \"entity\": \"null\",\n  \"jenis\": \"null\",\n  \"digit\": \"null\"\n}
+Apa kode KBLI untuk usaha restoran?;{\n  \"intent\": \"mencari kode\",\n  \"entity\": \"usaha restoran\",\n  \"jenis\": \"KBLI\",\n  \"digit\": \"null\"\n}
+Apakah ada kode KBJI untuk pekerjaan tukang kayu?;{\n  \"intent\": \"mencari kode\",\n  \"entity\": \"pekerjaan tukang kayu\",\n  \"jenis\": \"KBJI\",\n  \"digit\": \"null\"\n}
+Apa saja jenis pekerjaan yang termasuk dalam KBLI 62020?;{\n  \"intent\": \"menjelaskan kode\",\n  \"entity\": \"6202\",\n  \"jenis\": \"KBLI\",\n  \"digit\": 5\n}
+Bagaimana cara merawat tanaman hias?;{\n  \"intent\": \"tidak relevan\",\n  \"entity\": \"null\",\n  \"jenis\": \"null\",\n  \"digit\": \"null\"\n}
+Apakah ada kode KBJI untuk peternak ayam?;{\n  \"intent\": \"mencari kode\",\n  \"entity\": \"peternak ayam\",\n  \"jenis\": \"KBJI\",\n  \"digit\": \"null\"\n}
+Berapa digit kode KBJI untuk pekerjaan petani karet?;{\n  \"intent\": \"mencari digit kode\",\n  \"entity\": \"pekerjaan petani karet\",\n  \"jenis\": \"KBJI\",\n  \"digit\": \"null\"\n}
+Apa saja spesifikasi dari KBLI 35101?;{\n  \"intent\": \"menjelaskan kode\",\n  \"entity\": \"3510\",\n  \"jenis\": \"KBLI\",\n  \"digit\": 5\n}

@@ -37,6 +37,8 @@ User meminta untuk melakukan pencarian kode '{type}' untuk '{query}' dan sistem 
 {search_outputs}
 
 Jawab kepada user mengenai hal hasil pencarian tersebut. Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
+
+JAWAB MENGGUNAKAN FORMAT MARKDOWN!
 ---\n""",
         f"""user: {user_text}\n""",
         f"""assistant: """,

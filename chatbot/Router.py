@@ -8,7 +8,7 @@ from .TextGeneration import TextGeneration
 from .IntentClassifier import IntentClassifier, Intent
 from .SemanticSearch import SemanticSearch
 import json
-from .utils import read_specific_row, get_path
+from .utils import read_specific_row, get_path, remove_trailing_asterisks
 from .templates import prompt_templates
 
 logger = logging.getLogger("app")
@@ -64,6 +64,10 @@ assistant: """)
             text (str): _description_
         """
         logger.info("Handle `mencari kode`...")
+
+        info_message = await self.bot.to(chat_id).send_text("Sedang mencari kode...")
+        info_message = info_message.get("result")
+        
         query = prediction["entity"] 
         dataname = "kbli2020" if prediction.get("jenis") == "KBLI" else ("kbji2014" if prediction.get("jenis") == "KBJI" else "")
         try:
@@ -78,6 +82,7 @@ assistant: """)
             response += doc + '\n'    
 
         answer = await self.text_generator.generate(prompt_templates.for_mencari_kode(response, text, dataname, query))
+        answer = remove_trailing_asterisks(answer)
         
         logger.debug(f"Text: {text}, type: {dataname}, {digit}")
         # logger.debug(f"Processed: {preprocessed_query}")
@@ -86,3 +91,4 @@ assistant: """)
 
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         await self.bot.to(chat_id).send_text(answer)
+        await self.bot.to(chat_id).delete_message(info_message.get("message_id"))
