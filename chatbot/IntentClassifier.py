@@ -48,7 +48,14 @@ class IntentClassifier:
 
     async def predict(self, prompt: str):
         full_prompt = self._prepare_for_predict(prompt)
-        prediction = await self.model.generate_text(full_prompt)
+        prediction = await self.model.generate_text(
+            full_prompt,
+            {
+                "temperature": 0.2,
+                "top_k": 20,
+                "top_p": 0.9,
+            },
+        )
         json_string = prediction.replace("\\n", "\n").replace('\\"', '"')
 
         try:
@@ -57,7 +64,7 @@ class IntentClassifier:
         except Exception as e:
             logging.error(e)
             return {
-                "intent": "tidak relevan",
+                "intent": "error",
                 "entity": "null",
                 "jenis": "error",
                 "digit": "null",

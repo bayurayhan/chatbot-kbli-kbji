@@ -34,7 +34,8 @@ class SemanticSearch:
             self._embed_database()
             self._create_embedded_file(embedded_file_path)
 
-        db = self._load_embedding_data("kbli2020")
+        self._load_embedding_data("kbli2020")
+        self._load_embedding_data("kbji2014")
     
     async def _preprocessing_query(self, query: str) -> str:
         templated = prompt_templates.preprocessing_query(query)
@@ -42,7 +43,7 @@ class SemanticSearch:
         logger.debug(processed_query)
         return processed_query
 
-    async def embedding_query_to_text(self, query: str, digit: int = None):
+    async def embedding_query_to_text(self, query: str, digit: int = None, data_name="kbli2020"):
         """
         Embed query into text string
 
@@ -55,8 +56,8 @@ class SemanticSearch:
         processed_query = await self._preprocessing_query(query)
         if digit:
             processed_query = f"{digit} digit\n" + processed_query
-        
-        db = self._load_embedding_data("kbli2020")
+
+        db = self._load_embedding_data(data_name)
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         # results = db.max_marginal_relevance_search(processed_query, k=10)
         results = db.similarity_search(query=processed_query, k=10)
@@ -64,7 +65,7 @@ class SemanticSearch:
         results_string = []
 
         for i, doc in enumerate(results):
-            results_string.append(f"{i + 1}. kode_kbli: {doc.metadata['kode']} nama: {doc.metadata['source']}")
+            results_string.append(f"{i + 1}. kode_{data_name}: {doc.metadata['kode']} nama: {doc.metadata['source']}")
 
         return results_string
 
@@ -74,6 +75,7 @@ class SemanticSearch:
         logger.info("Embedding the database")
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self._process_embedding("kbli2020"))
+        loop.run_until_complete(self._process_embedding("kbji2014"))
         logger.info("Finished embedding the database!")
 
     async def _process_embedding(self, data_name: str):

@@ -34,8 +34,6 @@ class Application:
         )
         self.register_endpoints()
 
-        print("LOADED")
-
     @staticmethod
     def configure_logging():
         root_logger = logging.getLogger()

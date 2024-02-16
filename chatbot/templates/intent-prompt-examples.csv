@@ -1,5 +1,5 @@
 input;output
-Apa kode KBLI dari penjual bakso keliling dengan 5 digit kode?;{\n  \"intent\": \"mencari kode\",\n  \"entity\": \"penjual bakso keliling\",\n  \"jenis\": \"KBLI\",\n  \"digit\": 5\n}
+Apa kode dari penjual bakso keliling dengan 5 digit kode?;{\n  \"intent\": \"mencari kode\",\n  \"entity\": \"penjual bakso keliling\",\n  \"jenis\": \"KBLI\",\n  \"digit\": 5\n}
 Pekerjaan apa saja yang termasuk pada kode KBJI 4132;{\n  \"intent\": \"menjelaskan kode\",\n  \"entity\": \"4132\",\n  \"jenis\": \"KBJI\",\n  \"digit\": 4\n}
 Apa kode KBJI dari pembuat tahu;{\n  \"intent\": \"mencari kode\",\n  \"entity\": \"pembuat tahu\",\n  \"jenis\": \"KBJI\",\n  \"digit\": \"null\"\n}
 Tahun berapa Indonesia merdeka;{\n  \"intent\": \"tidak relevan\",\n  \"entity\": \"null\",\n  \"jenis\": \"null\",\n  \"digit\": \"null\"\n}

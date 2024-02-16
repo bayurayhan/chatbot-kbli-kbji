@@ -29,4 +29,4 @@ if __name__ == "__main__":
         uvicorn.run("main:server", host=HOST, port=PORT, reload=(DEBUG == "true"), ssl_certfile=SSL_CERT, ssl_keyfile=SSL_KEY, reload_excludes="*.log*")
     else:
         logger.info("Starting application in HTTP mode...")
-        uvicorn.run("main:server", host=HOST, port=PORT, reload=(DEBUG == "true"), reload_dirs=get_path("chatbot"))
+        uvicorn.run(server, host=HOST, port=PORT)

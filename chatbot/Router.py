@@ -25,7 +25,10 @@ class Router(APIRouter):
 
     async def handleWebhook(self, request: Request):
         body = await request.json()
+
         logger.info(f"Chat delivered with id {body.get('update_id')} from {body.get('message', {}).get('from').get('first_name')}")
+        logger.debug(body)
+
         if "message" not in body:
             return
         chat_id = body["message"]["chat"]["id"]
@@ -37,36 +40,49 @@ class Router(APIRouter):
         # Handle the intent
         if prediction["intent"] == Intent.MENCARI_KODE:
             await self.handleMencariKode(prediction, chat_id, text)
+        elif prediction["intent"] == "error":
+            await self.bot.to(chat_id).send_text("Error on generating text")
         else:
             await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
             answer = await self.text_generator.generate(f"""system: Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
-Jawab kepada user bawasannya kamu (chatbot) tidak dapat memproses permintaan dari user dengan sopan. Hal ini dikarenakan chatbot saat ini hanya bisa digunakan untuk "mencari kode KBLI".
+Jawab permintaan dari user dengan baik dan sopan.
+JANGAN MEMBERI JAWABAN JIKA PERTANYAAN DI LUAR KONTEKS KBLI DAN KBJI!
+---
 user: {text}
 assistant: """)
             await self.bot.to(chat_id).send_text(answer)
             
         return ""
     
-    async def handleMencariKode(self, prediction: dict, chat_id, text):
+    async def handleMencariKode(self, prediction: dict, chat_id: str, text: str):
+        """
+        Handling mencari kode intent from intent classification above.
+
+        Args:
+            prediction (dict): _description_
+            chat_id (str): _description_
+            text (str): _description_
+        """
         logger.info("Handle `mencari kode`...")
-        query = prediction["entity"]
-        type = prediction["jenis"]
+        query = prediction["entity"] 
+        dataname = "kbli2020" if prediction.get("jenis") == "KBLI" else ("kbji2014" if prediction.get("jenis") == "KBJI" else "")
         try:
             digit = int(prediction["digit"])
         except Exception as e:
             digit = None
-        
-        raw_response = await self.semantic_search.embedding_query_to_text(query, digit)
+         
+        raw_response = await self.semantic_search.embedding_query_to_text(query, digit, data_name=dataname)
         response = ""
 
         for doc in raw_response:
             response += doc + '\n'    
 
-        answer = await self.text_generator.generate(prompt_templates.for_mencari_kode(response, text, type, query))
+        answer = await self.text_generator.generate(prompt_templates.for_mencari_kode(response, text, dataname, query))
         
-        logger.debug(f"Text: {text}, type: {type}, {digit}")
+        logger.debug(f"Text: {text}, type: {dataname}, {digit}")
         # logger.debug(f"Processed: {preprocessed_query}")
         logger.debug(response)
+        logger.debug(answer)
 
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         await self.bot.to(chat_id).send_text(answer)

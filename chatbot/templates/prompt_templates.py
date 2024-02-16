@@ -11,7 +11,9 @@ Jenis klasifikasi yang digunakan harus salah satu dari berikut :
 -KBJI (Klasifikasi Baku Jabatan Indonesia)
 -null (jika intent "tidak relevan")
 
-Jawab menggunakan format JSON!
+JIKA TIDAK DISEBUTKAN KBLI ATAU KBJI, MAKA INTERPRETASIKAN SENDIRI BERDASARKAN KONTEKS DARI INPUT!
+
+JAWAB MENGGUNAKAN FORMAT JSON!
 """
 
 
@@ -31,11 +33,11 @@ def for_mencari_kode(
     return [
         f"""system: Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
         
-User meminta untuk melakukan pencarian kode '{type}' untuk '{query}' dan sistem sudah melakukan pencarian di data BPS KBLI 2020 dengan hasil berikut:
+User meminta untuk melakukan pencarian kode '{type}' untuk '{query}' dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
 {search_outputs}
 
 Jawab kepada user mengenai hal hasil pencarian tersebut. Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
 ---\n""",
-        # f"""user: {user_text}\n""",
+        f"""user: {user_text}\n""",
         f"""assistant: """,
     ]
