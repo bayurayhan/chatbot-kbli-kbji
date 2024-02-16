@@ -8,7 +8,7 @@ from .TextGeneration import TextGeneration
 from .IntentClassifier import IntentClassifier, Intent
 from .SemanticSearch import SemanticSearch
 import json
-from .utils import read_specific_row, get_path, remove_trailing_asterisks
+from .utils import read_specific_row, get_path, remove_trailing_asterisks, gemini_markdown_to_markdown
 from .templates import prompt_templates
 
 logger = logging.getLogger("app")
@@ -82,7 +82,6 @@ assistant: """)
             response += doc + '\n'    
 
         answer = await self.text_generator.generate(prompt_templates.for_mencari_kode(response, text, dataname, query))
-        answer = remove_trailing_asterisks(answer)
         
         logger.debug(f"Text: {text}, type: {dataname}, {digit}")
         # logger.debug(f"Processed: {preprocessed_query}")

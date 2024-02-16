@@ -20,8 +20,26 @@ def read_specific_row(filename, row_number):
     return specific_row
 
 def escape_characters(input_string):
-    escaped_string = re.sub(r'([_\[\]\(\)~`\>#\+\-=\|{}\.!])', r'\\\1', input_string)
+    escaped_string = re.sub(r'([\_\[\]\(\)\~\`\>\#\+\-\=\|\{\}\.\!])', r'\\\1', input_string)
     return escaped_string
+
+def replace_starting_asterisk_with_dash(input_string):
+    """
+    Replaces a '*' at the beginning of a line with '-' using regular expressions.
+    
+    Parameters:
+        input_string (str): The input string.
+    
+    Returns:
+        str: The modified string with '*' replaced with '-' at the beginning of lines.
+    """
+    return re.sub(r'^\* ', '- ', input_string, flags=re.MULTILINE)
+
+def gemini_markdown_to_markdown(input):
+    input = remove_trailing_asterisks(input)
+    input = replace_starting_asterisk_with_dash(input)
+    input = escape_characters(input)
+    return input
 
 def remove_trailing_asterisks(input_string):
     """
