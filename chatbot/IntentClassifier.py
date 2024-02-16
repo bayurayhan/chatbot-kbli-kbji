@@ -51,7 +51,7 @@ class IntentClassifier:
         prediction = await self.model.generate_text(
             full_prompt,
             {
-                "temperature": 0.5,
+                "temperature": 0,
                 "top_k": 1,
                 "top_p": 0.9,
             },

@@ -44,7 +44,7 @@ class SemanticSearch:
         templated = prompt_templates.preprocessing_query(query)
         processed_query = await self.text_generator.generate_text(
             templated,
-            {"temperature": 0.9, "top_k": 1, "top_p": 1, "max_output_tokens": 5000},
+            {"temperature": 0, "top_k": 1, "top_p": 1, "max_output_tokens": 5000},
         )
         logger.debug(f"Preprocessing query: {processed_query}")
         return processed_query
@@ -77,13 +77,14 @@ class SemanticSearch:
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         k = 10 if intent == Intent.MENCARI_KODE else 3
         results = db.similarity_search(query=processed_query, k=k)
+        # results = db.max_marginal_relevance_search(processed_query, k=k)
 
         results_string = []
 
         if intent == Intent.MENCARI_KODE:
             for i, doc in enumerate(results):
                 results_string.append(
-                    f"{i + 1}. kode_{data_name}: {doc.metadata['kode']}; nama: {doc.metadata['source']}"
+                    f"{i + 1}. kode_{data_name}: {doc.metadata['kode']}; nama: {doc.metadata['source']};"
                 )
         else:
             for i, doc in enumerate(results):
@@ -92,7 +93,7 @@ class SemanticSearch:
                     doc.metadata.get("row"),
                 )
                 results_string.append(
-                    f"{i + 1}. kode_{data_name}: {doc.metadata.get('source')}; nama: {row_data['judul']}; deskripsi: {row_data['deskripsi']}"
+                    f"{i + 1}. kode_{data_name}: {doc.metadata.get('source')}; nama: {row_data['judul']}; deskripsi: {row_data['deskripsi']};"
                 )
         return results_string, processed_query
 
