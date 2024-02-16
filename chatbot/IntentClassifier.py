@@ -23,7 +23,7 @@ class IntentClassifier:
 
     def _load_template(self):
         examples_file_path = get_path(
-            os.path.join("chatbot", "templates", "intent-prompt-examples.csv")
+            "chatbot", "templates", "intent-prompt-examples.csv"
         )
 
         with open(examples_file_path, "r", newline="") as csvfile:
@@ -51,8 +51,8 @@ class IntentClassifier:
         prediction = await self.model.generate_text(
             full_prompt,
             {
-                "temperature": 0.2,
-                "top_k": 20,
+                "temperature": 0.5,
+                "top_k": 1,
                 "top_p": 0.9,
             },
         )

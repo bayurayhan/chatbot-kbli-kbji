@@ -19,10 +19,13 @@ JAWAB MENGGUNAKAN FORMAT JSON!
 
 def preprocessing_query(query: str) -> list[str]:
     return [
-        f"""system: Tugas Anda adalah memberikan definisi atau arti dari istilah kata yang diberikan oleh user! Perbaiki juga jika ada typo (salah ketik)!\n""",
-        f"""user: 'pedagang'\n""",
-        f"""assistant: pedagang adalah orang yang mencari nafkah dengan berdagang; pedagang asongan pedagang yang menjajakan buah-buahan dan sebagainya (di dalam kendaraan umum, di perempatan jalan, dan sebagainya); pedagang besar pedagang yang berjualan secara besar-besaran (dengan modal besar); pedagang yang melakukan penyerahan barang kena pajak, bukan sebagai pedagang eceran; pedagang dorongan pedagang yang membawa dagangan dengan kereta dorong;\n""",
-        f"""user: '{query}'\n""",
+        f"""system: Tugas Anda adalah memberikan definisi detail dari istilah kata yang diberikan oleh user. Anggaplah user tidak mengerti apa-apa.
+Perbaiki juga jika ada typo (salah ketik).\n""",
+        f"""user: Apa itu 'pedagang'?\n""",
+        f"""assistant: Pedagang adalah orang yang melakukan atau terlibat perdagangan dan/atau memperjualbelikan barang yang tidak diproduksi sendiri, untuk memperoleh suatu keuntungan.\n""",
+        # f"""user: Apa itu 'pedagang bakso'?\n""",
+        # f"""assistant: Pedagang bakso adalah seseorang yang menjual bakso, yaitu bola daging yang biasanya terbuat dari daging sapi yang dicampur dengan tepung tapioka dan bumbu-bumbu lainnya. Bakso adalah makanan populer di Indonesia yang sering disajikan dalam berbagai variasi, seperti bakso kuah (dalam sup), bakso goreng (digoreng), bakso pangsit (dalam pangsit goreng), dan lain-lain.\n""",
+        f"""user: Apa itu '{query}'?\n""",
         f"""assistant: """,
     ]
 
@@ -33,7 +36,7 @@ def for_mencari_kode(
     return [
         f"""system: Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
         
-User meminta untuk melakukan pencarian kode '{type}' untuk '{query}' dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
+User meminta untuk melakukan pencarian kode '{type}' untuk {query} dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
 {search_outputs}
 
 Jawab kepada user mengenai hal hasil pencarian tersebut. Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
@@ -43,3 +46,28 @@ JAWAB MENGGUNAKAN FORMAT MARKDOWN!
         f"""user: {user_text}\n""",
         f"""assistant: """,
     ]
+
+def for_menjelaskan_kode(
+    search_outputs: str, user_text: str, type: str, query: str
+) -> list[str]:
+    return [
+        f"""system: Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+        
+User meminta untuk melakukan penjelasan kode '{type}' untuk kode '{query}' dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
+{search_outputs}
+
+Jawab kepada user mengenai hal hasil pencarian tersebut. Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
+
+JAWAB MENGGUNAKAN FORMAT MARKDOWN!
+---\n""",
+        f"""user: {user_text}\n""",
+        f"""assistant: """,
+    ]
+
+def for_tidak_relevan(query: str):
+    return f"""system: Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
+Jawab permintaan dari user dengan baik dan sopan.
+JANGAN MEMBERI JAWABAN JIKA PERTANYAAN DI LUAR KONTEKS KBLI DAN KBJI!
+---
+user: {query}
+assistant: """

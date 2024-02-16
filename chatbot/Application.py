@@ -23,7 +23,7 @@ class Application:
         intent_classifier = IntentClassifier(model=generative_model)
         text_generator = TextGeneration(model=generative_model)
         semantic_search = SemanticSearch(
-            embedding_model=embedding_model, text_generator=text_generator
+            embedding_model=embedding_model, text_generator=generative_model
         )
 
         self.router = Router(
@@ -60,7 +60,9 @@ class Application:
 
         app_stream_handler = logging.StreamHandler()
         app_stream_handler.setLevel(logging.INFO)  # Set stream handler level to INFO
-        app_stream_formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
+        app_stream_formatter = logging.Formatter(
+            "%(asctime)s %(levelname)s - %(message)s"
+        )
         app_stream_handler.setFormatter(app_stream_formatter)
         app_logger.addHandler(app_stream_handler)
 

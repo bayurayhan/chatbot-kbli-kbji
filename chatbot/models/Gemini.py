@@ -13,7 +13,7 @@ class Gemini(GenerativeModel):
         self.model_name = "gemini-1.0-pro"
         if not generation_config:
             self.generation_config = GenerationConfig(
-                temperature=0.8, top_k=1, top_p=0.9, max_output_tokens=2048
+                temperature=0.8, top_k=2, top_p=0.9, max_output_tokens=2048
             )
         else:
             self.generation_config = generation_config
