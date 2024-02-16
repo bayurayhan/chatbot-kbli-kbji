@@ -10,9 +10,9 @@ class Gemini(GenerativeModel):
     def __init__(self):
         google_api_key = os.environ.get("GOOGLE_API_KEY")
         self.model_name = "gemini-pro"
-        self.generation_config = GenerationConfig(temperature=0.9,
+        self.generation_config = GenerationConfig(temperature=0.8,
                                                   top_k=1,
-                                                  top_p=1,
+                                                  top_p=0.9,
                                                   max_output_tokens=2048)
         self.model = None
 

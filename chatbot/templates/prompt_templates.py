@@ -14,18 +14,28 @@ Jenis klasifikasi yang digunakan harus salah satu dari berikut :
 Jawab menggunakan format JSON!
 """
 
-def preprocessing_query(query: str) -> str:
-    return f"""Berikan definisi/penjelasan untuk query berikut!
 
-input: {query}
-definisi: """
+def preprocessing_query(query: str) -> list[str]:
+    return [
+        f"""system: Tugas Anda adalah memberikan definisi atau arti dari istilah kata yang diberikan oleh user! Perbaiki juga jika ada typo (salah ketik)!\n""",
+        f"""user: 'pedagang'\n""",
+        f"""assistant: pedagang adalah orang yang mencari nafkah dengan berdagang; pedagang asongan pedagang yang menjajakan buah-buahan dan sebagainya (di dalam kendaraan umum, di perempatan jalan, dan sebagainya); pedagang besar pedagang yang berjualan secara besar-besaran (dengan modal besar); pedagang yang melakukan penyerahan barang kena pajak, bukan sebagai pedagang eceran; pedagang dorongan pedagang yang membawa dagangan dengan kereta dorong;\n""",
+        f"""user: '{query}'\n""",
+        f"""assistant: """,
+    ]
 
-def for_mencari_kode(search_outputs: str, user_text: str, type: str, query: str) -> str:
-    return f"""Anda adalah Chatbot untuk Sistem Informasi KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
-User meminta untuk melakukan pencarian kode {type}. 
 
-Beritahu user hasil pencarian berikut dengan santai dan sopan.
----
-input: {user_text}
-hasil pencarian: {search_outputs}
-output: """
+def for_mencari_kode(
+    search_outputs: str, user_text: str, type: str, query: str
+) -> list[str]:
+    return [
+        f"""system: Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+        
+User meminta untuk melakukan pencarian kode '{type}' untuk '{query}' dan sistem sudah melakukan pencarian di data BPS KBLI 2020 dengan hasil berikut:
+{search_outputs}
+
+Jawab kepada user mengenai hal hasil pencarian tersebut. Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
+---\n""",
+        # f"""user: {user_text}\n""",
+        f"""assistant: """,
+    ]

@@ -62,7 +62,7 @@ class Application:
 
         app_stream_handler = logging.StreamHandler()
         app_stream_handler.setLevel(logging.INFO)  # Set stream handler level to INFO
-        app_stream_formatter = logging.Formatter("%(levelname)s - %(message)s")
+        app_stream_formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
         app_stream_handler.setFormatter(app_stream_formatter)
         app_logger.addHandler(app_stream_handler)
 
