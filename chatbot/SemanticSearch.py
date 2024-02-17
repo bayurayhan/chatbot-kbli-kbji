@@ -9,7 +9,7 @@ from tqdm.auto import tqdm
 import asyncio
 from langchain_community.document_loaders import CSVLoader
 from langchain_community.vectorstores.faiss import FAISS
-from langchain.text_splitter import TokenTextSplitter, CharacterTextSplitter
+from langchain.text_splitter import TokenTextSplitter, CharacterTextSplitter, RecursiveCharacterTextSplitter
 from .templates import prompt_templates
 from .IntentClassifier import Intent
 
@@ -172,6 +172,9 @@ class SemanticSearch:
             )
             documents = loader.load()
 
+            text_splitter = RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=10)
+            documents = text_splitter.split_documents(documents)
+
             # # Load to FAISS database
             db_mencari_kode = FAISS.from_documents(
                 documents, self.embedding_model.get_model()
@@ -187,6 +190,7 @@ class SemanticSearch:
                 source_column="kode",
             )
             documents = loader.load()
+            documents = text_splitter.split_documents(documents)
 
             db_menjelaskan_kode = FAISS.from_documents(
                 documents, self.embedding_model.get_model()

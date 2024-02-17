@@ -5,6 +5,9 @@ import requests
 from typing_extensions import Self
 from enum import Enum
 from .utils import remove_trailing_asterisks, escape_characters, gemini_markdown_to_markdown, save_chat_history
+import markdown
+import sys
+import re
 
 PARSE_MODE = "MarkdownV2"
 
@@ -36,9 +39,11 @@ class TelegramBot:
         self.chat_id = chat_id
         return self
 
-    async def send_text(self, message: str):
-        save_chat_history(self.chat_id, f"assistant: {message}\n")
+    async def send_text(self, message: str, set_history: bool=True):
+        if set_history:
+            save_chat_history(self.chat_id, f"assistant: {message}\n")
         message = gemini_markdown_to_markdown(message)
+        # message = markdown.markdown(message)
         logging.getLogger("app").debug(message)
         return await self.send_api_request(
             "POST", "sendMessage", data={"text": message, "parse_mode": PARSE_MODE}

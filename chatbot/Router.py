@@ -13,7 +13,8 @@ from .utils import (
     get_path,
     remove_trailing_asterisks,
     gemini_markdown_to_markdown,
-    save_chat_history
+    save_chat_history,
+    read_chat_history
 )
 from .templates import prompt_templates
 
@@ -54,15 +55,17 @@ class Router(APIRouter):
         save_chat_history(chat_id, f"user: {text}\n")
         
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        prediction = await self.intent_classifier.predict(text)
+        history = read_chat_history(chat_id)
+        history = " ".join(history)
+        prediction = await self.intent_classifier.predict(history)
         intent = prediction["intent"]
         logger.debug(prediction)
 
         # Handle the intent
         if intent == Intent.MENCARI_KODE:
-            await self.handleMencariKode(prediction, chat_id, text)
+            await self.handleCariKode(prediction, chat_id, text)
         elif intent == Intent.MENJELASKAN_KODE:
-            await self.handleMenjelaskanKode(prediction, chat_id, text)
+            await self.handleJelaskanKode(prediction, chat_id, text)
         elif intent == Intent.TIDAK_RELEVAN:
             await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
             answer = await self.text_generator.generate(
@@ -74,7 +77,7 @@ class Router(APIRouter):
             await self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
             
 
-    async def handleMencariKode(self, prediction: dict, chat_id: str, text: str):
+    async def handleCariKode(self, prediction: dict, chat_id: str, text: str):
         """
         Handling mencari kode intent from intent classification above.
 
@@ -85,7 +88,7 @@ class Router(APIRouter):
         """
         logger.info("Handle `mencari kode`...")
 
-        info_message = await self.bot.to(chat_id).send_text("Sedang mencari kode...")
+        info_message = await self.bot.to(chat_id).send_text("Sedang mencari kode...", set_history=False)
         info_message = info_message.get("result")
 
         query = prediction["entity"]
@@ -121,7 +124,7 @@ class Router(APIRouter):
         await self.bot.to(chat_id).send_text(answer)
         await self.bot.to(chat_id).delete_message(info_message.get("message_id"))
 
-    async def handleMenjelaskanKode(self, prediction: dict, chat_id: str, text: str):
+    async def handleJelaskanKode(self, prediction: dict, chat_id: str, text: str):
         """
         Handling menjelaskan kode intent from intent classification above.
 
@@ -132,7 +135,7 @@ class Router(APIRouter):
         """
         logger.info("Handle `menjelaskan kode`...")
 
-        info_message = await self.bot.to(chat_id).send_text("Sedang mencari kode...")
+        info_message = await self.bot.to(chat_id).send_text("Sedang mencari kode...", set_history=False)
         info_message = info_message.get("result")
 
         query = prediction["entity"]

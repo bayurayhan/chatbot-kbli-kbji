@@ -9,8 +9,8 @@ from .templates import prompt_templates
 
 
 class Intent(str, Enum):
-    MENCARI_KODE = "mencari kode"
-    MENJELASKAN_KODE = "menjelaskan kode"
+    MENCARI_KODE = "cari kode"
+    MENJELASKAN_KODE = "jelaskan kode"
     TIDAK_RELEVAN = "tidak relevan"
 
 
@@ -38,7 +38,6 @@ class IntentClassifier:
                 self.template.append(example_output)
 
         file_content = prompt_templates.intent_classification()
-
         self.template = [file_content] + self.template
 
     def _prepare_for_predict(self, prompt: str):
@@ -51,9 +50,8 @@ class IntentClassifier:
         prediction = await self.model.generate_text(
             full_prompt,
             {
-                "temperature": 0,
-                "top_k": 1,
-                "top_p": 0.9,
+                "temperature": 0.2,
+                "top_p": 0.1,
             },
         )
         json_string = prediction
