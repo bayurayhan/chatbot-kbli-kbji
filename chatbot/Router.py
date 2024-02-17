@@ -13,6 +13,7 @@ from .utils import (
     get_path,
     remove_trailing_asterisks,
     gemini_markdown_to_markdown,
+    save_chat_history
 )
 from .templates import prompt_templates
 
@@ -50,6 +51,8 @@ class Router(APIRouter):
         chat_id = body["message"]["chat"]["id"]
         text = body["message"]["text"]
 
+        save_chat_history(chat_id, f"user: {text}\n")
+        
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         prediction = await self.intent_classifier.predict(text)
         intent = prediction["intent"]
@@ -63,10 +66,13 @@ class Router(APIRouter):
         elif intent == Intent.TIDAK_RELEVAN:
             await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
             answer = await self.text_generator.generate(
-                prompt_templates.for_tidak_relevan(text),
+                prompt_templates.for_tidak_relevan(text, chat_id),
                 generation_config={"temperature": 0.5},
             )
             await self.bot.to(chat_id).send_text(answer)
+        else:
+            await self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
+            
 
     async def handleMencariKode(self, prediction: dict, chat_id: str, text: str):
         """
@@ -103,7 +109,7 @@ class Router(APIRouter):
 
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         answer = await self.text_generator.generate(
-            prompt_templates.for_mencari_kode(response, text, dataname, query)
+            prompt_templates.for_mencari_kode(response, text, dataname, query, chat_id)
         )
 
         logger.debug(f"Text: {text}, type: {dataname}, {digit}")
@@ -150,7 +156,7 @@ class Router(APIRouter):
 
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         answer = await self.text_generator.generate(
-            prompt_templates.for_menjelaskan_kode(response, text, dataname, query)
+            prompt_templates.for_menjelaskan_kode(response, text, dataname, query, chat_id)
         )
 
         logger.debug(f"Text: {text}, type: {dataname}, {digit}")

@@ -1,6 +1,7 @@
 import os
 import re
 import pandas as pd
+import csv
 
 def get_project_directory():
     current_file_path = os.path.abspath(__file__)
@@ -52,3 +53,43 @@ def remove_trailing_asterisks(input_string):
         str: The modified string with only one asterisk at the end.
     """
     return re.sub(r'\*+', '*', input_string)
+
+def save_chat_history(chat_id, new_message):
+    folder_hist = get_path("chatbot", "history")
+    filename = os.path.join(folder_hist, f"{chat_id}.csv")
+    os.makedirs(folder_hist, exist_ok=True)
+    # Check if the file exists, if not, create it
+    if not os.path.isfile(filename):
+        with open(filename, 'w', newline='') as file:
+            writer = csv.writer(file)
+    
+    # Read existing content from the CSV file
+    existing_data = []
+    try:
+        with open(filename, 'r', newline='') as file:
+            reader = csv.reader(file)
+            existing_data = list(reader)
+    except FileNotFoundError:
+        pass  # File doesn't exist yet, so no existing data
+
+    # Append new message and keep only the latest 5 messages
+    existing_data.append([new_message])
+    latest_messages = existing_data[-4:]
+
+    # Write the latest messages back to the CSV file
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(latest_messages)
+
+def read_chat_history(chat_id) -> list[str]:
+    folder_hist = get_path("chatbot", "history")
+    filename = os.path.join(folder_hist, f"{chat_id}.csv")
+    chat_history = []
+    try:
+        with open(filename, 'r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                chat_history.append(row[0])
+    except FileNotFoundError:
+        print("Chat history file not found.")
+    return chat_history

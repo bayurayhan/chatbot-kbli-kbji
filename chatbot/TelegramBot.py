@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 import requests
 from typing_extensions import Self
 from enum import Enum
-from .utils import remove_trailing_asterisks, escape_characters, gemini_markdown_to_markdown
+from .utils import remove_trailing_asterisks, escape_characters, gemini_markdown_to_markdown, save_chat_history
 
 PARSE_MODE = "MarkdownV2"
 
@@ -37,6 +37,7 @@ class TelegramBot:
         return self
 
     async def send_text(self, message: str):
+        save_chat_history(self.chat_id, f"assistant: {message}\n")
         message = gemini_markdown_to_markdown(message)
         logging.getLogger("app").debug(message)
         return await self.send_api_request(

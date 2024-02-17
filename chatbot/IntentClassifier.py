@@ -2,7 +2,7 @@ import os
 from enum import Enum
 import logging
 from .Model import GenerativeModel
-from .utils import get_path
+from .utils import get_path, read_chat_history
 import csv
 import json
 from .templates import prompt_templates
@@ -56,7 +56,7 @@ class IntentClassifier:
                 "top_p": 0.9,
             },
         )
-        json_string = prediction.replace("\\n", "\n").replace('\\"', '"')
+        json_string = prediction
 
         try:
             intent_json = json.loads(json_string)
