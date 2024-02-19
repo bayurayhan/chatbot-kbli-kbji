@@ -31,8 +31,8 @@ class IntentClassifier:
             header = next(csv_reader)
 
             for row in csv_reader:
-                example_input = "input: " + row[0]
-                example_output = "output: " + row[1]
+                example_input = {"role": "user", "content": row[0]}
+                example_output = {"role": "assistant", "content": row[1]}
 
                 self.template.append(example_input)
                 self.template.append(example_output)
@@ -40,8 +40,10 @@ class IntentClassifier:
         file_content = prompt_templates.intent_classification()
         self.template = [file_content] + self.template
 
-    def _prepare_for_predict(self, prompt: str):
-        additional = [f"input: {prompt}", "output: "]
+    def _prepare_for_predict(self, prompt: str, use_huggingface_template: bool = False):
+        additional = [
+            {"role": "user", "content": prompt}
+        ]
         prompt_template = self.template + additional
         return prompt_template
 
@@ -54,6 +56,7 @@ class IntentClassifier:
                 "top_p": 0.1,
             },
         )
+        logging.debug(prediction)
         json_string = prediction
 
         try:

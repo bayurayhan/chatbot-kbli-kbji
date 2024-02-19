@@ -35,8 +35,14 @@ class Gemini(GenerativeModel):
             generation_config=self.generation_config,
             safety_settings=SAFETY_SETTINGS,
         )
-
-    async def generate_text(self, prompt: any, generation_config: dict = None) -> str:
+    
+    def _generate_string(self, prompt: list[dict]) -> str:
+        generated_string = ""
+        for message in prompt:
+            generated_string += f"{message['role']}: {message['content']}"
+        return generated_string
+    
+    async def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
         """Generates text using the Google Gemini model with error handling.
 
         Args:
@@ -54,6 +60,7 @@ class Gemini(GenerativeModel):
             else GenerationConfig(**generation_config)
         )
         try:
+            prompt = self._generate_string(prompt)
             response = self.model.generate_content(
                 prompt, generation_config=generation_config
             )

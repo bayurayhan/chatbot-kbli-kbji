@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class GenerativeModel(ABC):
     @abstractmethod
-    async def generate_text(self, prompt: any, generation_config: dict = None) -> str:
+    async def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
         """Generates text based on a given prompt with optional control over length and creativity.
 
         Args:

@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from chatbot.utils import get_path
 import os
+import sys
+print(sys.getdefaultencoding())  # Check default encoding
 
 Application.configure_logging()
 logger = logging.getLogger("app")

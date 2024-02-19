@@ -1,8 +1,11 @@
+import asyncio
 import fastapi
 from .TelegramBot import TelegramBot
 from .Router import Router
-from .models.Gemini import Gemini
-from .models.OpenAIEmbedding import OpenAIEmbedding
+# from .models.Gemini import Gemini
+# from .models.OpenAIEmbedding import OpenAIEmbedding
+# from .models.GPT4Free import GPT4Free
+from .models import *
 from .Model import EmbeddingModel, GenerativeModel
 from .IntentClassifier import IntentClassifier
 from .TextGeneration import TextGeneration
@@ -10,7 +13,7 @@ from .SemanticSearch import SemanticSearch
 import logging
 import logging.config
 from logging.handlers import RotatingFileHandler
-from .utils import get_path
+from .utils import *
 
 
 class Application:
