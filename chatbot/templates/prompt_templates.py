@@ -7,9 +7,9 @@ def intent_classification():
         "content": """Berikan label intent, entity dan jenis klasifikasi pada pesan user dari sebuah percakapan. Jawab  dengan nama dari intent, entity, jenis klasifikasi dan jumlah digit (jika ada/diperlukan).
 
 Intent yang digunakan harus salah satu dari berikut : 
-- CK: mencari kode (digunakan ketika user ingin mencari kode dari suatu pekerjaan)
-- JK: jelaskan kode  (digunakan ketika user ingin penjelasan dari kode suatu pekerjaan)
-- TR: tidak relevan (digunakan ketika user mengirimkan prompt yang tidak berhubungan dengan mencari kode atau menjelaskan kode)
+- cari kode (digunakan ketika user ingin mencari kode dari suatu pekerjaan)
+- jelaskan kode  (digunakan ketika user ingin penjelasan dari kode suatu pekerjaan)
+- tidak relevan (digunakan ketika user mengirimkan prompt yang tidak berhubungan dengan mencari kode atau menjelaskan kode)
 
 Jenis klasifikasi yang digunakan harus salah satu dari berikut : 
 -KBLI (Klasifikasi Baku Lapangan Usaha Indonesia)
@@ -47,7 +47,7 @@ Jelaskan dengan kata-kata yang panjang.
 JAWAB MENGGUNAKAN FORMAT MARKDOWN TELEGRAM!"""}
     ]
     for item in history:
-        response.append({"role": "history", "content": item})
+        response.append({"role": item["role"], "content": item["content"]})
     return response
 
 
@@ -68,7 +68,7 @@ JAWAB MENGGUNAKAN FORMAT MARKDOWN!
 """}
     ]
     for item in history:
-        response.append({"role": "history", "content": item})
+        response.append({"role": item["role"], "content": item["content"]})
     return response
 
 def for_tidak_relevan(query: str, chat_id):
@@ -86,7 +86,6 @@ JANGAN MEMBERI JAWABAN JIKA PERTANYAAN DI LUAR KONTEKS KBLI DAN KBJI!
 """}
     ]
     for item in history:
-        response.append({"role": "history", "content": item})
-    response.append({"role": "assistant", "content": ""})
+        response.append({"role": item["role"], "content": item["content"]})
     return response
 

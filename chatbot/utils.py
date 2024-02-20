@@ -74,42 +74,46 @@ def remove_trailing_asterisks(input_string):
     """
     return re.sub(r'\*+', '*', input_string)
 
-def save_chat_history(chat_id, new_message):
+def save_chat_history(chat_id, role, new_message):
     folder_hist = get_path("chatbot", "history")
     filename = os.path.join(folder_hist, f"{chat_id}.csv")
     os.makedirs(folder_hist, exist_ok=True)
+    
     # Check if the file exists, if not, create it
     if not os.path.isfile(filename):
         with open(filename, 'w', newline='') as file:
-            writer = csv.writer(file)
+            writer = csv.DictWriter(file, fieldnames=["role", "content"])
+            writer.writeheader()
     
     # Read existing content from the CSV file
     existing_data = []
     try:
         with open(filename, 'r', newline='') as file:
-            reader = csv.reader(file)
+            reader = csv.DictReader(file)
             existing_data = list(reader)
     except FileNotFoundError:
         pass  # File doesn't exist yet, so no existing data
 
     # Append new message and keep only the latest 5 messages
-    existing_data.append([new_message])
+    existing_data.append({"role": role, "content": new_message})
     latest_messages = existing_data[-4:]
 
     # Write the latest messages back to the CSV file
     with open(filename, 'w', newline='') as file:
-        writer = csv.writer(file)
+        writer = csv.DictWriter(file, fieldnames=["role", "content"])
+        writer.writeheader()
         writer.writerows(latest_messages)
 
-def read_chat_history(chat_id) -> list[str]:
+def read_chat_history(chat_id) -> list[dict]:
     folder_hist = get_path("chatbot", "history")
     filename = os.path.join(folder_hist, f"{chat_id}.csv")
     chat_history = []
     try:
         with open(filename, 'r', newline='') as file:
-            reader = csv.reader(file)
+            reader = csv.DictReader(file)
             for row in reader:
-                chat_history.append(row[0])
+                chat_history.append(row)
     except FileNotFoundError:
         print("Chat history file not found.")
     return chat_history
+

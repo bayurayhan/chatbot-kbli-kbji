@@ -41,7 +41,7 @@ class TelegramBot:
 
     async def send_text(self, message: str, set_history: bool=True):
         if set_history:
-            save_chat_history(self.chat_id, f"assistant: {message}\n")
+            save_chat_history(self.chat_id, "assistant", message)
         message = gemini_markdown_to_markdown(message)
         # message = markdown.markdown(message)
         logging.getLogger("app").debug(message)
