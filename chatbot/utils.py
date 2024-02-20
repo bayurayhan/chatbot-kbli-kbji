@@ -104,15 +104,19 @@ def save_chat_history(chat_id, role, new_message):
         writer.writeheader()
         writer.writerows(latest_messages)
 
-def read_chat_history(chat_id) -> list[dict]:
+def read_chat_history(chat_id, use_dict=True) -> list[dict]:
     folder_hist = get_path("chatbot", "history")
     filename = os.path.join(folder_hist, f"{chat_id}.csv")
     chat_history = []
     try:
         with open(filename, 'r', newline='') as file:
             reader = csv.DictReader(file)
-            for row in reader:
-                chat_history.append(row)
+            if use_dict:
+                for row in reader:
+                    chat_history.append(row)
+            else:
+                for row in reader:
+                    chat_history.append(row["content"])
     except FileNotFoundError:
         print("Chat history file not found.")
     return chat_history

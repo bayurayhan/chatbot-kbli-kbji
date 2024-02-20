@@ -49,9 +49,9 @@ class Router(APIRouter):
         save_chat_history(chat_id, "user", text)
         
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        # history = read_chat_history(chat_id)
-        # history = " ".join(history)
-        prediction = await self.intent_classifier.predict(text)
+        history = read_chat_history(chat_id, False)
+        history = "\n".join(history)
+        prediction = await self.intent_classifier.predict(history)
         intent = prediction["intent"]
         logger.debug(prediction)
 

@@ -9,7 +9,11 @@ from tqdm.auto import tqdm
 import asyncio
 from langchain_community.document_loaders import CSVLoader
 from langchain_community.vectorstores.faiss import FAISS
-from langchain.text_splitter import TokenTextSplitter, CharacterTextSplitter, RecursiveCharacterTextSplitter
+from langchain.text_splitter import (
+    TokenTextSplitter,
+    CharacterTextSplitter,
+    RecursiveCharacterTextSplitter,
+)
 from .templates import prompt_templates
 from .IntentClassifier import Intent
 
@@ -43,7 +47,7 @@ class SemanticSearch:
         templated = prompt_templates.preprocessing_query(query)
         processed_query = await self.text_generator.generate_text(
             templated,
-            {"temperature": 0, "top_k": 1, "top_p": 1, "max_output_tokens": 5000},
+            {"temperature": 0, "top_p": 1, "max_output_tokens": 5000},
         )
         logger.debug(f"Preprocessing query: {processed_query}")
         return processed_query
@@ -76,7 +80,6 @@ class SemanticSearch:
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         k = 10 if intent == Intent.MENCARI_KODE else 3
         results = db.similarity_search(query=processed_query, k=k)
-        # results = db.max_marginal_relevance_search(processed_query, k=k)
 
         results_string = []
 
@@ -121,16 +124,6 @@ class SemanticSearch:
 
             df["deskripsi"] = df["deskripsi"].fillna("unknown")
 
-            # df["judul_deskripsi"] = df["judul"] + "\n" + df["deskripsi"]
-            # df["judul_deskripsi_embedding"] = await self.embedding_model.get_embedding(
-            #     df["judul_deskripsi"].to_list()
-            # )
-
-            # del df["judul_deskripsi"]
-            # df_new = pd.DataFrame()
-            # df_new["nama lapangan usaha"] = df["judul"]
-            # df_new["deskripsi"] = df["deskripsi"]
-
             df.to_csv(
                 get_path("chatbot", "data", f"{data_name}_embedding.csv"),
                 index=False,
@@ -147,67 +140,76 @@ class SemanticSearch:
                 "Error when embedding the database, please check the log file."
             )
 
-    def _load_embedding_data(
-        self, data_name=None, intent: Intent = Intent.MENCARI_KODE
-    ) -> FAISS:
+    def _load_documents(data_name: str, intent: Intent) -> list[str]:
         """
-        Loading the csv file that containing all data that already been
-        embedded. If the file is not already existed, do embed_dataset function.
+        Load documents from CSV file and split them into chunks.
 
         Args:
-            csv_file_path (str): file path for csv data
+            data_name (str): Name of the data
+            intent (Intent): Intent enum value
 
-        Return:
-            Numpy array of the loaded embedding
+        Returns:
+            List[str]: List of documents
+        """
+        source_column = "judul" if intent == Intent.MENCARI_KODE else ("kode" if intent == Intent.MENJELASKAN_KODE else None)
+        metadata_columns = ["kode", "deskripsi"] if intent == Intent.MENCARI_KODE else None
+        
+        loader = CSVLoader(
+            get_path("chatbot", "data", f"{data_name}_embedding.csv"),
+            source_column=source_column,
+            metadata_columns=metadata_columns
+        )
+        documents = loader.load()
+        if not intent == Intent.MENJELASKAN_KODE:
+            text_splitter = RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=10)
+            documents = text_splitter.split_documents(documents)
+        return documents
+
+    def _embed_documents(self, documents: list[str], save_folder: str) -> FAISS:
+        """
+        Embed documents and save the embeddings to the specified folder.
+
+        Args:
+            documents (List[str]): List of documents to embed
+            save_folder (str): Folder path to save embeddings
+
+        Returns:
+            FAISS: Embedded documents
+        """
+        db = self.embedding_model.faiss_embedding(documents=documents, save_folder=save_folder)
+        return db
+
+    def _load_embedding_data(
+        self, data_name: str = None, intent: Intent = Intent.MENCARI_KODE
+    ) -> FAISS:
+        """
+        Load embedded data from CSV files or embed them if necessary.
+
+        Args:
+            data_name (str, optional): Name of the data. Defaults to None.
+            intent (Intent, optional): Intent enum value. Defaults to Intent.MENCARI_KODE.
+
+        Returns:
+            FAISS: Embedded data
         """
         faiss_folder = os.path.join("chatbot", "data", f"{data_name}_faiss_index")
 
         if not os.path.exists(faiss_folder):
             logger.info("Load the documents...")
-            loader = CSVLoader(
-                get_path("chatbot", "data", f"{data_name}_embedding.csv"),
-                source_column="judul",
-                metadata_columns=["kode", "deskripsi"],
-            )
-            documents = loader.load()
+            documents = self._load_documents(data_name, intent)
 
-            text_splitter = RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=10)
-            documents = text_splitter.split_documents(documents)
+            if intent == Intent.MENCARI_KODE:
+                save_folder = get_path(faiss_folder, Intent.MENCARI_KODE.value)
+            else:
+                save_folder = get_path(faiss_folder, Intent.MENJELASKAN_KODE.value)
 
-            # # Load to FAISS database
-            db_mencari_kode = FAISS.from_documents(
-                documents, self.embedding_model.get_model()
-            )
-            db_mencari_kode.save_local(
-                get_path(faiss_folder, Intent.MENCARI_KODE.value)
-            )
-            # ==========================================================================
-            logger.info("Load the kode documents...")
+            db = self._embed_documents(documents, save_folder)
+        else:
+            folder_name = os.path.join(faiss_folder, intent.value)
+            db = self.embedding_model.load_faiss_embedding(folder_name)
 
-            loader = CSVLoader(
-                get_path("chatbot", "data", f"{data_name}_kode_embedding.csv"),
-                source_column="kode",
-            )
-            documents = loader.load()
-            documents = text_splitter.split_documents(documents)
-
-            db_menjelaskan_kode = FAISS.from_documents(
-                documents, self.embedding_model.get_model()
-            )
-            db_menjelaskan_kode.save_local(
-                get_path(faiss_folder, Intent.MENJELASKAN_KODE.value)
-            )
-
-            return (
-                db_mencari_kode
-                if intent == Intent.MENCARI_KODE
-                else Intent.MENJELASKAN_KODE
-            )
-
-        # db = FAISS.load_local(faiss_folder, self.embedding_model.get_model())
-        folder_name = os.path.join(faiss_folder, intent.value)
-        db = FAISS.load_local(folder_name, self.embedding_model.get_model())
         return db
+
 
     def _create_embedded_file(self, file_path: str):
         with open(file_path, "w"):

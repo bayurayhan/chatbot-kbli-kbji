@@ -1,5 +1,7 @@
 import os
 from langchain_openai import OpenAIEmbeddings as LangChainOpenAIEmbeddings
+from langchain_core.documents import Document
+from langchain_community.vectorstores.faiss import FAISS
 from ..Model import EmbeddingModel
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 
@@ -13,10 +15,16 @@ class OpenAIEmbedding(EmbeddingModel):
         self.embedding_model_name = name
         self.model = LangChainOpenAIEmbeddings(model=self.embedding_model_name)
     
-    async def get_embedding(self, documents: any) -> list:
-        if isinstance(documents, list):
-            embeddings = self.model.embed_documents(documents)
-            return embeddings
+    def faiss_embedding(self, documents: Document, save_folder: str) -> FAISS:
+        db = FAISS.from_documents(
+            documents, self.model
+        )
+        db.save_local(save_folder)
+        return db
+
+    def load_faiss_embedding(self, faiss_folder: str) -> FAISS:
+        db = FAISS.load_local(faiss_folder, self.model)
+        return db
 
     def get_model(self):
         return self.model

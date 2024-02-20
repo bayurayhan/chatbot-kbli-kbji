@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from langchain_core.documents import Document
+from langchain_community.vectorstores.faiss import FAISS
 
 class GenerativeModel(ABC):
     @abstractmethod
@@ -14,16 +16,27 @@ class GenerativeModel(ABC):
 
 class EmbeddingModel(ABC):
     @abstractmethod
-    async def get_embedding(self, documents: any) -> list:
+    def faiss_embedding(self, documents: Document, save_folder: str) -> FAISS:
         """
         Abstract method to get the embedding of a given text.
 
         Parameters:
-            text (str|list): The input text for which embedding is required.
+            documents (Langchain Document): The input text for which embedding is required.
 
         Returns:
-            list
+            FAISS DB
         """
+    @abstractmethod
+    def load_faiss_embedding(self, faiss_folder: str) -> FAISS:
+        """
+        Load FAISS embedding.
+        
+        Parameters:
+            faiss_folder
+            
+        Returns:
+            FAISS DB
+        """ 
     
     @abstractmethod
     def get_model(self):
