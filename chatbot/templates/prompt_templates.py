@@ -16,9 +16,11 @@ Jenis klasifikasi yang digunakan harus salah satu dari berikut :
 -KBJI (Klasifikasi Baku Jabatan Indonesia)
 -null (jika intent "tidak relevan")
 
-JIKA TIDAK DISEBUTKAN KBLI ATAU KBJI, MAKA INTERPRETASIKAN SENDIRI BERDASARKAN KONTEKS DARI INPUT!
+Tulis dengan menggunakan format:
+`intent;entity;jenis;digit`
+seperti contoh di bawah 
 
-JAWAB MENGGUNAKAN FORMAT JSON!
+JIKA TIDAK DISEBUTKAN KBLI ATAU KBJI, MAKA INTERPRETASIKAN SENDIRI BERDASARKAN KONTEKS DARI INPUT!
 """,
     }
 

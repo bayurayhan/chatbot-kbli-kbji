@@ -14,19 +14,25 @@ import logging
 import logging.config
 from logging.handlers import RotatingFileHandler
 from .utils import *
+import yaml
+import sys
+
+logger = logging.getLogger("app")
 
 
 class Application:
     def __init__(self, server: fastapi.FastAPI):
         self.server = server
+        self.config_file = get_path("config.yaml")
+        self.config = None
+        self.generative_model = None
+        self.embedding_model = None
+        self.load_configuration()
 
-        generative_model: GenerativeModel = Gemini()  # We can edit the model here
-        embedding_model: EmbeddingModel = OpenAIEmbedding()
-
-        intent_classifier = IntentClassifier(model=generative_model)
-        text_generator = TextGeneration(model=generative_model)
+        intent_classifier = IntentClassifier(model=self.generative_model, config=self.config)
+        text_generator = TextGeneration(model=self.generative_model)
         semantic_search = SemanticSearch(
-            embedding_model=embedding_model, text_generator=generative_model
+            embedding_model=self.embedding_model, text_generator=self.generative_model
         )
 
         self.router = Router(
@@ -36,6 +42,30 @@ class Application:
             semantic_search=semantic_search,
         )
         self.register_endpoints()
+
+    def load_configuration(self):
+        logger.info(f"Load the configuration file from {self.config_file}...")
+        with open(self.config_file, 'r') as file:
+            self.config = yaml.safe_load(file)
+
+        generative_model_config = self.config['models']['generative']
+        embedding_model_config = self.config['models']['embedding']
+
+        generative_model_class = generative_model_config['model_name']
+        embedding_model_class = embedding_model_config['model_name']
+
+        # Dynamically import generative model class
+        generative_module_name, generative_class_name = generative_model_class.rsplit('.', 1)
+        generative_module = __import__(generative_module_name, fromlist=[generative_class_name])
+        GenerativeModel = getattr(generative_module, generative_class_name)
+
+        # Dynamically import embedding model class
+        embedding_module_name, embedding_class_name = embedding_model_class.rsplit('.', 1)
+        embedding_module = __import__(embedding_module_name, fromlist=[embedding_class_name])
+        EmbeddingModel = getattr(embedding_module, embedding_class_name)
+
+        self.generative_model = GenerativeModel(**generative_model_config['model_params'])
+        self.embedding_model = EmbeddingModel(**embedding_model_config['model_params'])
 
     @staticmethod
     def configure_logging():

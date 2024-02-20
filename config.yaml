@@ -1,0 +1,19 @@
+# Configuration for the Telegram chatbot models
+models:
+  generative:
+    model_name: "chatbot.models.Gemini"
+    model_params:
+      name: "gemini-1.0-pro"
+
+  embedding:
+    model_name: "chatbot.models.OpenAIEmbedding"
+    model_params:
+      name: "text-embedding-3-large"
+
+intent-classifier:
+  model_config:
+    temperature: 0.2
+    top_p: 0.1
+
+semantic-search:
+  data-folder: ""

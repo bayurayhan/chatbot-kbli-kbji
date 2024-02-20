@@ -61,6 +61,7 @@ class Router(APIRouter):
         elif intent == Intent.MENJELASKAN_KODE:
             await self.handleJelaskanKode(prediction, chat_id, text)
         elif intent == Intent.TIDAK_RELEVAN:
+            logger.info("Handle `tidak relevan`...")
             await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
             answer = await self.text_generator.generate(
                 prompt_templates.for_tidak_relevan(text, chat_id),

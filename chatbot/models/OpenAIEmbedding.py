@@ -5,12 +5,12 @@ from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 
 class OpenAIEmbedding(EmbeddingModel):
-    def __init__(self):
+    def __init__(self, name="text-embedding-3-large"):
         api_key = os.environ.get("OPENAI_API_KEY", "")
         if api_key == "":
             raise RuntimeError("Please fill OPENAI_API_KEY in .env file!")
 
-        self.embedding_model_name = "text-embedding-3-large"
+        self.embedding_model_name = name
         self.model = LangChainOpenAIEmbeddings(model=self.embedding_model_name)
     
     async def get_embedding(self, documents: any) -> list:

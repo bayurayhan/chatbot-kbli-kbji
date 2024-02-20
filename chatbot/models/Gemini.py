@@ -3,6 +3,7 @@ import os
 import google.generativeai as genai
 from google.generativeai import GenerationConfig
 from ..Model import GenerativeModel
+import traceback
 
 logger = logging.getLogger("app")
 
@@ -15,15 +16,22 @@ SAFETY_SETTINGS = [
 
 
 class Gemini(GenerativeModel):
-    def __init__(self, generation_config: GenerationConfig = None):
+    def __init__(
+        self,
+        name="gemini-1.0-pro",
+        temperature=0.5,
+        top_p=0.5,
+        top_k=40,
+        max_output_tokens=4000,
+    ):
         google_api_key = os.environ.get("GOOGLE_API_KEY")
-        self.model_name = "gemini-1.0-pro"
-        if not generation_config:
-            self.generation_config = GenerationConfig(
-                temperature=0.5, top_p=0.5, max_output_tokens=4000
-            )
-        else:
-            self.generation_config = generation_config
+        self.model_name = name
+        self.generation_config = GenerationConfig(
+            temperature=temperature,
+            top_p=top_p,
+            top_k=top_k,
+            max_output_tokens=max_output_tokens,
+        )
         self.model = None
 
         genai.configure(api_key=google_api_key)
@@ -35,14 +43,17 @@ class Gemini(GenerativeModel):
             generation_config=self.generation_config,
             safety_settings=SAFETY_SETTINGS,
         )
-    
-    def _generate_string(self, prompt: list[dict]) -> str:
-        generated_string = ""
+
+    def _generate_string(self, prompt: list[dict]) -> list[str]:
+        generated_string = []
         for message in prompt:
-            generated_string += f"{message['role']}: {message['content']}"
+            generated_string.append(f"{message['role']}: {message['content']}\n")
+        generated_string.append(f"assistant: ")
         return generated_string
-    
-    async def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
+
+    async def generate_text(
+        self, prompt: list[dict], generation_config: dict = None
+    ) -> str:
         """Generates text using the Google Gemini model with error handling.
 
         Args:
@@ -61,12 +72,10 @@ class Gemini(GenerativeModel):
         )
         try:
             prompt = self._generate_string(prompt)
-            response = self.model.generate_content(
-                prompt, generation_config=generation_config
-            )
+            response = self.model.generate_content(prompt)
             return response.text
         except Exception as e:
             error_message = f"Error generating text with Gemini: {e}"
             # Log or handle the error appropriately here
-            logger.error(error_message)
+            logger.error(traceback.format_exc())
             return "Maaf, saya tidak bisa menjawab permintaan Anda."

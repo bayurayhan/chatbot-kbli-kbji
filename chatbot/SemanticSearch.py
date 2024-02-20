@@ -25,7 +25,6 @@ class SemanticSearch:
         Args:
             embedding_model (EmbeddingModel): _description_
         """
-        self.db_path = get_path("chatbot", "data", "baku.db")
         self.embedding_model = embedding_model
         self.text_generator = text_generator
 

@@ -15,9 +15,10 @@ class Intent(str, Enum):
 
 
 class IntentClassifier:
-    def __init__(self, model: GenerativeModel):
+    def __init__(self, model: GenerativeModel, config: dict):
         self.model = model
         self.template = []
+        self.config_dict = config["intent-classifier"]
 
         self._load_template()
 
@@ -41,9 +42,7 @@ class IntentClassifier:
         self.template = [file_content] + self.template
 
     def _prepare_for_predict(self, prompt: str, use_huggingface_template: bool = False):
-        additional = [
-            {"role": "user", "content": prompt}
-        ]
+        additional = [{"role": "user", "content": prompt}]
         prompt_template = self.template + additional
         return prompt_template
 
@@ -51,17 +50,19 @@ class IntentClassifier:
         full_prompt = self._prepare_for_predict(prompt)
         prediction = await self.model.generate_text(
             full_prompt,
-            {
-                "temperature": 0.2,
-                "top_p": 0.1,
-            },
+            self.config_dict["model_config"],
         )
-        logging.debug(prediction)
-        json_string = prediction
-
         try:
-            intent_json = json.loads(json_string)
-            return intent_json
+            logging.debug(prediction)
+            prediction = prediction.split(sep=";")
+            prediction_dict = {
+                "intent": prediction[0],
+                "entity": prediction[1],
+                "jenis": prediction[2],
+                "digit": prediction[3],
+            }
+
+            return prediction_dict
         except Exception as e:
             logging.error(e)
             return {
