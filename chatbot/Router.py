@@ -49,8 +49,8 @@ class Router(APIRouter):
         save_chat_history(chat_id, "user", text)
         
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        history = read_chat_history(chat_id, False)
-        history = "\n".join(history)
+        history = read_chat_history(chat_id, 2)
+        # history = "\n".join(history)
         prediction = await self.intent_classifier.predict(history)
         intent = prediction["intent"]
         logger.debug(prediction)
@@ -83,7 +83,7 @@ class Router(APIRouter):
         """
         logger.info("Handle `mencari kode`...")
 
-        info_message = await self.bot.to(chat_id).send_text("Sedang mencari kode...", set_history=False)
+        info_message = await self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
         info_message = info_message.get("result")
 
         query = prediction["entity"]
@@ -130,7 +130,7 @@ class Router(APIRouter):
         """
         logger.info("Handle `menjelaskan kode`...")
 
-        info_message = await self.bot.to(chat_id).send_text("Sedang mencari kode...", set_history=False)
+        info_message = await self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
         info_message = info_message.get("result")
 
         query = prediction["entity"]

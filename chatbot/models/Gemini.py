@@ -14,6 +14,11 @@ SAFETY_SETTINGS = [
     {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_ONLY_HIGH"},
 ]
 
+def delete_last_char(string):
+    if string.endswith('>'):
+        return string[:-1]  # Return string excluding the last character
+    else:
+        return string  # Return the original string if it doesn't end with '>'
 
 class Gemini(GenerativeModel):
     def __init__(
@@ -47,8 +52,8 @@ class Gemini(GenerativeModel):
     def _generate_string(self, prompt: list[dict]) -> list[str]:
         generated_string = []
         for message in prompt:
-            generated_string.append(f"{message['role']}: {message['content']}\n")
-        generated_string.append(f"assistant: ")
+            generated_string.append(f"<|{message['role']}|>: <{message['content']}>\n\n")
+        generated_string.append(f"assistant: <")
         return generated_string
 
     async def generate_text(
@@ -73,7 +78,7 @@ class Gemini(GenerativeModel):
         try:
             prompt = self._generate_string(prompt)
             response = self.model.generate_content(prompt)
-            return response.text
+            return delete_last_char(response.text)
         except Exception as e:
             error_message = f"Error generating text with Gemini: {e}"
             # Log or handle the error appropriately here

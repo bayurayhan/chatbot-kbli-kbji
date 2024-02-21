@@ -11,22 +11,28 @@ from .templates import prompt_templates
 class Intent(str, Enum):
     MENCARI_KODE = "cari kode"
     MENJELASKAN_KODE = "jelaskan kode"
-    TIDAK_RELEVAN = "tidak relevan"
+    TIDAK_RELEVAN = "lainnya"
 
+    @classmethod
+    def find(cls, value):
+        for member in cls:
+            if member.value == value:
+                return member
+        return Intent.TIDAK_RELEVAN
 
 class IntentClassifier:
     def __init__(self, model: GenerativeModel, config: dict):
         self.model = model
-        self.template = []
         self.config_dict = config["intent-classifier"]
 
-        self._load_template()
+        self.template = self._load_template("intent-prompt-examples.csv")
+        # self.only_intent_template = self._load_template("only-intent-prompt-examples.csv")
 
-    def _load_template(self):
+    def _load_template(self, filename):
         examples_file_path = get_path(
-            "chatbot", "templates", "intent-prompt-examples.csv"
+            "chatbot", "templates", filename
         )
-
+        template = []
         with open(examples_file_path, "r", newline="") as csvfile:
             csv_reader = csv.reader(csvfile, delimiter=";")
             header = next(csv_reader)
@@ -35,19 +41,25 @@ class IntentClassifier:
                 example_input = {"role": "user", "content": row[0]}
                 example_output = {"role": "assistant", "content": row[1]}
 
-                self.template.append(example_input)
-                self.template.append(example_output)
+                template.append(example_input)
+                template.append(example_output)
 
+        return template
+        
+    def _prepare_for_predict(self, prompt, examples):
+        if isinstance(prompt, list):
+            system = {'role': 'system', "content": "Chat setelah ini adalah HISTORY chat user!"}
+            additional = [system] + prompt
+        else:
+            additional = [{"role": "user", "content": prompt}]
         file_content = prompt_templates.intent_classification()
-        self.template = [file_content] + self.template
-
-    def _prepare_for_predict(self, prompt: str, use_huggingface_template: bool = False):
-        additional = [{"role": "user", "content": prompt}]
-        prompt_template = self.template + additional
+        prompt_template = [file_content] + examples + additional
         return prompt_template
+    
 
     async def predict(self, prompt: str):
-        full_prompt = self._prepare_for_predict(prompt)
+        full_prompt = self._prepare_for_predict(prompt, self.template)
+        logging.debug(full_prompt)
         prediction = await self.model.generate_text(
             full_prompt,
             self.config_dict["model_config"],
@@ -56,7 +68,7 @@ class IntentClassifier:
             logging.debug(prediction)
             prediction = prediction.split(sep=";")
             prediction_dict = {
-                "intent": prediction[0],
+                "intent": Intent.find(prediction[0]),
                 "entity": prediction[1],
                 "jenis": prediction[2],
                 "digit": prediction[3],
@@ -71,3 +83,16 @@ class IntentClassifier:
                 "jenis": "error",
                 "digit": "null",
             }
+
+    # async def predict_only_intent(self, prompt: str):
+    #     full_prompt = self._prepare_for_predict(prompt, self.only_intent_template)
+    #     prediction = await self.model.generate_text(
+    #         full_prompt,
+    #         self.config_dict["model_config"],
+    #     )
+    #     try:
+    #         logging.debug(prediction)
+    #         return Intent.find(prediction)
+    #     except Exception as e:
+    #         logging.error(e)
+    #         return "error"

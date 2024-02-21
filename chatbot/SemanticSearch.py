@@ -140,7 +140,7 @@ class SemanticSearch:
                 "Error when embedding the database, please check the log file."
             )
 
-    def _load_documents(data_name: str, intent: Intent) -> list[str]:
+    def _load_documents(self, data_name: str, intent: Intent) -> list[str]:
         """
         Load documents from CSV file and split them into chunks.
 

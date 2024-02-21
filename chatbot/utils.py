@@ -96,7 +96,7 @@ def save_chat_history(chat_id, role, new_message):
 
     # Append new message and keep only the latest 5 messages
     existing_data.append({"role": role, "content": new_message})
-    latest_messages = existing_data[-4:]
+    latest_messages = existing_data[-10:]
 
     # Write the latest messages back to the CSV file
     with open(filename, 'w', newline='') as file:
@@ -104,7 +104,7 @@ def save_chat_history(chat_id, role, new_message):
         writer.writeheader()
         writer.writerows(latest_messages)
 
-def read_chat_history(chat_id, use_dict=True) -> list[dict]:
+def read_chat_history(chat_id, use_dict=True, n=5) -> list[dict]:
     folder_hist = get_path("chatbot", "history")
     filename = os.path.join(folder_hist, f"{chat_id}.csv")
     chat_history = []
@@ -119,5 +119,5 @@ def read_chat_history(chat_id, use_dict=True) -> list[dict]:
                     chat_history.append(row["content"])
     except FileNotFoundError:
         print("Chat history file not found.")
-    return chat_history
+    return chat_history[-n:]
 
