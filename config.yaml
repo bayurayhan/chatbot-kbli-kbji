@@ -10,10 +10,11 @@ models:
     model_params:
       name: "text-embedding-3-large"
 
+# Intent classifier uses generative model above
 intent-classifier:
   model_config:
-    temperature: 0.2
-    top_p: 0.1
+    temperature: 0.4
+    top_p: 0.2
 
 semantic-search:
   data-folder: ""

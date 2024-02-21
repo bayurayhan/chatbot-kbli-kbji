@@ -15,8 +15,8 @@ SAFETY_SETTINGS = [
 ]
 
 def delete_last_char(string):
-    if string.endswith('<END>'):
-        return string[:-5]  # Return string excluding the last character
+    if string.endswith('</MSG>'):
+        return string[:-6]  # Return string excluding the last character
     else:
         return string  # Return the original string if it doesn't end with '>'
 
@@ -52,8 +52,8 @@ class Gemini(GenerativeModel):
     def _generate_string(self, prompt: list[dict]) -> list[str]:
         generated_string = []
         for message in prompt:
-            generated_string.append(f"<|{message['role']}|>: <STA>{message['content']}<END>\n\n")
-        generated_string.append(f"assistant: <STA>")
+            generated_string.append(f"<|{message['role']}|>: <MSG>{message['content']}</MSG>\n\n")
+        generated_string.append(f"assistant: <MSG>")
         return generated_string
 
     async def generate_text(

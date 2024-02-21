@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 from urllib.parse import urljoin
@@ -7,6 +8,7 @@ from enum import Enum
 from .utils import remove_trailing_asterisks, escape_characters, gemini_markdown_to_markdown, save_chat_history
 import markdown
 import sys
+import json
 import re
 
 PARSE_MODE = "MarkdownV2"
@@ -31,6 +33,19 @@ class TelegramBot:
         self.url_path = f"https://api.telegram.org/bot{self.token}/"
 
         self.chat_id = None
+        self.commands = []
+
+        # NOTE: Set all the commands here
+        self.set_command("clearhistory", "Bersihkan history chat sebelumnya. (Dibersihkan di dalam server)")
+        asyncio.run(self.set_commands())
+    
+    def set_command(self, command: str, description: str):
+        self.commands.append({"command": command, "description": description})
+
+    async def set_commands(self):
+        data = {"commands": json.dumps(self.commands)}
+        response = await self.send_api_request("POST", "setMyCommands", data)
+        return response
 
     def get_url(self, path):
         return urljoin(self.url_path, path)
@@ -71,5 +86,6 @@ class TelegramBot:
 
         if res.status_code == 200:
             return res.json()
+        logging.error(res.text)
 
         raise res.raise_for_status()

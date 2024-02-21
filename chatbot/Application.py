@@ -32,11 +32,13 @@ class Application:
         intent_classifier = IntentClassifier(model=self.generative_model, config=self.config)
         text_generator = TextGeneration(model=self.generative_model)
         semantic_search = SemanticSearch(
-            embedding_model=self.embedding_model, text_generator=self.generative_model
+            embedding_model=self.embedding_model, text_generator=self.generative_model, config=self.config
         )
+        
+        telegram_bot = TelegramBot()
 
         self.router = Router(
-            telegram_bot=TelegramBot(),
+            telegram_bot=telegram_bot,
             intent_classifier=intent_classifier,
             text_generator=text_generator,
             semantic_search=semantic_search,
@@ -64,8 +66,8 @@ class Application:
         embedding_module = __import__(embedding_module_name, fromlist=[embedding_class_name])
         EmbeddingModel = getattr(embedding_module, embedding_class_name)
 
-        self.generative_model = GenerativeModel(**generative_model_config['model_params'])
-        self.embedding_model = EmbeddingModel(**embedding_model_config['model_params'])
+        self.generative_model = GenerativeModel(**generative_model_config.get('model_params', {}))
+        self.embedding_model = EmbeddingModel(**embedding_model_config.get('model_params', {}))
 
     @staticmethod
     def configure_logging():
@@ -83,7 +85,7 @@ class Application:
         # Create a logger for the application
         app_logger = logging.getLogger("app")
         app_logger.setLevel(logging.DEBUG)  # Set app logger level to DEBUG
-        app_file_handler = logging.FileHandler("app.log")
+        app_file_handler = RotatingFileHandler("app.log", maxBytes=1e6, backupCount=2)
         app_file_handler.setLevel(logging.DEBUG)  # Set file handler level to DEBUG
         app_formatter = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

@@ -22,7 +22,7 @@ logger = logging.getLogger("app")
 
 class SemanticSearch:
     def __init__(
-        self, embedding_model: EmbeddingModel, text_generator: GenerativeModel
+        self, embedding_model: EmbeddingModel, text_generator: GenerativeModel, config: dict
     ):
         """Initialize the class
 
@@ -31,6 +31,7 @@ class SemanticSearch:
         """
         self.embedding_model = embedding_model
         self.text_generator = text_generator
+        self.semantic_search_config = config["semantic-search"]
 
         embedded_file_path = get_path("chatbot", "data", ".EMBEDDED")
         if not os.path.exists(embedded_file_path):
@@ -40,17 +41,20 @@ class SemanticSearch:
             self._embed_database()
             self._create_embedded_file(embedded_file_path)
 
+        # NOTE: To load the embedding turn this on
         self._load_embedding_data("kbli2020")
         self._load_embedding_data("kbji2014")
+        self._load_embedding_data("kbli2020", Intent.MENJELASKAN_KODE)
+        self._load_embedding_data("kbji2014", Intent.MENJELASKAN_KODE)
 
         self._load_text_information_data("kbli2020.txt")
         self._load_text_information_data("kbji2014.txt")
-        
+
     async def _preprocessing_query(self, query: str) -> str:
         templated = prompt_templates.preprocessing_query(query)
         processed_query = await self.text_generator.generate_text(
             templated,
-            {"temperature": 0, "top_p": 1, "max_output_tokens": 5000},
+            {"temperature": 0.3, "max_output_tokens": 5000},
         )
         logger.debug(f"Preprocessing query: {processed_query}")
         return processed_query
@@ -99,6 +103,7 @@ class SemanticSearch:
             list (str): List of outputs ready to print.
         """
         if intent == Intent.MENCARI_KODE:
+            # processed_query = query
             processed_query = await self._preprocessing_query(query)
             if digit:
                 processed_query = f"{digit} digit\n" + processed_query
@@ -110,13 +115,18 @@ class SemanticSearch:
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         k = 10 if intent == Intent.MENCARI_KODE else 3
         results = db.similarity_search(query=processed_query, k=k)
+        logger.debug(results)
 
         results_string = []
 
         if intent == Intent.MENCARI_KODE:
             for i, doc in enumerate(results):
+                row_data = read_specific_row(
+                    get_path("chatbot", "data", f"{data_name}_embedding.csv"),
+                    doc.metadata.get("row"),
+                )
                 results_string.append(
-                    f"{i + 1}. kode_{data_name}: {doc.metadata['kode']}; nama: {doc.metadata['source']};"
+                    f"{i + 1}. kode_{data_name}: {row_data['kode']}; nama: {row_data['judul']};"
                 )
         else:
             for i, doc in enumerate(results):
@@ -125,8 +135,9 @@ class SemanticSearch:
                     doc.metadata.get("row"),
                 )
                 results_string.append(
-                    f"{i + 1}. kode_{data_name}: {doc.metadata.get('source')}; nama: {row_data['judul']}; deskripsi: {row_data['deskripsi']};"
+                    f"{i + 1}. kode_{data_name}: {row_data.get('kode')}; nama: {row_data['judul']}; deskripsi: {row_data['deskripsi']};"
                 )
+        logger.debug(results_string)
         return results_string, processed_query
 
     def _embed_database(self):
@@ -182,16 +193,18 @@ class SemanticSearch:
             List[str]: List of documents
         """
         source_column = "judul" if intent == Intent.MENCARI_KODE else ("kode" if intent == Intent.MENJELASKAN_KODE else None)
-        metadata_columns = ["kode", "deskripsi"] if intent == Intent.MENCARI_KODE else None
-        
         loader = CSVLoader(
             get_path("chatbot", "data", f"{data_name}_embedding.csv"),
             source_column=source_column,
-            metadata_columns=metadata_columns
         )
+        if intent == Intent.MENJELASKAN_KODE: 
+            loader = CSVLoader(
+                get_path("chatbot", "data", f"{data_name}_kode_embedding.csv"),
+                source_column=source_column,
+            )
         documents = loader.load()
         if not intent == Intent.MENJELASKAN_KODE:
-            text_splitter = RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=10)
+            text_splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=10)
             documents = text_splitter.split_documents(documents)
         return documents
 
@@ -222,9 +235,10 @@ class SemanticSearch:
         Returns:
             FAISS: Embedded data
         """
-        faiss_folder = os.path.join("chatbot", "data", f"{data_name}_faiss_index")
+        faiss_folder = get_path("chatbot", "data", f"{data_name}_faiss_index")
+        intent_faiss_folder = os.path.join(faiss_folder, intent.value)
 
-        if not os.path.exists(faiss_folder):
+        if not os.path.exists(intent_faiss_folder):
             logger.info("Load the documents...")
             documents = self._load_documents(data_name, intent)
 

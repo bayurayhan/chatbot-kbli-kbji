@@ -46,10 +46,19 @@ class Router(APIRouter):
         chat_id = body["message"]["chat"]["id"]
         text = body["message"]["text"]
 
+        if text == "/clearhistory":
+            try:
+                os.remove(get_path("chatbot", "history", f"{chat_id}.csv"))
+            except:
+                pass
+                
+            await self.bot.to(chat_id).send_text("History telah dihapus!", False)
+            return
+
         save_chat_history(chat_id, "user", text)
         
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        history = read_chat_history(chat_id, 2)
+        history = read_chat_history(chat_id, 4)
         # history = "\n".join(history)
         prediction = await self.intent_classifier.predict(history)
         intent = prediction["intent"]
