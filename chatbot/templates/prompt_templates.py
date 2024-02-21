@@ -1,18 +1,5 @@
 from ..utils import read_chat_history
 
-def only_intent():
-    return {
-        "role": "system",
-        "content": """Anda adalah assistant yang selalu memberikan label INTENT pada pesan user dari sebuah percakapan dengan topik KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia). Jawab HANYA dengan nama dari intent dari list di bawah!
-
-Intent yang digunakan harus salah satu dari berikut : 
-- `cari kode` (digunakan ketika user ingin mencari kode dari suatu pekerjaan/usaha) 
-- `jelaskan kode`  (digunakan ketika user ingin penjelasan dari kode suatu pekerjaan/usaha)
-- `tidak relevan` (digunakan ketika user mengirimkan prompt yang tidak berhubungan dengan mencari kode atau menjelaskan kode)
-""",
-    }
-
-
 def intent_classification():
     return {
         "role": "system",
@@ -26,7 +13,8 @@ Intent yang digunakan harus salah satu dari berikut :
 Jenis klasifikasi yang digunakan harus salah satu dari berikut : 
 -`KBLI` (Klasifikasi Baku Lapangan Usaha Indonesia)
 -`KBJI` (Klasifikasi Baku Jabatan Indonesia)
--`null` (jika intent "lainnya")
+-`semua` (Ketika permintaan lebih general tentang keduanya (KBJI dan KBLI). HANYA dapat digunakan ketika intent `lainnya`)
+-`null` (jika intent `lainnya`)
 
 Tulis dengan menggunakan format:
 `intent;entity;jenis;digit`
@@ -89,10 +77,10 @@ JAWAB MENGGUNAKAN FORMAT MARKDOWN!
         response.append({"role": item["role"], "content": item["content"]})
     return response
 
-def for_tidak_relevan(query: str, chat_id):
+def for_tidak_relevan(query: str, chat_id, informations):
     history = read_chat_history(chat_id)
     response = [
-        {"role": "system", "content": """Anda adalah chatbot yang informatif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
 
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
@@ -102,6 +90,11 @@ Anda dapat melayani beberapa task yaitu,
 Jawab permintaan dari user dengan baik dan sopan.
 JANGAN MEMBERI JAWABAN JIKA PERTANYAAN DI LUAR KONTEKS KBLI DAN KBJI!
 JAWAB PADA PERTANYAAN UMUM TENTANG KBLI DAN KBJI, JANGAN MENJAWAB UNTUK MENCARI KODE DAN MENJELASKAN KODE TANPA MEMILIKI DATA! 
+
+Berikut adalah informasi (unstructured) yang diambil dari semantic retrieval pada publikasi BPS berdasarkan query user:
+```text
+{informations}
+```
 """}
     ]
     for item in history:

@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from tqdm.auto import tqdm
 import asyncio
-from langchain_community.document_loaders import CSVLoader
+from langchain_community.document_loaders import CSVLoader, TextLoader, PyPDFLoader
 from langchain_community.vectorstores.faiss import FAISS
 from langchain.text_splitter import (
     TokenTextSplitter,
@@ -43,6 +43,9 @@ class SemanticSearch:
         self._load_embedding_data("kbli2020")
         self._load_embedding_data("kbji2014")
 
+        self._load_text_information_data("kbli2020.txt")
+        self._load_text_information_data("kbji2014.txt")
+        
     async def _preprocessing_query(self, query: str) -> str:
         templated = prompt_templates.preprocessing_query(query)
         processed_query = await self.text_generator.generate_text(
@@ -51,8 +54,35 @@ class SemanticSearch:
         )
         logger.debug(f"Preprocessing query: {processed_query}")
         return processed_query
+    
+    async def information_retrieval(self, query: str, type: str=""):
+        if type == "semua":
+            db_kbli = self._load_text_information_data("kbli2020.txt") 
+            db_kbji = self._load_text_information_data("kbji2014.txt") 
 
-    async def embedding_query_to_text(
+            kbli_docs = db_kbli.similarity_search(query, k=2)
+            kbji_docs = db_kbji.similarity_search(query, k=2)
+
+            result = kbli_docs + kbji_docs
+            result = "\n".join([data.page_content for data in result])
+        elif type.lower() == "kbji":
+            db_kbji = self._load_text_information_data("kbji2014.txt") 
+            kbji_docs = db_kbji.similarity_search(query, k=5)
+            result = "\n".join([data.page_content for data in kbji_docs])
+        elif type.lower() == "kbli":
+            db_kbli = self._load_text_information_data("kbli2020.txt") 
+            kbli_docs = db_kbli.similarity_search(query, k=5)
+            result = "\n".join([data.page_content for data in kbli_docs])
+        
+        else:
+            result = ""
+        
+        logger.debug(result)
+        
+        return result
+            
+
+    async def semantic_search(
         self,
         query: str,
         digit: int = None,
@@ -209,7 +239,22 @@ class SemanticSearch:
             db = self.embedding_model.load_faiss_embedding(folder_name)
 
         return db
+    
+    def _load_text_information_data(self, text_filename: str) -> FAISS:
+        path = get_path("chatbot", "data", "information_faiss_index", text_filename)
+        if not os.path.exists(path):
+            logger.info(f"Embedding {text_filename} data...")
+            loader = TextLoader(get_path("chatbot", "data", text_filename), autodetect_encoding=True)
+            documents = loader.load()
 
+            splitter = RecursiveCharacterTextSplitter()
+            documents = splitter.split_documents(documents)
+            
+            db = self.embedding_model.faiss_embedding(documents, path)
+        else:
+            db = self.embedding_model.load_faiss_embedding(path)
+        
+        return db
 
     def _create_embedded_file(self, file_path: str):
         with open(file_path, "w"):

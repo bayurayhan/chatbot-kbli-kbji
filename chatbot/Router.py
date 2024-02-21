@@ -62,9 +62,11 @@ class Router(APIRouter):
             await self.handleJelaskanKode(prediction, chat_id, text)
         elif intent == Intent.TIDAK_RELEVAN:
             logger.info("Handle `tidak relevan`...")
+            type = prediction["jenis"] if not prediction["jenis"] == "null" else ""
+            informations = await self.semantic_search.information_retrieval(text, type)
             await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
             answer = await self.text_generator.generate(
-                prompt_templates.for_tidak_relevan(text, chat_id),
+                prompt_templates.for_tidak_relevan(text, chat_id, informations),
                 generation_config={"temperature": 0.5},
             )
             await self.bot.to(chat_id).send_text(answer)
@@ -97,7 +99,7 @@ class Router(APIRouter):
         except Exception as e:
             digit = None
 
-        raw_response, _ = await self.semantic_search.embedding_query_to_text(
+        raw_response, _ = await self.semantic_search.semantic_search(
             query, digit, data_name=dataname
         )
         response = ""
@@ -144,7 +146,7 @@ class Router(APIRouter):
         except Exception as e:
             digit = None
 
-        raw_response, _ = await self.semantic_search.embedding_query_to_text(
+        raw_response, _ = await self.semantic_search.semantic_search(
             query, digit, data_name=dataname, intent=Intent.MENJELASKAN_KODE
         )
         response = ""
