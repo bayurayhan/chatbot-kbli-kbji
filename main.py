@@ -15,7 +15,6 @@ load_dotenv()
 logger.info(".env file loaded!")
 
 server = FastAPI()
-app = Application.get_instance(server)
 
 HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
 PORT = int(os.environ.get("SERVER_PORT", 8000))
@@ -23,6 +22,7 @@ PORT = int(os.environ.get("SERVER_PORT", 8000))
 # Run the FastAPI server
 if __name__ == "__main__":
     import uvicorn
+    app = Application.get_instance(server)
     logger.info("Starting application in HTTP mode...")
     WORKERS = os.environ.get("WORKERS", None)
     if WORKERS:
