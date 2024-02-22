@@ -60,7 +60,7 @@ class Router(APIRouter):
         # ===========================================================================
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         history = read_chat_history(chat_id, 4)
-        # history = "\n".join(history)
+        history = "\n---\n".join([data["content"] for data in history])
         prediction = await self.intent_classifier.predict(history)
         intent = prediction["intent"]
         logger.debug(prediction)
