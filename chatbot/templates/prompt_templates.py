@@ -73,6 +73,7 @@ Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
 Jelaskan dengan kata-kata yang panjang.
 
 DATA DISINI HANYA BERASAL DARI KBLI 2020 DAN KBJI 2014, SELAIN SUMBER TERSEBUT BERARTI TIDAK VALID JANGAN DIBERIKAN KE USER!
+JIKA TERNYATA TIDAK DITEMUKAN DI HASIL PENCARIAN, KATAKAN HASIL TIDAK DITEMUKAN!
 JAWAB MENGGUNAKAN FORMAT MARKDOWN TELEGRAM!
 """}
     ]
@@ -94,7 +95,9 @@ User meminta untuk melakukan penjelasan kode {"KBLI 2020" if type == "kbli2020" 
 Jawab kepada user mengenai hal hasil pencarian tersebut. 
 Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
 Jelaskan dengan kata-kata yang panjang.
+
 DATA DISINI HANYA BERASAL DARI KBLI 2020 DAN KBJI 2014, SELAIN SUMBER TERSEBUT BERARTI TIDAK VALID JANGAN DIBERIKAN KE USER!
+JIKA TERNYATA TIDAK DITEMUKAN DI HASIL PENCARIAN, KATAKAN HASIL TIDAK DITEMUKAN!
 JAWAB MENGGUNAKAN FORMAT MARKDOWN!
 """}
     ]
