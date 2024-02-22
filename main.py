@@ -15,7 +15,7 @@ load_dotenv()
 logger.info(".env file loaded!")
 
 server = FastAPI()
-app = Application(server)
+app = Application.get_instance(server)
 
 HOST = os.environ.get("SERVER_HOST", "0.0.0.0")
 PORT = int(os.environ.get("SERVER_PORT", 8000))

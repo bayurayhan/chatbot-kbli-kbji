@@ -23,12 +23,9 @@ logger = logging.getLogger("app")
 class Application:
     _instance = None
 
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls, *args, **kwargs)
-        return cls._instance
-
     def __init__(self, server: fastapi.FastAPI):
+        if Application._instance is not None:
+            raise Exception("Application instance already exists. Use get_instance() to access it.")
         self.server = server
         self.config_file = get_path("config.yaml")
         self.config = None
@@ -51,6 +48,12 @@ class Application:
             semantic_search=semantic_search,
         )
         self.register_endpoints()
+
+    @staticmethod
+    def get_instance(server: fastapi.FastAPI):
+        if Application._instance is None:
+            Application._instance = Application(server)
+        return Application._instance
 
     def load_configuration(self):
         logger.info(f"Load the configuration file from {self.config_file}...")
