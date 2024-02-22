@@ -113,7 +113,7 @@ class SemanticSearch:
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         k = 10 if intent == Intent.MENCARI_KODE else 3
         results = db.similarity_search(query=processed_query, k=k)
-        logger.debug("Hasil Similarity Search:\n" + results)
+        logger.debug(results)
 
         results_string = []
 
