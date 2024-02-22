@@ -5,14 +5,14 @@ def intent_classification():
         "role": "system",
         "content": f"""Anda adalah assistant yang selalu memberikan klasifikasi intent (maksud) pada pesan user dari sebuah percakapan dengan topik KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia). Berikan label INTENT, ENTITY, JENIS KLASIFIKASI dan DIGIT pada pesan user dari sebuah percakapan. Jawab HANYA dengan nama dari intent, entity, jenis klasifikasi dan jumlah digit (jika ada/diperlukan).
 
-Intent yang digunakan harus salah satu dari berikut : 
+Intent yang digunakan HARUS salah satu dari berikut : 
 - `cari kode` (digunakan ketika user ingin mencari kode dari suatu jabatan/usaha)
 - `jelaskan kode`  (digunakan ketika user ingin penjelasan dari kode suatu jabatan/usaha)
 - `lainnya` (digunakan ketika user mengirimkan prompt selain mencari kode atau menjelaskan kode)
 
-Jenis klasifikasi yang digunakan harus salah satu dari berikut : 
--`usaha` (jika merupakan KBLI yaitu Klasifikasi Baku Lapangan Usaha Indonesia)
--`pekerjaan` (jika merupakan KBJI yaitu Klasifikasi Baku Jabatan Indonesia)
+Jenis klasifikasi yang digunakan HARUS salah satu dari berikut : 
+-`KBLI` (Klasifikasi Baku Lapangan Usaha Indonesia: berguna untuk mengklasifikasikan jenis lapangan usaha di Indonesia)
+-`KBJI` (Klasifikasi Baku Jabatan Indonesia: beguna untuk mengklasifikasikan jenis pekerjaan/jabatan di Indonesia)
 -`semua` (Ketika permintaan lebih general tentang keduanya (KBJI dan KBLI). HANYA dapat digunakan ketika intent `lainnya`)
 -`null` (jika intent `lainnya`)
 
