@@ -70,7 +70,7 @@ class Router(APIRouter):
     def handleProcess(self, chat_id, text):
         # ===========================================================================
         self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        history = read_chat_history(chat_id, 4)
+        history = read_chat_history(chat_id, 2)
         history = "\n---\n".join([data["content"] for data in history])
         prediction = self.intent_classifier.predict(history)
         intent = prediction["intent"]
