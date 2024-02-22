@@ -15,7 +15,6 @@ import sys
 from .templates import prompt_templates
 import multiprocessing
 from concurrent.futures import ProcessPoolExecutor
-from pathos.multiprocessing import ProcessingPool
 from fastapi import BackgroundTasks
 
 logger = logging.getLogger("app")
