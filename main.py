@@ -36,7 +36,7 @@ server.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 LOG_FILE_PATH = get_path("app.log")
-MAX_LINES = 100
+MAX_LINES = 700
 
 @server.get("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0", response_class=HTMLResponse)
 async def index(request: Request):
