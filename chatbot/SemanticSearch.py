@@ -122,7 +122,7 @@ class SemanticSearch:
         if intent == Intent.MENCARI_KODE:
             for i, doc in enumerate(results):
                 row_data = read_specific_row(
-                    get_path("chatbot", "data", f"{data_name}_embedding.csv"),
+                    get_path("chatbot", "data", f"{data_name}.csv"),
                     doc.metadata.get("row"),
                 )
                 results_string.append(
@@ -131,7 +131,7 @@ class SemanticSearch:
         else:
             for i, doc in enumerate(results):
                 row_data = read_specific_row(
-                    get_path("chatbot", "data", f"{data_name}_embedding.csv"),
+                    get_path("chatbot", "data", f"{data_name}.csv"),
                     doc.metadata.get("row"),
                 )
                 results_string.append(
