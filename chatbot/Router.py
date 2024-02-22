@@ -40,6 +40,34 @@ class Router(APIRouter):
             "/webhook", self.handleWebhook, methods=["POST"]
         )  # http://localhost:8000/api/webhook
 
+    async def handleWebhook(self, request: Request, background_task: BackgroundTasks):
+        body = await request.json()
+
+        logger.info(
+            f"Chat delivered with id {body.get('update_id')} from {body.get('message', {}).get('from').get('first_name')}"
+        )
+        logger.debug(body)
+
+        if "message" not in body:
+            return
+        chat_id = body["message"]["chat"]["id"]
+        text = body["message"]["text"]
+
+        if text == "/clearhistory":
+            try:
+                os.remove(get_path("chatbot", "history", f"{chat_id}.csv"))
+            except:
+                pass
+                
+            self.bot.to(chat_id).send_text("History telah dihapus!", False)
+            return
+
+        save_chat_history(chat_id, "user", text)
+
+        task = background_task.add_task(self.handleProcess, chat_id, text)
+        
+        return ""
+
     def handleProcess(self, chat_id, text):
         # ===========================================================================
         self.bot.to(chat_id).send_action(TelegramAction.TYPING)
@@ -68,32 +96,6 @@ class Router(APIRouter):
             self.bot.to(chat_id).send_text(answer)
         else:
             self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
-
-    async def handleWebhook(self, request: Request, background_task: BackgroundTasks):
-        body = await request.json()
-
-        logger.info(
-            f"Chat delivered with id {body.get('update_id')} from {body.get('message', {}).get('from').get('first_name')}"
-        )
-        logger.debug(body)
-
-        if "message" not in body:
-            return
-        chat_id = body["message"]["chat"]["id"]
-        text = body["message"]["text"]
-
-        if text == "/clearhistory":
-            try:
-                os.remove(get_path("chatbot", "history", f"{chat_id}.csv"))
-            except:
-                pass
-                
-            self.bot.to(chat_id).send_text("History telah dihapus!", False)
-            return
-
-        task = background_task.add_task(self.handleProcess, chat_id, text)
-        
-        return ""
         
 
     def handleCariKode(self, prediction: dict, chat_id: str, text: str):
