@@ -16,7 +16,7 @@ def get_path(*path: str):
     return os.path.join(project_dir, *path)
 
 def read_specific_row(filename, row_number):
-    df = pd.read_csv(filename)
+    df = pd.read_csv(filename, dtype=str)
     specific_row = df.iloc[row_number]
     return specific_row
 
