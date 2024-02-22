@@ -37,7 +37,8 @@ class TelegramBot:
 
         # NOTE: Set all the commands here
         self.set_command("clearhistory", "Bersihkan history chat sebelumnya. (Dibersihkan di dalam server)")
-        asyncio.run(self.set_commands())
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.set_commands())
     
     def set_command(self, command: str, description: str):
         self.commands.append({"command": command, "description": description})
