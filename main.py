@@ -48,7 +48,6 @@ async def get_logs():
         # Read the last MAX_LINES lines
         lines = file.readlines()[-MAX_LINES:]
         # Reverse the order of lines to show newest lines at the top
-        lines.reverse()
         logs = "".join(lines)
     return f"<pre>{logs}</pre>"
 
