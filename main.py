@@ -25,4 +25,6 @@ if __name__ == "__main__":
     import uvicorn
     logger.info("Starting application in HTTP mode...")
     WORKERS = os.environ.get("WORKERS", None)
+    if WORKERS:
+        WORKERS = int(WORKERS)
     uvicorn.run("main:server", host=HOST, port=PORT, workers=WORKERS)
