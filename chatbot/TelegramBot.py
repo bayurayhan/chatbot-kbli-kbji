@@ -37,15 +37,14 @@ class TelegramBot:
 
         # NOTE: Set all the commands here
         self.set_command("clearhistory", "Bersihkan history chat sebelumnya. (Dibersihkan di dalam server)")
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.set_commands())
+        self.set_commands()
     
     def set_command(self, command: str, description: str):
         self.commands.append({"command": command, "description": description})
 
-    async def set_commands(self):
+    def set_commands(self):
         data = {"commands": json.dumps(self.commands)}
-        response = await self.send_api_request("POST", "setMyCommands", data)
+        response =   self.send_api_request("POST", "setMyCommands", data)
         return response
 
     def get_url(self, path):
@@ -55,32 +54,32 @@ class TelegramBot:
         self.chat_id = chat_id
         return self
 
-    async def send_text(self, message: str, set_history: bool=True):
+    def send_text(self, message: str, set_history: bool=True):
         if set_history:
             save_chat_history(self.chat_id, "assistant", message)
         message = gemini_markdown_to_markdown(message)
         # message = markdown.markdown(message)
         logging.getLogger("app").debug(message)
-        return await self.send_api_request(
+        return   self.send_api_request(
             "POST", "sendMessage", data={"text": message, "parse_mode": PARSE_MODE}
         )
     
-    async def edit_message(self, message_id: int, message: str):
-        return await self.send_api_request(
+    def edit_message(self, message_id: int, message: str):
+        return   self.send_api_request(
             "POST", "editMessageText", data={"text": message, "message_id": message_id, "parse_mode": PARSE_MODE}   
         )
 
-    async def delete_message(self, message_id: int):
-        return await self.send_api_request(
+    def delete_message(self, message_id: int):
+        return   self.send_api_request(
             "POST", "deleteMessage", data={"message_id": message_id}   
         )
 
-    async def send_action(self, action: str):
-        return await self.send_api_request(
+    def send_action(self, action: str):
+        return   self.send_api_request(
             "POST", "sendChatAction", data={"action": action}
         )
 
-    async def send_api_request(self, method, name, data):
+    def send_api_request(self, method, name, data):
         res = requests.api.request(
             method, self.get_url(name), data={"chat_id": self.chat_id, **data}
         )

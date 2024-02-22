@@ -56,7 +56,7 @@ class Gemini(GenerativeModel):
         generated_string.append(f"assistant: <MSG>")
         return generated_string
 
-    async def generate_text(
+    def generate_text(
         self, prompt: list[dict], generation_config: dict = None
     ) -> str:
         """Generates text using the Google Gemini model with error handling.

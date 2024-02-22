@@ -42,24 +42,24 @@ class SemanticSearch:
             self._create_embedded_file(embedded_file_path)
 
         # NOTE: To load the embedding turn this on
-        self._load_embedding_data("kbli2020")
-        self._load_embedding_data("kbji2014")
-        self._load_embedding_data("kbli2020", Intent.MENJELASKAN_KODE)
-        self._load_embedding_data("kbji2014", Intent.MENJELASKAN_KODE)
+        # self._load_embedding_data("kbli2020")
+        # self._load_embedding_data("kbji2014")
+        # self._load_embedding_data("kbli2020", Intent.MENJELASKAN_KODE)
+        # self._load_embedding_data("kbji2014", Intent.MENJELASKAN_KODE)
 
-        self._load_text_information_data("kbli2020.txt")
-        self._load_text_information_data("kbji2014.txt")
+        # self._load_text_information_data("kbli2020.txt")
+        # self._load_text_information_data("kbji2014.txt")
 
-    async def _preprocessing_query(self, query: str) -> str:
+    def _preprocessing_query(self, query: str) -> str:
         templated = prompt_templates.preprocessing_query(query)
-        processed_query = await self.text_generator.generate_text(
+        processed_query =   self.text_generator.generate_text(
             templated,
             {"temperature": 0.3, "max_output_tokens": 5000},
         )
         logger.debug(f"Preprocessing query: {processed_query}")
         return processed_query
     
-    async def information_retrieval(self, query: str, type: str=""):
+    def information_retrieval(self, query: str, type: str=""):
         if type == "semua":
             db_kbli = self._load_text_information_data("kbli2020.txt") 
             db_kbji = self._load_text_information_data("kbji2014.txt") 
@@ -86,7 +86,7 @@ class SemanticSearch:
         return result
             
 
-    async def semantic_search(
+    def semantic_search(
         self,
         query: str,
         digit: int = None,
@@ -104,7 +104,7 @@ class SemanticSearch:
         """
         if intent == Intent.MENCARI_KODE:
             # processed_query = query
-            processed_query = await self._preprocessing_query(query)
+            processed_query =   self._preprocessing_query(query)
             if digit:
                 processed_query = f"{digit} digit\n" + processed_query
         else:
@@ -147,7 +147,7 @@ class SemanticSearch:
         loop.run_until_complete(self._process_embedding("kbji2014"))
         logger.info("Finished embedding the database!")
 
-    async def _process_embedding(self, data_name: str):
+    def _process_embedding(self, data_name: str):
         try:
             embedded_file_path = get_path(
                 "chatbot", "data", f"{data_name}_embedding.csv"

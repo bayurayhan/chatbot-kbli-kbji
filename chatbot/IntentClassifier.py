@@ -56,18 +56,18 @@ class IntentClassifier:
         prompt_template = [file_content] + examples + additional
         return prompt_template
     
-    # async def fix_query(self, prompt):
+    # def fix_query(self, prompt):
     #     generated_template = prompt_templates.prompt_fixer("\n---\n".join([data["content"] for data in prompt]))
-    #     fixed_query = await self.model.generate_text(generated_template)
+    #     fixed_query =   self.model.generate_text(generated_template)
     #     print(fixed_query)
     #     return fixed_query
 
-    async def predict(self, prompt: str):
-        # prompt = await self.fix_query(prompt)
+    def predict(self, prompt: str):
+        # prompt =   self.fix_query(prompt)
         # prompt = " ".join(prompt.split(sep=":")[1:])
         full_prompt = self._prepare_for_predict(prompt, self.template)
         logging.debug(full_prompt)
-        prediction = await self.model.generate_text(
+        prediction =   self.model.generate_text(
             full_prompt,
             self.config_dict["model_config"],
         )
@@ -91,9 +91,9 @@ class IntentClassifier:
                 "digit": "null",
             }
 
-    # async def predict_only_intent(self, prompt: str):
+    # def predict_only_intent(self, prompt: str):
     #     full_prompt = self._prepare_for_predict(prompt, self.only_intent_template)
-    #     prediction = await self.model.generate_text(
+    #     prediction =   self.model.generate_text(
     #         full_prompt,
     #         self.config_dict["model_config"],
     #     )

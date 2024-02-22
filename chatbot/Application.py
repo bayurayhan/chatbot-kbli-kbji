@@ -1,7 +1,6 @@
 import asyncio
 import fastapi
 from .TelegramBot import TelegramBot
-from .Router import Router
 # from .models.Gemini import Gemini
 # from .models.OpenAIEmbedding import OpenAIEmbedding
 # from .models.GPT4Free import GPT4Free
@@ -17,42 +16,34 @@ from .utils import *
 import yaml
 import sys
 
+
 logger = logging.getLogger("app")
 
 
 class Application:
     _instance = None
 
-    def __init__(self, server: fastapi.FastAPI):
+    def __init__(self):
         if Application._instance is not None:
             raise Exception("Application instance already exists. Use get_instance() to access it.")
-        self.server = server
         self.config_file = get_path("config.yaml")
         self.config = None
         self.generative_model = None
         self.embedding_model = None
         self.load_configuration()
 
-        intent_classifier = IntentClassifier(model=self.generative_model, config=self.config)
-        text_generator = TextGeneration(model=self.generative_model)
-        semantic_search = SemanticSearch(
+        self.intent_classifier = IntentClassifier(model=self.generative_model, config=self.config)
+        self.text_generator = TextGeneration(model=self.generative_model)
+        self.semantic_search = SemanticSearch(
             embedding_model=self.embedding_model, text_generator=self.generative_model, config=self.config
         )
         
-        telegram_bot = TelegramBot()
-
-        self.router = Router(
-            telegram_bot=telegram_bot,
-            intent_classifier=intent_classifier,
-            text_generator=text_generator,
-            semantic_search=semantic_search,
-        )
-        self.register_endpoints()
+        self.telegram_bot = TelegramBot()
 
     @staticmethod
-    def get_instance(server: fastapi.FastAPI):
+    def get_instance():
         if Application._instance is None:
-            Application._instance = Application(server)
+            Application._instance = Application()
         return Application._instance
 
     def load_configuration(self):
@@ -110,10 +101,3 @@ class Application:
         )
         app_stream_handler.setFormatter(app_stream_formatter)
         app_logger.addHandler(app_stream_handler)
-
-    def register_endpoints(self):
-        @self.server.get("/")
-        def home():
-            return "Success connected to server!"
-
-        self.server.include_router(self.router)

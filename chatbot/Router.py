@@ -2,6 +2,8 @@ import asyncio
 import logging
 from fastapi import APIRouter, Request
 from urllib.parse import urljoin
+
+from .Application import Application
 from .TelegramBot import TelegramBot, TelegramAction
 import requests as httpRequest
 from .TextGeneration import TextGeneration
@@ -11,8 +13,13 @@ import json
 from .utils import *
 import sys
 from .templates import prompt_templates
+import multiprocessing
+from concurrent.futures import ProcessPoolExecutor
+from pathos.multiprocessing import ProcessingPool
+from fastapi import BackgroundTasks
 
 logger = logging.getLogger("app")
+
 
 
 class Router(APIRouter):
@@ -33,7 +40,36 @@ class Router(APIRouter):
             "/webhook", self.handleWebhook, methods=["POST"]
         )  # http://localhost:8000/api/webhook
 
-    async def handleWebhook(self, request: Request):
+    def handleProcess(self, chat_id, text):
+        # ===========================================================================
+        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        history = read_chat_history(chat_id, 4)
+        history = "\n---\n".join([data["content"] for data in history])
+        prediction = self.intent_classifier.predict(history)
+        intent = prediction["intent"]
+        logger.debug(prediction)
+
+        # Handle the intent
+        if intent == Intent.MENCARI_KODE:
+            self.handleCariKode(prediction, chat_id, text)
+        elif intent == Intent.MENJELASKAN_KODE:
+            self.handleJelaskanKode(prediction, chat_id, text)
+        elif intent == Intent.TIDAK_RELEVAN:
+            logger.info("Handle `tidak relevan`...")
+
+            type = prediction["jenis"] if not prediction["jenis"] == "null" else ""
+            informations = self.semantic_search.information_retrieval(text, type)
+
+            self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+            answer = self.text_generator.generate(
+                prompt_templates.for_tidak_relevan(text, chat_id, informations),
+                generation_config={"temperature": 0.5},
+            )
+            self.bot.to(chat_id).send_text(answer)
+        else:
+            self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
+
+    async def handleWebhook(self, request: Request, background_task: BackgroundTasks):
         body = await request.json()
 
         logger.info(
@@ -52,41 +88,15 @@ class Router(APIRouter):
             except:
                 pass
                 
-            await self.bot.to(chat_id).send_text("History telah dihapus!", False)
+            self.bot.to(chat_id).send_text("History telah dihapus!", False)
             return
 
-        save_chat_history(chat_id, "user", text)
+        task = background_task.add_task(self.handleProcess, chat_id, text)
         
-        # ===========================================================================
-        await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        history = read_chat_history(chat_id, 4)
-        history = "\n---\n".join([data["content"] for data in history])
-        prediction = await self.intent_classifier.predict(history)
-        intent = prediction["intent"]
-        logger.debug(prediction)
+        return ""
+        
 
-        # Handle the intent
-        if intent == Intent.MENCARI_KODE:
-            await self.handleCariKode(prediction, chat_id, text)
-        elif intent == Intent.MENJELASKAN_KODE:
-            await self.handleJelaskanKode(prediction, chat_id, text)
-        elif intent == Intent.TIDAK_RELEVAN:
-            logger.info("Handle `tidak relevan`...")
-
-            type = prediction["jenis"] if not prediction["jenis"] == "null" else ""
-            informations = await self.semantic_search.information_retrieval(text, type)
-
-            await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-            answer = await self.text_generator.generate(
-                prompt_templates.for_tidak_relevan(text, chat_id, informations),
-                generation_config={"temperature": 0.5},
-            )
-            await self.bot.to(chat_id).send_text(answer)
-        else:
-            await self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
-            
-
-    async def handleCariKode(self, prediction: dict, chat_id: str, text: str):
+    def handleCariKode(self, prediction: dict, chat_id: str, text: str):
         """
         Handling mencari kode intent from intent classification above.
 
@@ -97,7 +107,7 @@ class Router(APIRouter):
         """
         logger.info("Handle `mencari kode`...")
 
-        info_message = await self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
+        info_message =   self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
         info_message = info_message.get("result")
 
         # Extracting query and digit
@@ -113,7 +123,7 @@ class Router(APIRouter):
             digit = None
 
         # Semantic Search
-        raw_response, _ = await self.semantic_search.semantic_search(
+        raw_response, _ =   self.semantic_search.semantic_search(
             query, digit, data_name=dataname
         )
         response = ""
@@ -122,8 +132,8 @@ class Router(APIRouter):
             response += doc + "\n"
 
         # Generate answer
-        await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        answer = await self.text_generator.generate(
+        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        answer =   self.text_generator.generate(
             prompt_templates.for_mencari_kode(response, text, dataname, query, chat_id)
         )
 
@@ -131,11 +141,11 @@ class Router(APIRouter):
         logger.debug(response)
         logger.debug(answer)
 
-        await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        await self.bot.to(chat_id).send_text(answer)
-        await self.bot.to(chat_id).delete_message(info_message.get("message_id"))
+        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        self.bot.to(chat_id).send_text(answer)
+        self.bot.to(chat_id).delete_message(info_message.get("message_id"))
 
-    async def handleJelaskanKode(self, prediction: dict, chat_id: str, text: str):
+    def handleJelaskanKode(self, prediction: dict, chat_id: str, text: str):
         """
         Handling menjelaskan kode intent from intent classification above.
 
@@ -146,7 +156,7 @@ class Router(APIRouter):
         """
         logger.info("Handle `menjelaskan kode`...")
 
-        info_message = await self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
+        info_message =  self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
         info_message = info_message.get("result")
 
         query = prediction["entity"]
@@ -160,7 +170,7 @@ class Router(APIRouter):
         except Exception as e:
             digit = None
 
-        raw_response, _ = await self.semantic_search.semantic_search(
+        raw_response, _ =   self.semantic_search.semantic_search(
             query, digit, data_name=dataname, intent=Intent.MENJELASKAN_KODE
         )
         response = ""
@@ -168,8 +178,8 @@ class Router(APIRouter):
         for doc in raw_response:
             response += doc + "\n"
 
-        await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        answer = await self.text_generator.generate(
+        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        answer =   self.text_generator.generate(
             prompt_templates.for_menjelaskan_kode(response, text, dataname, query, chat_id)
         )
 
@@ -177,6 +187,6 @@ class Router(APIRouter):
         logger.debug(response)
         logger.debug(answer)
 
-        await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        await self.bot.to(chat_id).send_text(answer)
-        await self.bot.to(chat_id).delete_message(info_message.get("message_id"))
+        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        self.bot.to(chat_id).send_text(answer)
+        self.bot.to(chat_id).delete_message(info_message.get("message_id"))

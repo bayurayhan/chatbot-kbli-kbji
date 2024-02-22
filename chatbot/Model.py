@@ -4,7 +4,7 @@ from langchain_community.vectorstores.faiss import FAISS
 
 class GenerativeModel(ABC):
     @abstractmethod
-    async def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
+    def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
         """Generates text based on a given prompt with optional control over length and creativity.
 
         Args:

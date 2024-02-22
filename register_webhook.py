@@ -1,14 +1,16 @@
 import requests
 import os
 import sys
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from pyngrok import ngrok
 
-load_dotenv()
+load_dotenv(override=True)
 
 API_KEY = os.environ.get("TELEGRAM_API_KEY")
 PORT = os.environ.get("SERVER_PORT")
 SERVER_DOMAIN = os.environ.get("SERVER_DOMAIN")
+
+print(API_KEY)
 
 def register_webhook(is_server):
     if is_server:

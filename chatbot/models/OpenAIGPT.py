@@ -10,7 +10,7 @@ class OpenAIGPT(GenerativeModel):
         self.model = openai.OpenAI()
         self.temperature = temperature
 
-    async def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
+    def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
         response = self.model.chat.completions.create(
             model=self.name,
             messages=prompt,
