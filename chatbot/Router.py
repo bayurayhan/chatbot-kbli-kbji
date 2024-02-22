@@ -57,6 +57,7 @@ class Router(APIRouter):
 
         save_chat_history(chat_id, "user", text)
         
+        # ===========================================================================
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         history = read_chat_history(chat_id, 4)
         # history = "\n".join(history)
@@ -71,8 +72,10 @@ class Router(APIRouter):
             await self.handleJelaskanKode(prediction, chat_id, text)
         elif intent == Intent.TIDAK_RELEVAN:
             logger.info("Handle `tidak relevan`...")
+
             type = prediction["jenis"] if not prediction["jenis"] == "null" else ""
             informations = await self.semantic_search.information_retrieval(text, type)
+
             await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
             answer = await self.text_generator.generate(
                 prompt_templates.for_tidak_relevan(text, chat_id, informations),
@@ -97,6 +100,7 @@ class Router(APIRouter):
         info_message = await self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
         info_message = info_message.get("result")
 
+        # Extracting query and digit
         query = prediction["entity"]
         dataname = (
             "kbli2020"
@@ -108,6 +112,7 @@ class Router(APIRouter):
         except Exception as e:
             digit = None
 
+        # Semantic Search
         raw_response, _ = await self.semantic_search.semantic_search(
             query, digit, data_name=dataname
         )
@@ -116,13 +121,13 @@ class Router(APIRouter):
         for doc in raw_response:
             response += doc + "\n"
 
+        # Generate answer
         await self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         answer = await self.text_generator.generate(
             prompt_templates.for_mencari_kode(response, text, dataname, query, chat_id)
         )
 
         logger.debug(f"Text: {text}, type: {dataname}, {digit}")
-        # logger.debug(f"Processed: {preprocessed_query}")
         logger.debug(response)
         logger.debug(answer)
 

@@ -25,38 +25,36 @@ JIKA TIDAK DISEBUTKAN KBLI ATAU KBJI SECARA LANGSUNG, MAKA PAHAMI SENDIRI BERDAS
 """,
     }
 
-def prompt_fixer(history: str):
-    return [
-        {"role": "system", "content": """Generate chatbot prompt berdasarkan input dari user. Prompt yang digenerate harus jelas dan informatif!"""},
-        {"role": "user", "content": """Berikut hasil pencarian kode KBJI 2014 untuk dosen:
+# def prompt_fixer(history: str):
+#     return [
+#         {"role": "system", "content": """Generate chatbot prompt berdasarkan input dari user. Prompt yang digenerate harus jelas dan informatif!"""},
+#         {"role": "user", "content": """Berikut hasil pencarian kode KBJI 2014 untuk dosen:
 
-1. 2310.0 - Dosen Universitas dan Pendidikan Tinggi
-2. 231.0 - Dosen Universitas dan Pendidikan Tinggi
-3. 23.0 - Profesional Pendidikan
-4. 2310.01 - Dosen Ilmu Fisika
-5. 2310.11 - Dosen Ilmu Bahasa, Sastra, Budaya dan Sejarah
-6. 235.0 - Profesional Bidang Pendidikan Lainnya
+# 1. 2310.0 - Dosen Universitas dan Pendidikan Tinggi
+# 2. 231.0 - Dosen Universitas dan Pendidikan Tinggi
+# 3. 23.0 - Profesional Pendidikan
+# 4. 2310.01 - Dosen Ilmu Fisika
+# 5. 2310.11 - Dosen Ilmu Bahasa, Sastra, Budaya dan Sejarah
+# 6. 235.0 - Profesional Bidang Pendidikan Lainnya
 
-Interpretasi:
+# Interpretasi:
 
-- Kode KBJI 2310.0 dan 231.0 merupakan kode umum untuk dosen di universitas dan pendidikan tinggi.
-- Kode KBJI 23.0 merupakan kode yang lebih luas untuk profesional pendidikan, termasuk dosen.
-- Kode KBJI 2310.01 dan 2310.11 merupakan kode yang lebih spesifik untuk dosen di bidang fisika dan bahasa, sastra, budaya, dan sejarah.
-- Kode KBJI 235.0 merupakan kode untuk profesional bidang pendidikan lainnya, yang mungkin mencakup dosen di bidang tertentu yang tidak tercantum dalam kode KBJI lainnya.
----
-jelaskan kode di nomor 1
-"""},
-        {"role": "assistant", "content": "prompt: Jelaskan kode nomor 1 yaitu 2310 Dosen Universitas dan Pendidikan Tinggi"},
-        {"role": "user", "content": history}
-    ]
+# - Kode KBJI 2310.0 dan 231.0 merupakan kode umum untuk dosen di universitas dan pendidikan tinggi.
+# - Kode KBJI 23.0 merupakan kode yang lebih luas untuk profesional pendidikan, termasuk dosen.
+# - Kode KBJI 2310.01 dan 2310.11 merupakan kode yang lebih spesifik untuk dosen di bidang fisika dan bahasa, sastra, budaya, dan sejarah.
+# - Kode KBJI 235.0 merupakan kode untuk profesional bidang pendidikan lainnya, yang mungkin mencakup dosen di bidang tertentu yang tidak tercantum dalam kode KBJI lainnya.
+# ---
+# jelaskan kode di nomor 1
+# """},
+#         {"role": "assistant", "content": "prompt: Jelaskan kode nomor 1 yaitu 2310 Dosen Universitas dan Pendidikan Tinggi"},
+#         {"role": "user", "content": history}
+#     ]
 
 def preprocessing_query(query: str) -> list[dict]:
     return [
         {"role": "system", "content": "Tugas Anda adalah memberikan definisi detail dari istilah kata yang diberikan oleh user. Perbaiki juga jika ada typo (salah ketik).\n"},
         {"role": "user", "content": f"Apa itu 'pedagang'?\n"},
         {"role": "assistant", "content": "Pedagang adalah seseorang yang melakukan kegiatan membeli dan menjual barang atau jasa dengan tujuan untuk mendapatkan keuntungan. Pedagang bisa beroperasi dalam berbagai skala, mulai dari individu yang menjalankan bisnis kecil di pasar lokal hingga perusahaan besar yang beroperasi di pasar global. Mereka dapat berdagang dengan berbagai jenis produk atau layanan, termasuk barang konsumen, barang industri, layanan keuangan, dan banyak lagi. Pedagang dapat berdagang secara fisik di tempat-tempat seperti pasar tradisional atau toko ritel, atau melalui platform online dan pasar keuangan seperti bursa saham dan pasar valuta asing. Dalam menjalankan bisnis mereka, pedagang harus memperhatikan pasar, persaingan, kebijakan peraturan, dan faktor-faktor lain yang memengaruhi keberhasilan perdagangan mereka.\n"},
-#         {"role": "system", "content": """Anda adalah asisten yang SELALU membantu menyempurnakan query yang diberikan oleh user untuk digunakan sebagai query pencarian semantik pada database KBLI dan KBJI. Berikan beberapa istilah lain sebagai alternatif pencarian tentang pekerjaan/jabatan/usaha yang diberikan user. 
-# JIKA QUERY USER ADA HUBUNGAN DENGAN MAKANAN, MAKA BERIKAN PENJELASAN 'Bukan Selain Makanan'. KARENA SERING DISALAH ARTIKAN SEBAGAI SELAIN MAKANAN!"""},
         {"role": "user", "content": f"{query}\n"},
     ]
 

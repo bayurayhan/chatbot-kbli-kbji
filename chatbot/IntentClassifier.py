@@ -56,11 +56,11 @@ class IntentClassifier:
         prompt_template = [file_content] + examples + additional
         return prompt_template
     
-    async def fix_query(self, prompt):
-        generated_template = prompt_templates.prompt_fixer("\n---\n".join([data["content"] for data in prompt]))
-        fixed_query = await self.model.generate_text(generated_template)
-        print(fixed_query)
-        return fixed_query
+    # async def fix_query(self, prompt):
+    #     generated_template = prompt_templates.prompt_fixer("\n---\n".join([data["content"] for data in prompt]))
+    #     fixed_query = await self.model.generate_text(generated_template)
+    #     print(fixed_query)
+    #     return fixed_query
 
     async def predict(self, prompt: str):
         # prompt = await self.fix_query(prompt)
