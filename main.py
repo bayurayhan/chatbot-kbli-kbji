@@ -1,10 +1,15 @@
 import logging
 from chatbot.Router import Router
+from chatbot.utils import *
 from chatbot.Application import Application
 from chatbot.TelegramBot import TelegramBot
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from chatbot.utils import get_path
+from fastapi.staticfiles import StaticFiles
+from starlette.templating import Jinja2Templates
+import time
 import os
 import sys
 
@@ -25,6 +30,27 @@ router = Router(
 @server.get("/")
 async def home():
     return "Successfully connected to server!"
+
+# Mount a directory containing the client-side HTML file
+server.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+LOG_FILE_PATH = get_path("app.log")
+MAX_LINES = 100
+
+@server.get("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@server.get("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0/logs", response_class=HTMLResponse)
+async def get_logs():
+    with open(LOG_FILE_PATH, "r") as file:
+        # Read the last MAX_LINES lines
+        lines = file.readlines()[-MAX_LINES:]
+        # Reverse the order of lines to show newest lines at the top
+        lines.reverse()
+        logs = "".join(lines)
+    return f"<pre>{logs}</pre>"
 
 server.include_router(router)
 

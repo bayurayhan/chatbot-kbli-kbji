@@ -81,8 +81,6 @@ class SemanticSearch:
         else:
             result = ""
         
-        logger.debug(result)
-        
         return result
             
 
@@ -115,7 +113,7 @@ class SemanticSearch:
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         k = 10 if intent == Intent.MENCARI_KODE else 3
         results = db.similarity_search(query=processed_query, k=k)
-        logger.debug(results)
+        logger.debug("Hasil Similarity Search:\n" + results)
 
         results_string = []
 
@@ -137,7 +135,6 @@ class SemanticSearch:
                 results_string.append(
                     f"{i + 1}. kode_{data_name}: {row_data.get('kode')}; nama: {row_data['judul']}; deskripsi: {row_data['deskripsi']};"
                 )
-        logger.debug(results_string)
         return results_string, processed_query
 
     def _embed_database(self):
