@@ -78,8 +78,10 @@ class Router(APIRouter):
 
         # Handle the intent
         if intent == Intent.MENCARI_KODE:
+            prediction["jenis"] = "KBLI" if prediction["jenis"].lower() == "usaha" else ("KBJI" if prediction["jenis"].lower() == "pekerjaan" else "KBJI")
             self.handleCariKode(prediction, chat_id, text)
         elif intent == Intent.MENJELASKAN_KODE:
+            prediction["jenis"] = "KBLI" if prediction["jenis"].lower() == "usaha" else ("KBJI" if prediction["jenis"].lower() == "pekerjaan" else "KBJI")
             self.handleJelaskanKode(prediction, chat_id, text)
         elif intent == Intent.TIDAK_RELEVAN:
             logger.info("Handle `tidak relevan`...")

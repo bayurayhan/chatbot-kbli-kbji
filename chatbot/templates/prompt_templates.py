@@ -11,8 +11,8 @@ Intent yang digunakan harus salah satu dari berikut :
 - `lainnya` (digunakan ketika user mengirimkan prompt selain mencari kode atau menjelaskan kode)
 
 Jenis klasifikasi yang digunakan harus salah satu dari berikut : 
--`KBLI` (Klasifikasi Baku Lapangan Usaha Indonesia)
--`KBJI` (Klasifikasi Baku Jabatan Indonesia)
+-`usaha` (jika merupakan KBLI yaitu Klasifikasi Baku Lapangan Usaha Indonesia)
+-`pekerjaan` (jika merupakan KBJI yaitu Klasifikasi Baku Jabatan Indonesia)
 -`semua` (Ketika permintaan lebih general tentang keduanya (KBJI dan KBLI). HANYA dapat digunakan ketika intent `lainnya`)
 -`null` (jika intent `lainnya`)
 
