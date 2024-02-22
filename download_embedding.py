@@ -21,5 +21,5 @@ def download_and_extract(url, save_path):
 
 if __name__ == "__main__":
     file_url = "https://github.com/bayurayhan/chatbot-kbli-kbji/releases/download/v0.1/data.zip"
-    save_path = get_path("chatbot", "data")
+    save_path = get_path("chatbot", "data", "data.zip")
     download_and_extract(file_url, save_path)
