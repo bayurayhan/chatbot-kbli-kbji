@@ -10,8 +10,13 @@
             font-size: 1.5em; /* Set font size to 16px */
         }
     </style>
-    <script>
-        document.getElementById("log-container").scrollTop = document.getElementById("log-container").scrollHeight;
+    
+</head>
+<body>
+    <div id="log-container" style="overflow-y: scroll; height: 80vh;"><div style="height: 200vh; width: 100vw"></div></div>
+<script>
+        let logContainer = document.getElementById("log-container")
+        logContainer.scrollTop = logContainer.scrollHeight;
         function updateLogs() {
             fetch("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0/logs")
                 .then(response => response.text())
@@ -23,8 +28,5 @@
 
         setInterval(updateLogs, 2000); // Update every 2 seconds
     </script>
-</head>
-<body>
-    <div id="log-container" style="overflow-y: scroll; height: 80vh;"><div style="height: 200vh; width: 100vw"></div></div>
 </body>
 </html>
