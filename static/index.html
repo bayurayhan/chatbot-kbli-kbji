@@ -11,6 +11,7 @@
         }
     </style>
     <script>
+        document.getElementById("log-container").scrollTop = document.getElementById("log-container").scrollHeight;
         function updateLogs() {
             fetch("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0/logs")
                 .then(response => response.text())
