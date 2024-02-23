@@ -40,32 +40,35 @@ class Router(APIRouter):
         )  # http://localhost:8000/api/webhook
 
     async def handleWebhook(self, request: Request, background_task: BackgroundTasks):
-        body = await request.json()
+        try:
+            body = await request.json()
 
-        logger.info(
-            f"Chat delivered with id {body.get('update_id')} from {body.get('message', {}).get('from').get('first_name')}"
-        )
-        logger.debug(body)
+            logger.info(
+                f"Chat delivered with id {body.get('update_id')} from {body.get('message', {}).get('from').get('first_name')}"
+            )
+            logger.debug(body)
 
-        if ("message" not in body) and ("text" not in body["message"]):
-            return
-        chat_id = body["message"]["chat"]["id"]
-        text = body["message"]["text"]
+            if ("message" not in body) and ("text" not in body["message"]):
+                return
+            chat_id = body["message"]["chat"]["id"]
+            text = body["message"]["text"]
 
-        if text == "/clearhistory":
-            try:
-                os.remove(get_path("chatbot", "history", f"{chat_id}.csv"))
-            except:
-                pass
-                
-            self.bot.to(chat_id).send_text("History telah dihapus!", False)
-            return
+            if text == "/clearhistory":
+                try:
+                    os.remove(get_path("chatbot", "history", f"{chat_id}.csv"))
+                except:
+                    pass
+                    
+                self.bot.to(chat_id).send_text("History telah dihapus!", False)
+                return
 
-        save_chat_history(chat_id, "user", text)
+            save_chat_history(chat_id, "user", text)
 
-        task = background_task.add_task(self.handleProcess, chat_id, text)
-        
-        return ""
+            task = background_task.add_task(self.handleProcess, chat_id, text)
+            
+            return ""
+        except Exception as e:
+            logger.error(e)
 
     def handleProcess(self, chat_id, text):
         # ===========================================================================
