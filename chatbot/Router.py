@@ -47,7 +47,7 @@ class Router(APIRouter):
         )
         logger.debug(body)
 
-        if ("message" not in body) and ("chat" not in body["message"]):
+        if ("message" not in body) and ("text" not in body["message"]):
             return
         chat_id = body["message"]["chat"]["id"]
         text = body["message"]["text"]
