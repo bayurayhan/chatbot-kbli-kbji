@@ -16,7 +16,7 @@ import sys
 Application.configure_logging()
 logger = logging.getLogger("app")
 
-load_dotenv()
+load_dotenv(override=True)
 logger.info(".env file loaded!")
 
 server = FastAPI()
