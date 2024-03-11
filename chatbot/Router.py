@@ -61,6 +61,12 @@ class Router(APIRouter):
                     
                 self.bot.to(chat_id).send_text("History telah dihapus!", False)
                 return
+            elif text == "/start":
+                self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+                self.bot.to(chat_id).send_text(
+                    "Halo! Saya adalah chatbot yang akan membantu kamu mencari informasi seputar KBLI dan KBJI. Silakan ajukan pertanyaanmu!"
+                )
+                return
 
             save_chat_history(chat_id, "user", text)
 
