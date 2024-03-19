@@ -124,7 +124,7 @@ class SemanticSearch:
                     doc.metadata.get("row"),
                 )
                 results_string.append(
-                    f"{i + 1}. kode_{data_name}: {row_data['kode']}; nama: {row_data['judul']};"
+                    f"- kode_{data_name}: {row_data['kode']}; nama: {row_data['judul']};"
                 )
         else:
             for i, doc in enumerate(results):
@@ -133,7 +133,7 @@ class SemanticSearch:
                     doc.metadata.get("row"),
                 )
                 results_string.append(
-                    f"{i + 1}. kode_{data_name}: {row_data.get('kode')}; nama: {row_data['judul']}; deskripsi: {row_data['deskripsi']};"
+                    f"- kode_{data_name}: {row_data.get('kode')}; nama: {row_data['judul']}; deskripsi: {row_data['deskripsi']};"
                 )
         logger.debug(results_string)
         return results_string, processed_query
