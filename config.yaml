@@ -17,4 +17,5 @@ intent-classifier:
     top_p: 0.2
 
 semantic-search:
-  data-folder: ""
+  chunk_size: 400
+  chunk_overlap: 10

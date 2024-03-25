@@ -202,7 +202,7 @@ class SemanticSearch:
             )
         documents = loader.load()
         if not intent == Intent.MENJELASKAN_KODE:
-            text_splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=10)
+            text_splitter = RecursiveCharacterTextSplitter(chunk_size=self.semantic_search_config["chunk_size"], chunk_overlap=self.semantic_search_config["chunk_overlap"])
             documents = text_splitter.split_documents(documents)
         return documents
 
@@ -259,7 +259,7 @@ class SemanticSearch:
             loader = TextLoader(get_path("chatbot", "data", text_filename), autodetect_encoding=True)
             documents = loader.load()
 
-            splitter = RecursiveCharacterTextSplitter()
+            splitter = RecursiveCharacterTextSplitter() # chunk_size = 1000, chunk_overlap = 200
             documents = splitter.split_documents(documents)
             
             db = self.embedding_model.faiss_embedding(documents, path)
