@@ -15,6 +15,7 @@ intent-classifier:
   model_config:
     temperature: 0.4
     top_p: 0.2
+    top_k: 10
 
 semantic-search:
   chunk_size: 400
