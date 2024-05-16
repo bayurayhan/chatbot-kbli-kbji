@@ -52,6 +52,7 @@ class Router(APIRouter):
                 return
             chat_id = body["message"]["chat"]["id"]
             text = body["message"]["text"]
+            message_id = body["message"]["message_id"]
 
             if text == "/clearhistory":
                 try:
@@ -70,26 +71,26 @@ class Router(APIRouter):
 
             save_chat_history(chat_id, "user", text)
 
-            task = background_task.add_task(self.handleProcess, chat_id, text)
+            task = background_task.add_task(self.handleProcess, chat_id, text, message_id)
             
             return ""
         except Exception as e:
             logger.error(e)
 
-    def handleProcess(self, chat_id, text):
+    def handleProcess(self, chat_id, text, message_id):
         # ===========================================================================
         self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        history = read_chat_history(chat_id, 3)
-        history = "\n---\n".join([data["content"] for data in history])
+        history = read_chat_history(chat_id, use_dict=True, n=5)
+        history = "\n".join([f'{data["role"]}: <MSG>{data["content"]}</MSG>' for data in history])
         prediction = self.intent_classifier.predict(history)
         intent = prediction["intent"]
         logger.debug(prediction)
 
         # Handle the intent
         if intent == Intent.MENCARI_KODE:
-            self.handleCariKode(prediction, chat_id, text)
+            self.handleCariKode(prediction, chat_id, text, message_id)
         elif intent == Intent.MENJELASKAN_KODE:
-            self.handleJelaskanKode(prediction, chat_id, text)
+            self.handleJelaskanKode(prediction, chat_id, text, message_id)
         elif intent == Intent.TIDAK_RELEVAN:
             logger.info("Handle `tidak relevan`...")
 
@@ -105,14 +106,14 @@ class Router(APIRouter):
                 prompt_templates.for_tidak_relevan(text, chat_id, informations),
                 generation_config={"temperature": 0.5},
             )
-            self.bot.to(chat_id).send_text(answer)
+            self.bot.to(chat_id).reply(message_id).send_text(answer)
             if informations != "":
                 self.bot.to(chat_id).delete_message(info_message.get("message_id"))
         else:
             self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
         
 
-    def handleCariKode(self, prediction: dict, chat_id: str, text: str):
+    def handleCariKode(self, prediction: dict, chat_id: str, text: str, message_id):
         """
         Handling mencari kode intent from intent classification above.
 
@@ -158,10 +159,10 @@ class Router(APIRouter):
         logger.debug(answer)
 
         self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        self.bot.to(chat_id).send_text(answer)
+        self.bot.to(chat_id).reply(message_id).send_text(answer)
         self.bot.to(chat_id).delete_message(info_message.get("message_id"))
 
-    def handleJelaskanKode(self, prediction: dict, chat_id: str, text: str):
+    def handleJelaskanKode(self, prediction: dict, chat_id: str, text: str, message_id):
         """
         Handling menjelaskan kode intent from intent classification above.
 
@@ -204,5 +205,5 @@ class Router(APIRouter):
         logger.debug(answer)
 
         self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        self.bot.to(chat_id).send_text(answer)
+        self.bot.to(chat_id).reply(message_id).send_text(answer)
         self.bot.to(chat_id).delete_message(info_message.get("message_id"))

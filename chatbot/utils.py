@@ -21,20 +21,12 @@ def read_specific_row(filename, row_number):
     return specific_row
 
 def escape_characters(input_string):
-    escaped_string = re.sub(r'([\_\[\]\(\)\~\>\#\+\-\=\|\{\}\.\!])', r'\\\1', input_string)
-    return escaped_string
+    escaped_string = re.sub(r'([\_\[\]\(\)\*\~\>\#\+\-\=\|\{\}\.\!])', r'\\\1', input_string)
+    escaped_string = re.sub(r'^\\(\>)', r'\1', escaped_string, flags=re.MULTILINE) # For quotes
+    escaped_string = re.sub(r'^\\\* ', '\- ', escaped_string, flags=re.MULTILINE) # For list
+    escaped_string = re.sub(r'\\\*\\\*(.*)\\\*\\\*', r'*\1*', escaped_string, flags=re.MULTILINE) # For list
 
-def replace_starting_asterisk_with_dash(input_string):
-    """
-    Replaces a '*' at the beginning of a line with '-' using regular expressions.
-    
-    Parameters:
-        input_string (str): The input string.
-    
-    Returns:
-        str: The modified string with '*' replaced with '-' at the beginning of lines.
-    """
-    return re.sub(r'^\* ', '- ', input_string, flags=re.MULTILINE)
+    return escaped_string
 
 def remove_emojis(text):
     # Emoji ranges (from https://unicode.org/emoji/charts/full-emoji-list.html)
@@ -58,8 +50,7 @@ def remove_emojis(text):
 
 def gemini_markdown_to_markdown(input):
     # input = remove_emojis(input)
-    input = remove_trailing_asterisks(input)
-    input = replace_starting_asterisk_with_dash(input)
+    # input = remove_trailing_asterisks(input)
     input = escape_characters(input)
     return input
 
@@ -110,7 +101,7 @@ def read_chat_history(chat_id, use_dict=True, n=5) -> list[dict]:
     filename = os.path.join(folder_hist, f"{chat_id}.csv")
     chat_history = []
     try:
-        with open(filename, 'r', newline='') as file:
+        with open(filename, 'r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             if use_dict:
                 for row in reader:

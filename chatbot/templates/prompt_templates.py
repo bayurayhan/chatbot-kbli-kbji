@@ -1,5 +1,28 @@
 from ..utils import read_chat_history
 
+TEMPLATE_FORMAT_PROMPT = f"""Jawab dengan format parse MarkdownV2 style seperti panduan dibawah ini:
+*bold \*text*
+_italic \*text_
+__underline__
+~strikethrough~
+||spoiler||
+*bold _italic bold ~italic bold strikethrough ||italic bold strikethrough spoiler||~ __underline italic bold___ bold*
+[inline URL](http://www.example.com/)
+[inline mention of a user](tg://user?id=123456789)
+![👍](tg://emoji?id=5368324170671202286)
+`inline fixed-width code`
+```
+pre-formatted fixed-width code block
+```
+```python
+pre-formatted fixed-width code block written in the Python programming language
+```
+>Block quotation started
+>Block quotation continued
+>The last line of the block quotation**
+>The second block quotation started right after the previous\r
+>The third block quotation started right after the previous"""
+
 def intent_classification():
     return {
         "role": "system",
@@ -20,6 +43,7 @@ Tulis dengan menggunakan format:
 `intent;entity;jenis;digit`
 seperti contoh di bawah 
 
+PENTING:
 ANDA AKAN DIBERIKAN CONTOH DAN YANG TERAKHIR ADALAH HISTORY CHAT DARI USER, MAKA FOKUS HANYA PADA HISTORY UNTUK KLASIFIKASI!
 JIKA TIDAK DISEBUTKAN KBLI ATAU KBJI SECARA LANGSUNG, MAKA PAHAMI SENDIRI BERDASARKAN HISTORY CHAT!
 """,
@@ -53,9 +77,9 @@ JIKA TIDAK DISEBUTKAN KBLI ATAU KBJI SECARA LANGSUNG, MAKA PAHAMI SENDIRI BERDAS
 def preprocessing_query(query: str) -> list[dict]:
     return [
         {"role": "system", "content": "Tugas Anda adalah memberikan definisi detail dari istilah kata yang diberikan oleh user. Perbaiki juga jika ada typo (salah ketik).\n"},
-        {"role": "user", "content": f"Apa itu 'pedagang'?\n"},
+        {"role": "user", "content": f"Jelaskan singkat tentang istilah 'pedagang'?\n"},
         {"role": "assistant", "content": "Pedagang adalah seseorang yang melakukan kegiatan membeli dan menjual barang atau jasa dengan tujuan untuk mendapatkan keuntungan. Pedagang bisa beroperasi dalam berbagai skala, mulai dari individu yang menjalankan bisnis kecil di pasar lokal hingga perusahaan besar yang beroperasi di pasar global.\n"},
-        {"role": "user", "content": f"{query}\n"},
+        {"role": "user", "content": f"Jelaskan singkat tentang istilah '{query}'\n"},
     ]
 
 def for_mencari_kode(
@@ -69,9 +93,12 @@ Anda dapat melayani beberapa task yaitu,
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
 - menjelaskan pengetahuan umum tentang kbli dan kbji
 ---
+{TEMPLATE_FORMAT_PROMPT}
+---
 User meminta untuk melakukan pencarian kode '{"KBLI 2020" if type == "kbli2020" else "KBJI 2014"}' untuk {query} dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
 {search_outputs}
 ---
+PENTING:
 JAWAB KEPADA USER MENGENAI HAL HASIL PENCARIAN TERSEBUT.
 JIKA ADA INTEPRETASI DARI PENCARIAN TERSEBUT, JELASKAN JUGA KEPADA USER.
 JELASKAN DENGAN KATA-KATA YANG LENGKAP.
@@ -96,9 +123,12 @@ Anda dapat melayani beberapa task yaitu,
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
 - menjelaskan pengetahuan umum tentang kbli dan kbji
 ---
+{TEMPLATE_FORMAT_PROMPT}
+---
 User meminta untuk melakukan penjelasan kode {"KBLI 2020" if type == "kbli2020" else "KBJI 2014"} untuk kode '{query}' dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
 {search_outputs}
 ---
+PENTING:
 JAWAB KEPADA USER MENGENAI HAL HASIL PENCARIAN TERSEBUT. 
 JIKA ADA INTEPRETASI DARI PENCARIAN TERSEBUT, JELASKAN JUGA KEPADA USER.
 JELASKAN DENGAN KATA-KATA YANG PANJANG.
@@ -129,6 +159,9 @@ Anda dapat melayani beberapa task yaitu,
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
 - menjelaskan pengetahuan umum tentang kbli dan kbji
 ---
+{TEMPLATE_FORMAT_PROMPT}
+---
+PENTING:
 JAWAB PERMINTAAN DARI USER DENGAN BAIK DAN SOPAN.
 JANGAN MEMBERI JAWABAN JIKA PERTANYAAN DI LUAR KONTEKS KBLI DAN KBJI!
 JAWAB PADA PERTANYAAN UMUM TENTANG KBLI DAN KBJI, JANGAN MENJAWAB UNTUK MENCARI KODE DAN MENJELASKAN KODE TANPA MEMILIKI DATA! 

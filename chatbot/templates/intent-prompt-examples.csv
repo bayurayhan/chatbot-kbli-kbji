@@ -13,8 +13,8 @@ Saya memiliki kebun di desa dan ingin memulai usaha pertanian kecil-kecilan. Bag
 Saya ingin mempekerjakan seorang teknisi untuk mengurus perbaikan komputer di toko saya. Apakah ada kode KBJI yang mencakup pekerjaan seperti itu?;"cari kode;teknisi komputer;KBJI;null;"
 Bagaimana cara mengetahui apakah usaha makanan saya memerlukan kode KBLI atau tidak?;"lainnya;null;KBLI;null;"
 apakah kbli ada di undang-undang?;"lainnya;null;KBJI;null;"
-"<assistant>: ...penjelasan panjang... 
-<user>: Ok terima kasih";"lainnya;null;null;null;"
+"assistant: <MSG>...penjelasan panjang…</MSG>
+user: <MSG>Ok terima kasih</MSG>";"lainnya;null;null;null;"
 Apa saja jenis pekerjaan yang termasuk dalam KBLI 62020?;"jelaskan kode;62020;KBLI;5;"
 Bagaimana cara merawat tanaman hias?;"lainnya;null;null;null;"
 Apakah ada kode KBJI untuk peternak ayam?;"cari kode;peternak ayam;KBJI;null;"
@@ -27,7 +27,7 @@ Apa saja jenis pekerjaan yang tidak termasuk dalam cakupan KBLI?;"lainnya;null;K
 Bagaimana cara mengetahui apakah sebuah usaha memerlukan KBJI atau tidak?;"lainnya;null;KBJI;null;"
 Saya ingin memperluas usaha katering saya. Bagaimana cara mencari tahu kode KBLI yang relevan dengan layanan katering?;"lainnya;null;KBLI;null;"
 Apa perbedaan utama antara KBJI dan KBLI, dan mengapa penting untuk memahaminya?;"lainnya;null;semua;null;"
-"<assistant>: ...penjelasan panjang... 
-<user>: Kamu keren";"lainnya;null;null;null;"
-"<assistant>: ...penjelasan kode kbli untuk rumah sakit... 
-<user>: berikan kode 5 digitnya";"cari kode;rumah sakit;KBLI;5;"
+"assistant: <MSG>...penjelasan panjang…</MSG>
+user: <MSG>Kamu keren</MSG";"lainnya;null;null;null;"
+"assistant: <MSG>...penjelasan kode kbli untuk rumah sakit... </MSG>
+user: <MSG>berikan kode 5 digitnya</MSG>";"cari kode;rumah sakit;KBLI;5;"

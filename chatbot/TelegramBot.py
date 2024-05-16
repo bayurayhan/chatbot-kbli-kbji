@@ -33,6 +33,7 @@ class TelegramBot:
         self.url_path = f"https://api.telegram.org/bot{self.token}/"
 
         self.chat_id = None
+        self.message_id = None
         self.commands = []
 
         # NOTE: Set all the commands here
@@ -54,15 +55,58 @@ class TelegramBot:
         self.chat_id = chat_id
         return self
 
+    def reply(self, message_id) -> Self:
+        self.message_id = message_id
+        return self
+
+    def divide_message(self, message: str, max_length: int = 4087):
+        words = message.split(' ')
+        chunks = []
+        current_chunk = ''
+        
+        for word in words:
+            if len(current_chunk) + len(word) + 1 < max_length:
+                current_chunk += ' ' + word
+            else:
+                # Add "..." to the end of the chunk if it's not the last one
+                chunks.append(current_chunk + '\\.\\.\\.')
+                current_chunk = word
+        
+        chunks.append(current_chunk)
+        return chunks
+
     def send_text(self, message: str, set_history: bool=True):
         if set_history:
             save_chat_history(self.chat_id, "assistant", message)
         message = gemini_markdown_to_markdown(message)
         # message = markdown.markdown(message)
-        logging.getLogger("app").debug(message)
-        return   self.send_api_request(
-            "POST", "sendMessage", data={"text": message, "parse_mode": PARSE_MODE}
-        )
+
+        # Divide the message into chunks
+        chunks = self.divide_message(message)
+        logging.getLogger("app").debug(chunks)
+
+        info_message = None
+        
+        if self.message_id:
+            for i, chunk in enumerate(chunks):
+                if i == 0:
+                    info_message = self.send_api_request(
+                        "POST", "sendMessage", data={"text": chunk, "parse_mode": PARSE_MODE, "reply_to_message_id": self.message_id}
+                    )
+                else:
+                    info_message = self.send_api_request(
+                        "POST", "sendMessage", data={"text": chunk, "parse_mode": PARSE_MODE}
+                    )
+                    
+        else:
+            for chunk in chunks:
+                info_message = self.send_api_request(
+                    "POST", "sendMessage", data={"text": chunk, "parse_mode": PARSE_MODE}
+                )
+        
+        self.message_id = None        
+        
+        return info_message
     
     def edit_message(self, message_id: int, message: str):
         return   self.send_api_request(

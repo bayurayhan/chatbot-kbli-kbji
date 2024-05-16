@@ -38,17 +38,18 @@ class SemanticSearch:
             logger.info(
                 "Creating embedding for the database. This may take some time..."
             )
-            self._embed_database()
-            self._create_embedded_file(embedded_file_path)
+            self._prepare_database_for_embedding()
 
-        # NOTE: To load the embedding turn this on
-        # self._load_embedding_data("kbli2020")
-        # self._load_embedding_data("kbji2014")
-        # self._load_embedding_data("kbli2020", Intent.MENJELASKAN_KODE)
-        # self._load_embedding_data("kbji2014", Intent.MENJELASKAN_KODE)
+            # NOTE: To load the embedding turn this on
+            self._embed_data_and_load("kbli2020")
+            self._embed_data_and_load("kbji2014")
+            self._embed_data_and_load("kbli2020", Intent.MENJELASKAN_KODE)
+            self._embed_data_and_load("kbji2014", Intent.MENJELASKAN_KODE)
 
-        # self._load_text_information_data("kbli2020.txt")
-        # self._load_text_information_data("kbji2014.txt")
+            self._embed_and_load_text_information_data("kbli2020.txt")
+            self._embed_and_load_text_information_data("kbji2014.txt")
+
+            self._create_embedding_preparation_file(embedded_file_path)
 
     def _preprocessing_query(self, query: str) -> str:
         templated = prompt_templates.preprocessing_query(query)
@@ -61,8 +62,8 @@ class SemanticSearch:
     
     def information_retrieval(self, query: str, type: str=""):
         if type == "semua":
-            db_kbli = self._load_text_information_data("kbli2020.txt") 
-            db_kbji = self._load_text_information_data("kbji2014.txt") 
+            db_kbli = self._embed_and_load_text_information_data("kbli2020.txt") 
+            db_kbji = self._embed_and_load_text_information_data("kbji2014.txt") 
 
             kbli_docs = db_kbli.similarity_search(query, k=2)
             kbji_docs = db_kbji.similarity_search(query, k=2)
@@ -70,11 +71,11 @@ class SemanticSearch:
             result = kbli_docs + kbji_docs
             result = "\n".join([data.page_content for data in result])
         elif type.lower() == "kbji":
-            db_kbji = self._load_text_information_data("kbji2014.txt") 
+            db_kbji = self._embed_and_load_text_information_data("kbji2014.txt") 
             kbji_docs = db_kbji.similarity_search(query, k=5)
             result = "\n".join([data.page_content for data in kbji_docs])
         elif type.lower() == "kbli":
-            db_kbli = self._load_text_information_data("kbli2020.txt") 
+            db_kbli = self._embed_and_load_text_information_data("kbli2020.txt") 
             kbli_docs = db_kbli.similarity_search(query, k=5)
             result = "\n".join([data.page_content for data in kbli_docs])
         
@@ -110,7 +111,7 @@ class SemanticSearch:
         else:
             processed_query = f"kode_{data_name}: " + query
 
-        db = self._load_embedding_data(data_name, intent=intent)
+        db = self._embed_data_and_load(data_name, intent=intent)
 
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
         k = 5 if intent == Intent.MENCARI_KODE else 3
@@ -140,11 +141,10 @@ class SemanticSearch:
         logger.debug(results_string)
         return results_string, processed_query
 
-    def _embed_database(self):
+    def _prepare_database_for_embedding(self):
         logger.info("Embedding the database")
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self._process_embedding("kbli2020"))
-        loop.run_until_complete(self._process_embedding("kbji2014"))
+        self._process_embedding("kbli2020")
+        self._process_embedding("kbji2014")
         logger.info("Finished embedding the database!")
 
     def _process_embedding(self, data_name: str):
@@ -153,7 +153,7 @@ class SemanticSearch:
                 "chatbot", "data", f"{data_name}_embedding.csv"
             )
             if os.path.exists(embedded_file_path):
-                logger.info(f"Skipping {data_name} embedding.")
+                logger.info(f"Skipping {data_name} embedding preparation.")
                 return
 
             column_types = {"kode": "str"}
@@ -222,7 +222,7 @@ class SemanticSearch:
         db = self.embedding_model.faiss_embedding(documents=documents, save_folder=save_folder)
         return db
 
-    def _load_embedding_data(
+    def _embed_data_and_load(
         self, data_name: str = None, intent: Intent = Intent.MENCARI_KODE
     ) -> FAISS:
         """
@@ -239,7 +239,7 @@ class SemanticSearch:
         intent_faiss_folder = os.path.join(faiss_folder, intent.value)
 
         if not os.path.exists(intent_faiss_folder):
-            logger.info("Load the documents...")
+            logger.info(f"Load the {data_name} documents...")
             documents = self._load_documents(data_name, intent)
 
             if intent == Intent.MENCARI_KODE:
@@ -254,7 +254,7 @@ class SemanticSearch:
 
         return db
     
-    def _load_text_information_data(self, text_filename: str) -> FAISS:
+    def _embed_and_load_text_information_data(self, text_filename: str) -> FAISS:
         path = get_path("chatbot", "data", "information_faiss_index", text_filename)
         if not os.path.exists(path):
             logger.info(f"Embedding {text_filename} data...")
@@ -270,6 +270,6 @@ class SemanticSearch:
         
         return db
 
-    def _create_embedded_file(self, file_path: str):
+    def _create_embedding_preparation_file(self, file_path: str):
         with open(file_path, "w"):
             pass
