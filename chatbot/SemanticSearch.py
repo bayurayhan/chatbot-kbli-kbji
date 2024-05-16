@@ -80,6 +80,8 @@ class SemanticSearch:
         
         else:
             result = ""
+
+        logger.debug("FROM SemanticSearch.py: " + result[:500] + "...")
         
         return result
             
@@ -111,7 +113,7 @@ class SemanticSearch:
         db = self._load_embedding_data(data_name, intent=intent)
 
         # NOTE: You can use different types of retrieval algorithms, such as similarity search, max marginal relevance search, self query, contextual compression, time-weighted search, and multi-query retriever.
-        k = 10 if intent == Intent.MENCARI_KODE else 3
+        k = 5 if intent == Intent.MENCARI_KODE else 3
         results = db.similarity_search(query=processed_query, k=k)
         # logger.debug(results)
 
@@ -124,7 +126,7 @@ class SemanticSearch:
                     doc.metadata.get("row"),
                 )
                 results_string.append(
-                    f"- kode_{data_name}: {row_data['kode']}; nama: {row_data['judul']};"
+                    f"- kode {row_data['kode']}: {row_data['judul']}; {row_data['deskripsi'][:1000]}"
                 )
         else:
             for i, doc in enumerate(results):

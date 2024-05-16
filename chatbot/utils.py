@@ -57,6 +57,7 @@ def remove_emojis(text):
     return emoji_pattern.sub(r"", text)
 
 def gemini_markdown_to_markdown(input):
+    # input = remove_emojis(input)
     input = remove_trailing_asterisks(input)
     input = replace_starting_asterisk_with_dash(input)
     input = escape_characters(input)
@@ -81,14 +82,14 @@ def save_chat_history(chat_id, role, new_message):
     
     # Check if the file exists, if not, create it
     if not os.path.isfile(filename):
-        with open(filename, 'w', newline='') as file:
+        with open(filename, 'w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=["role", "content"])
             writer.writeheader()
     
     # Read existing content from the CSV file
     existing_data = []
     try:
-        with open(filename, 'r', newline='') as file:
+        with open(filename, 'r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             existing_data = list(reader)
     except FileNotFoundError:
@@ -99,7 +100,7 @@ def save_chat_history(chat_id, role, new_message):
     latest_messages = existing_data[-10:]
 
     # Write the latest messages back to the CSV file
-    with open(filename, 'w', newline='') as file:
+    with open(filename, 'w', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=["role", "content"])
         writer.writeheader()
         writer.writerows(latest_messages)

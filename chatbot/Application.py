@@ -75,7 +75,7 @@ class Application:
         root_logger = logging.getLogger()
         root_logger.setLevel(logging.DEBUG)  # Set root logger level to DEBUG
         # Create a RotatingFileHandler for the root logger with a maximum file size of 1 MB
-        root_file_handler = RotatingFileHandler("root.log", maxBytes=1e6, backupCount=3)
+        root_file_handler = RotatingFileHandler("root.log", maxBytes=1e6, backupCount=3, encoding='utf-8')
         root_file_handler.setLevel(logging.DEBUG)  # Set file handler level to DEBUG
         root_formatter = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -86,7 +86,7 @@ class Application:
         # Create a logger for the application
         app_logger = logging.getLogger("app")
         app_logger.setLevel(logging.DEBUG)  # Set app logger level to DEBUG
-        app_file_handler = RotatingFileHandler("app.log", maxBytes=1e6, backupCount=2)
+        app_file_handler = RotatingFileHandler("app.log", maxBytes=1e6, backupCount=2, encoding='utf-8')
         app_file_handler.setLevel(logging.DEBUG)  # Set file handler level to DEBUG
         app_formatter = logging.Formatter(
             "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

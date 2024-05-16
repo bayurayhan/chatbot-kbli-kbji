@@ -4,6 +4,7 @@ import google.generativeai as genai
 from google.generativeai import GenerationConfig
 from ..Model import GenerativeModel
 import traceback
+import re
 
 logger = logging.getLogger("app")
 
@@ -14,11 +15,14 @@ SAFETY_SETTINGS = [
     {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_ONLY_HIGH"},
 ]
 
-def delete_last_char(string):
-    if string.endswith('</MSG>'):
-        return string[:-6]  # Return string excluding the last character
-    else:
-        return string  # Return the original string if it doesn't end with '>'
+def cleanup_text(text):
+    # Define the regex pattern to match the specific strings at the beginning and end
+    pattern = r'(<\|assistant\|>: )?(<MSG>)?(.*?)(\n)?<\/MSG>'
+    
+    # Use re.sub to replace the pattern with the captured group (the message content)
+    cleaned_text = re.sub(pattern, r'\3', text, flags=re.DOTALL)
+    
+    return cleaned_text
 
 class Gemini(GenerativeModel):
     def __init__(
@@ -77,9 +81,10 @@ class Gemini(GenerativeModel):
         )
         try:
             prompt = self._generate_string(prompt)
-            logging.debug(prompt)
             response = self.model.generate_content(prompt)
-            return delete_last_char(response.text)
+            cleaned_res = cleanup_text(response.text)
+            logger.debug("RESPONSE FROM gemini.py: `cleaned_res` -> " + cleaned_res)
+            return cleaned_res
         except Exception as e:
             error_message = f"Error generating text with Gemini: {e}"
             # Log or handle the error appropriately here

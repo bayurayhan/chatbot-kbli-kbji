@@ -54,27 +54,30 @@ def preprocessing_query(query: str) -> list[dict]:
     return [
         {"role": "system", "content": "Tugas Anda adalah memberikan definisi detail dari istilah kata yang diberikan oleh user. Perbaiki juga jika ada typo (salah ketik).\n"},
         {"role": "user", "content": f"Apa itu 'pedagang'?\n"},
-        {"role": "assistant", "content": "Pedagang adalah seseorang yang melakukan kegiatan membeli dan menjual barang atau jasa dengan tujuan untuk mendapatkan keuntungan. Pedagang bisa beroperasi dalam berbagai skala, mulai dari individu yang menjalankan bisnis kecil di pasar lokal hingga perusahaan besar yang beroperasi di pasar global. Mereka dapat berdagang dengan berbagai jenis produk atau layanan, termasuk barang konsumen, barang industri, layanan keuangan, dan banyak lagi. Pedagang dapat berdagang secara fisik di tempat-tempat seperti pasar tradisional atau toko ritel, atau melalui platform online dan pasar keuangan seperti bursa saham dan pasar valuta asing. Dalam menjalankan bisnis mereka, pedagang harus memperhatikan pasar, persaingan, kebijakan peraturan, dan faktor-faktor lain yang memengaruhi keberhasilan perdagangan mereka.\n"},
+        {"role": "assistant", "content": "Pedagang adalah seseorang yang melakukan kegiatan membeli dan menjual barang atau jasa dengan tujuan untuk mendapatkan keuntungan. Pedagang bisa beroperasi dalam berbagai skala, mulai dari individu yang menjalankan bisnis kecil di pasar lokal hingga perusahaan besar yang beroperasi di pasar global.\n"},
         {"role": "user", "content": f"{query}\n"},
     ]
-
 
 def for_mencari_kode(
     search_outputs: str, user_text: str, type: str, query: str, chat_id
 ) -> list[dict]:
     history = read_chat_history(chat_id)
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
-
-User meminta untuk melakukan pencarian kode '{"KBLI 2020" if type == "kbli2020" else "KBJI 2014"}' untuk {query} dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:{search_outputs}
-
-Jawab kepada user mengenai hal hasil pencarian tersebut.
-Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
-Jelaskan dengan kata-kata yang panjang.
-
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+Anda dapat melayani beberapa task yaitu,
+- mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
+- menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
+- menjelaskan pengetahuan umum tentang kbli dan kbji
+---
+User meminta untuk melakukan pencarian kode '{"KBLI 2020" if type == "kbli2020" else "KBJI 2014"}' untuk {query} dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
+{search_outputs}
+---
+JAWAB KEPADA USER MENGENAI HAL HASIL PENCARIAN TERSEBUT.
+JIKA ADA INTEPRETASI DARI PENCARIAN TERSEBUT, JELASKAN JUGA KEPADA USER.
+JELASKAN DENGAN KATA-KATA YANG LENGKAP.
 DATA DISINI HANYA BERASAL DARI KBLI 2020 DAN KBJI 2014, SELAIN SUMBER TERSEBUT BERARTI TIDAK VALID JANGAN DIBERIKAN KE USER!
 JIKA TERNYATA TIDAK DITEMUKAN DI HASIL PENCARIAN, KATAKAN HASIL TIDAK DITEMUKAN!
-JAWAB MENGGUNAKAN FORMAT MARKDOWN TELEGRAM!
+LIST SEMUA HASIL PENCARIANNYA TERLEBIH DAHULU AGAR USER MENGETAHUI! 
 """}
     ]
     for item in history:
@@ -87,18 +90,20 @@ def for_menjelaskan_kode(
 ) -> list[dict]:
     history = read_chat_history(chat_id)
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang interaktif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
-
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan . Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+Anda dapat melayani beberapa task yaitu,
+- mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
+- menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
+- menjelaskan pengetahuan umum tentang kbli dan kbji
+---
 User meminta untuk melakukan penjelasan kode {"KBLI 2020" if type == "kbli2020" else "KBJI 2014"} untuk kode '{query}' dan sistem sudah melakukan pencarian di data BPS {type} dengan hasil berikut:
 {search_outputs}
-
-Jawab kepada user mengenai hal hasil pencarian tersebut. 
-Jika ada intepretasi dari pencarian tersebut, jelaskan juga kepada user.
-Jelaskan dengan kata-kata yang panjang.
-
+---
+JAWAB KEPADA USER MENGENAI HAL HASIL PENCARIAN TERSEBUT. 
+JIKA ADA INTEPRETASI DARI PENCARIAN TERSEBUT, JELASKAN JUGA KEPADA USER.
+JELASKAN DENGAN KATA-KATA YANG PANJANG.
 DATA DISINI HANYA BERASAL DARI KBLI 2020 DAN KBJI 2014, SELAIN SUMBER TERSEBUT BERARTI TIDAK VALID JANGAN DIBERIKAN KE USER!
 JIKA TERNYATA TIDAK DITEMUKAN DI HASIL PENCARIAN, KATAKAN HASIL TIDAK DITEMUKAN!
-JAWAB MENGGUNAKAN FORMAT MARKDOWN!
 """}
     ]
     for item in history:
@@ -107,22 +112,27 @@ JAWAB MENGGUNAKAN FORMAT MARKDOWN!
 
 def for_tidak_relevan(query: str, chat_id, informations):
     history = read_chat_history(chat_id)
+    informations_string = ""
+
+    if informations != "":
+        informations_string = f"""---
+Berikut adalah informasi (unstructured) yang diambil dari semantic retrieval pada publikasi BPS berdasarkan query user:
+```text
+{informations}
+``"""
+    
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan menyenangkan. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
 
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
 - menjelaskan pengetahuan umum tentang kbli dan kbji
-
-Jawab permintaan dari user dengan baik dan sopan.
+---
+JAWAB PERMINTAAN DARI USER DENGAN BAIK DAN SOPAN.
 JANGAN MEMBERI JAWABAN JIKA PERTANYAAN DI LUAR KONTEKS KBLI DAN KBJI!
 JAWAB PADA PERTANYAAN UMUM TENTANG KBLI DAN KBJI, JANGAN MENJAWAB UNTUK MENCARI KODE DAN MENJELASKAN KODE TANPA MEMILIKI DATA! 
-
-Berikut adalah informasi (unstructured) yang diambil dari semantic retrieval pada publikasi BPS berdasarkan query user:
-```text
-{informations}
-```
+{informations_string}
 """}
     ]
     for item in history:

@@ -96,12 +96,18 @@ class Router(APIRouter):
             type = prediction["jenis"] if not prediction["jenis"] == "null" else ""
             informations = self.semantic_search.information_retrieval(text, type)
 
+            if informations != "":
+                info_message = self.bot.to(chat_id).send_text("Mencari informasi dari database...", False)
+                info_message = info_message.get("result")
+
             self.bot.to(chat_id).send_action(TelegramAction.TYPING)
             answer = self.text_generator.generate(
                 prompt_templates.for_tidak_relevan(text, chat_id, informations),
                 generation_config={"temperature": 0.5},
             )
             self.bot.to(chat_id).send_text(answer)
+            if informations != "":
+                self.bot.to(chat_id).delete_message(info_message.get("message_id"))
         else:
             self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
         
@@ -117,9 +123,6 @@ class Router(APIRouter):
         """
         logger.info("Handle `mencari kode`...")
 
-        info_message =   self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
-        info_message = info_message.get("result")
-
         # Extracting query and digit
         query = prediction["entity"]
         dataname = (
@@ -131,6 +134,9 @@ class Router(APIRouter):
             digit = int(prediction["digit"])
         except Exception as e:
             digit = None
+        
+        info_message =   self.bot.to(chat_id).send_text(f"Sedang mencari kode {dataname} untuk {query}...", set_history=False)
+        info_message = info_message.get("result")
 
         # Semantic Search
         raw_response, _ =   self.semantic_search.semantic_search(
@@ -166,9 +172,6 @@ class Router(APIRouter):
         """
         logger.info("Handle `menjelaskan kode`...")
 
-        info_message =  self.bot.to(chat_id).send_text("Mencari informasi...", set_history=False)
-        info_message = info_message.get("result")
-
         query = prediction["entity"]
         dataname = (
             "kbli2020"
@@ -179,6 +182,9 @@ class Router(APIRouter):
             digit = int(prediction["digit"])
         except Exception as e:
             digit = None
+
+        info_message =  self.bot.to(chat_id).send_text(f"Mencari penjelasan kode {query} di database...", set_history=False)
+        info_message = info_message.get("result")
 
         raw_response, _ =   self.semantic_search.semantic_search(
             query, digit, data_name=dataname, intent=Intent.MENJELASKAN_KODE
