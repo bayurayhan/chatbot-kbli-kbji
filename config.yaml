@@ -23,4 +23,4 @@ semantic-search:
 
 feedback-system:
   active: true
-  file_path: "feedbacks.csv"
+  file_path: "feedbacks.sqlite"

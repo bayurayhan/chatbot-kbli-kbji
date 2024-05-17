@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import time
 from fastapi import APIRouter, Request
 from urllib.parse import urljoin
 
@@ -39,6 +40,7 @@ class Router(APIRouter):
         self.add_api_route("/webhook", self.handleWebhook, methods=["POST"])  # http://localhost:8000/api/webhook
 
     async def handleWebhook(self, request: Request, background_task: BackgroundTasks):
+        start_time = time.time()
         try:
             body = await request.json()
 
@@ -92,13 +94,13 @@ class Router(APIRouter):
 
             save_chat_history(chat_id, "user", text)
 
-            task = background_task.add_task(self.handleProcess, chat_id, text, message_id)
+            task = background_task.add_task(self.handleProcess, chat_id, text, message_id, {"start_time": start_time})
 
             return ""
         except Exception as e:
             logger.error(e)
 
-    def handleProcess(self, chat_id, text, message_id):
+    def handleProcess(self, chat_id, text, message_id, debug: dict):
         # ===========================================================================
         self.bot.to(chat_id).send_action(TelegramAction.TYPING)
         history = read_chat_history(chat_id, use_dict=True, n=5)
@@ -109,9 +111,9 @@ class Router(APIRouter):
 
         # Handle the intent
         if intent == Intent.MENCARI_KODE:
-            self.handleCariKode(prediction, chat_id, text, message_id)
+            self.handleCariKode(prediction, chat_id, text, message_id, {"start_time": debug['start_time']})
         elif intent == Intent.MENJELASKAN_KODE:
-            self.handleJelaskanKode(prediction, chat_id, text, message_id)
+            self.handleJelaskanKode(prediction, chat_id, text, message_id, {"start_time": debug['start_time']})
         elif intent == Intent.TIDAK_RELEVAN:
             logger.info("Handle `tidak relevan`...")
 
@@ -136,19 +138,29 @@ class Router(APIRouter):
 
             dispatch(
                 "queryHandled/success",
-                {"id": f"{chat_id}__{answer_message.get('message_id')}", "response": answer, "user_prompt": text},
+                {
+                    "id": f"{chat_id}__{answer_message.get('message_id')}",
+                    "response": answer,
+                    "user_prompt": text,
+                    "start_time": debug["start_time"],
+                },
             )
         else:
             answer_message = self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
 
             dispatch(
                 "queryHandled/success",
-                {"id": f"{chat_id}__{answer_message.get('message_id')}", "response": answer, "user_prompt": text},
+                {
+                    "id": f"{chat_id}__{answer_message.get('message_id')}",
+                    "response": answer,
+                    "user_prompt": text,
+                    "start_time": debug["start_time"],
+                },
             )
 
         dispatch("queryHandled/all")
 
-    def handleCariKode(self, prediction: dict, chat_id: str, text: str, message_id):
+    def handleCariKode(self, prediction: dict, chat_id: str, text: str, message_id, debug):
         """
         Handling mencari kode intent from intent classification above.
 
@@ -199,11 +211,16 @@ class Router(APIRouter):
         self.bot.to(chat_id).delete_message(info_message.get("message_id"))
         dispatch(
             "queryHandled/success",
-            {"id": f"{chat_id}__{answer_message.get('message_id')}", "response": answer, "user_prompt": text},
+            {
+                "id": f"{chat_id}__{answer_message.get('message_id')}",
+                "response": answer,
+                "user_prompt": text,
+                "start_time": debug["start_time"],
+            },
         )
         dispatch("queryHandled/success/cariKode")
 
-    def handleJelaskanKode(self, prediction: dict, chat_id: str, text: str, message_id):
+    def handleJelaskanKode(self, prediction: dict, chat_id: str, text: str, message_id, debug):
         """
         Handling menjelaskan kode intent from intent classification above.
 
@@ -253,6 +270,11 @@ class Router(APIRouter):
         self.bot.to(chat_id).delete_message(info_message.get("message_id"))
         dispatch(
             "queryHandled/success",
-            {"id": f"{chat_id}__{answer_message.get('message_id')}", "response": answer, "user_prompt": text},
+            {
+                "id": f"{chat_id}__{answer_message.get('message_id')}",
+                "response": answer,
+                "user_prompt": text,
+                "start_time": debug["start_time"],
+            },
         )
         dispatch("queryHandled/success/menjelaskanKode")

@@ -14,7 +14,7 @@ import os
 import sys
 from fastapi_events.middleware import EventHandlerASGIMiddleware
 from fastapi_events.handlers.local import local_handler
-from chatbot.event_handlers import FeedbackEvent
+from chatbot.event_handlers import MainEvent, FeedbackEvent
 
 Application.configure_logging()
 logger = logging.getLogger("app")

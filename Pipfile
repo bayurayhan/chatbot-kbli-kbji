@@ -26,6 +26,8 @@ tenacity = "*"
 tqdm = "*"
 uvicorn = "*"
 faiss-cpu = "*"
+mysql-connector-python = "*"
+scikit-learn = "*"
 
 [dev-packages]
 

@@ -1,4 +1,5 @@
 import logging
+import time
 from fastapi_events.handlers.local import local_handler
 from fastapi_events.typing import Event
 
