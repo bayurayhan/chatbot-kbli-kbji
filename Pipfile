@@ -25,6 +25,7 @@ starlette = "*"
 tenacity = "*"
 tqdm = "*"
 uvicorn = "*"
+faiss-cpu = "*"
 
 [dev-packages]
 

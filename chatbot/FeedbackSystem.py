@@ -63,7 +63,7 @@ class FeedbackSystem:
         keyboard = [[{'text': 'Relevan', 'callback_data': '1'}, {'text': 'Tidak relevan', 'callback_data': '0'}]]
         return self.telegram_bot.to(chat_id).reply(message_id).send_message_with_inline_keyboard("Bagaimana respon dari chatbot?", keyboard)
     
-    def edit_feedback_poll(self, chat_id, message_id):
+    def send_edit_feedback_poll(self, chat_id, message_id):
         """
         Edit a poll with a predefined keyboard layout to a specific chat ID and message ID.
         
@@ -132,13 +132,13 @@ class FeedbackSystem:
         df = pd.concat([df, new_feedback], ignore_index=True)
         df.to_csv(self.file_path, index=False)
 
-    def edit_feedback(self, id, column, new_data):
+    def edit_feedback(self, poll_id, column, new_data):
         """
-        Edits the feedback data in the file based on the provided ID, column, and new data.
+        Edits the feedback data in the file based on the provided poll_id, column, and new data.
 
         Parameters:
             self: The instance of the class.
-            id: The ID of the feedback.
+            poll_id: The ID of the poll.
             column: The column to be edited.
             new_data: The new data to replace the existing data.
 
@@ -148,7 +148,7 @@ class FeedbackSystem:
         if os.path.getsize(self.file_path) > 0:
             chunk_container = pd.read_csv(self.file_path, chunksize=self.chunksize)
             for chunk in chunk_container:
-                chunk.loc[chunk["id"] == id, column] = new_data
+                chunk.loc[chunk["poll_id"] == poll_id, column] = new_data
                 chunk.to_csv(self.file_path, mode="a", index=False)
         else:
             print("File is empty.")

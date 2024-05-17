@@ -42,26 +42,35 @@ class Router(APIRouter):
         try:
             body = await request.json()
 
-            logger.info(
-                f"Chat delivered from {body.get('message', {}).get('from').get('first_name')}"
-            )
             logger.debug(body)
 
-            if 'callback_query' in body:
+            if "callback_query" in body:
+                logger.info(
+                    f"Callback query delivered from {body.get('callback_query', {}).get('from').get('first_name')}"
+                )
                 # The update contains a callback query
-                callback_query = body['callback_query']
-                user_id = callback_query['from']['id']
-                data = callback_query['data']  # This is the 'callback_data' you set when creating the inline keyboard
-                logger.debug("RECEIVED CALLBACK -> " + data)
+                callback_query = body["callback_query"]
+                user_id = callback_query["from"]["id"]
+                response = callback_query[
+                    "data"
+                ]  # This is the 'callback_data' you set when creating the inline keyboard
+
+                dispatch(
+                    "feedback/success",
+                    {"is_relevant": response, "user_id": user_id, "poll_id": callback_query["message"]["message_id"]},
+                )
+
                 # Now you can handle the callback query
-                # For example, edit the original message to say "Thank you for your feedback!"
-                original_message_id = callback_query['message']['message_id']
+                original_message_id = callback_query["message"]["message_id"]
                 self.bot.to(user_id).edit_message(original_message_id, "Thank you for your feedback!")
 
                 return
 
             if ("message" not in body) and ("text" not in body["message"]):
                 return
+
+            logger.info(f"Text delivered from {body.get('message', {}).get('from').get('first_name')}")
+
             chat_id = body["message"]["chat"]["id"]
             text = body["message"]["text"]
             message_id = body["message"]["message_id"]

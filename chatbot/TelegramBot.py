@@ -109,6 +109,7 @@ class TelegramBot:
         return info_message
 
     def edit_message(self, message_id: int, message: str):
+        message = gemini_markdown_to_markdown(message)
         return self.send_api_request(
             "POST", "editMessageText", data={"text": message, "message_id": message_id, "parse_mode": PARSE_MODE}
         )

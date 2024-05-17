@@ -87,7 +87,7 @@ def for_mencari_kode(
 ) -> list[dict]:
     history = read_chat_history(chat_id)
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang informatif. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan friendly. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
@@ -117,7 +117,7 @@ def for_menjelaskan_kode(
 ) -> list[dict]:
     history = read_chat_history(chat_id)
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan . Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan friendly. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
@@ -152,7 +152,7 @@ Berikut adalah informasi (unstructured) yang diambil dari semantic retrieval pad
 ``"""
     
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang informatif. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan friendly. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
 
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).

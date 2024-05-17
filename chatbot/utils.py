@@ -24,7 +24,7 @@ def escape_characters(input_string):
     escaped_string = re.sub(r'([\_\[\]\(\)\*\~\>\#\+\-\=\|\{\}\.\!])', r'\\\1', input_string)
     escaped_string = re.sub(r'^\\(\>)', r'\1', escaped_string, flags=re.MULTILINE) # For quotes
     escaped_string = re.sub(r'^\\\* ', '\- ', escaped_string, flags=re.MULTILINE) # For list
-    escaped_string = re.sub(r'\\\*\\\*(.*)\\\*\\\*', r'*\1*', escaped_string, flags=re.MULTILINE) # For list
+    escaped_string = re.sub(r'\\\*\\\*([^\*]*)\\\*\\\*', r'*\1*', escaped_string, flags=re.MULTILINE) # For bold
 
     return escaped_string
 
