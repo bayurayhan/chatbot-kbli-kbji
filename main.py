@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     logger.info("Starting application in HTTP mode...")
     for route in server.routes:
-        print(route)
+        logger.debug(route)
     WORKERS = os.environ.get("WORKERS", None)
     if WORKERS:
         WORKERS = int(WORKERS)

@@ -17,6 +17,29 @@ from logging.handlers import RotatingFileHandler
 from .utils import *
 import yaml
 import sys
+import logging
+
+class CustomFormatter(logging.Formatter):
+
+    grey = "\033[90m"
+    yellow = "\033[93m"
+    red = "\033[91m"
+    bold_red = "\033[1;91m"
+    reset = "\033[0m"
+    format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
+
+    FORMATS = {
+        logging.DEBUG: grey + format + reset,
+        logging.INFO: grey + format + reset,
+        logging.WARNING: yellow + format + reset,
+        logging.ERROR: red + format + reset,
+        logging.CRITICAL: bold_red + format + reset
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
 
 logger = logging.getLogger("app")
 
@@ -74,11 +97,18 @@ class Application:
 
     @staticmethod
     def configure_logging():
+
+        # # Set all loggers inside logging.root.manager.loggerDict to WARNING
+        # for logger_name in logging.root.manager.loggerDict:
+        #     # add rotating file handler to all loggers
+        #     logging.getLogger(logger_name).addHandler(root_file_handler)
+
         root_logger = logging.getLogger()
-        root_logger.setLevel(logging.DEBUG)  # Set root logger level to DEBUG
-        # Create a RotatingFileHandler for the root logger with a maximum file size of 1 MB
+        root_logger.removeHandler(root_logger.handlers[0])
+        root_logger.setLevel(logging.NOTSET)  # Set root logger level to DEBUG
+        # # Create a RotatingFileHandler for the root logger with a maximum file size of 1 MB
         root_file_handler = RotatingFileHandler("root.log", maxBytes=1e6, backupCount=3, encoding="utf-8")
-        root_file_handler.setLevel(logging.DEBUG)  # Set file handler level to DEBUG
+        root_file_handler.setLevel(logging.NOTSET)  # Set file handler level to DEBUG
         root_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         root_file_handler.setFormatter(root_formatter)
         root_logger.addHandler(root_file_handler)
@@ -92,8 +122,8 @@ class Application:
         app_file_handler.setFormatter(app_formatter)
         app_logger.addHandler(app_file_handler)
 
-        app_stream_handler = logging.StreamHandler()
+        app_stream_handler = logging.StreamHandler(stream=sys.stdout)
         app_stream_handler.setLevel(logging.INFO)  # Set stream handler level to INFO
-        app_stream_formatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s")
-        app_stream_handler.setFormatter(app_stream_formatter)
+        app_stream_handler.addFilter(lambda record: record.levelname == "INFO")
+        app_stream_handler.setFormatter(CustomFormatter())
         app_logger.addHandler(app_stream_handler)

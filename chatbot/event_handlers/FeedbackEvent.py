@@ -15,7 +15,7 @@ def handle_query_handled_successfully(event: Event):
     # TODO: save to feedback csv file
     feedback = FeedbackSystem.get_instance()
 
-    poll_message = feedback.send_poll(chat_id, message_id)    
+    poll_message = feedback.send_feedback_poll(chat_id, message_id)    
     poll_message = poll_message.get("result")
     
     feedback.add_feedback(

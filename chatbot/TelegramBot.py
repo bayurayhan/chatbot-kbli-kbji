@@ -1,15 +1,11 @@
-import asyncio
 import logging
 import os
 from urllib.parse import urljoin
 import requests
 from typing_extensions import Self
 from enum import Enum
-from .utils import remove_trailing_asterisks, escape_characters, gemini_markdown_to_markdown, save_chat_history
-import markdown
-import sys
+from .utils import gemini_markdown_to_markdown, save_chat_history
 import json
-import re
 
 PARSE_MODE = "MarkdownV2"
 
@@ -132,7 +128,7 @@ class TelegramBot:
         logging.error(res.text)
 
         raise res.raise_for_status()
-
+    
     def send_poll(
         self, question: str, options: list, is_anonymous=False, type="regular", allows_multiple_answers=False
     ):
@@ -169,8 +165,5 @@ class TelegramBot:
         Returns:
         dict: Response from Telegram API.
         """
-        data = {
-            'text': message,
-            'reply_markup': json.dumps({'inline_keyboard': keyboard})
-        }
-        return self.send_api_request('POST', 'sendMessage', data)
+        data = {"text": message, "reply_markup": json.dumps({"inline_keyboard": keyboard})}
+        return self.send_api_request("POST", "sendMessage", data)

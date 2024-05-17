@@ -2,3 +2,4 @@ id,user_prompt,response,response_time,is_relevant,is_error,poll_id
 787077279__440,coba,"Maaf, saya tidak mengerti maksud Anda. Silakan ajukan pertanyaan yang jelas tentang KBLI atau KBJI.",,,False,
 787077279__447,Halo,"Halo, saya adalah chatbot yang dapat membantu Anda dalam mencari informasi terkait Klasifikasi Baku Lapangan Usaha Indonesia (KBLI) dan Klasifikasi Baku Jabatan Indonesia (KBJI). Silakan ajukan pertanyaan Anda, dan saya akan berusaha memberikan informasi yang akurat dan jelas.",,,False,
 787077279__452,halo again,"Halo, ada yang bisa saya bantu? Apakah Anda ingin mencari kode KBLI atau KBJI, atau ingin penjelasan tentang KBLI dan KBJI?",,,False,
+787077279__457,halo,"Halo, ada yang bisa saya bantu? Apakah Anda ingin mencari kode KBLI atau KBJI, atau ingin penjelasan tentang KBLI dan KBJI?",,,False,
