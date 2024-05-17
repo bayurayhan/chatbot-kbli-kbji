@@ -20,3 +20,7 @@ intent-classifier:
 semantic-search:
   chunk_size: 400
   chunk_overlap: 10
+
+feedback-system:
+  active: true
+  file_path: "feedbacks.csv"
