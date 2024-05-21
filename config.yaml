@@ -3,7 +3,7 @@ models:
   generative:
     model_name: "chatbot.models.Gemini" # Gemini, OpenAIGPT
     model_params:
-      name: "gemini-1.0-pro" # Match the model
+      name: "gemini-1.5-flash-latest" # Match the model
 
   embedding:
     model_name: "chatbot.models.OpenAIEmbedding" # OpenAIEmbedding, GeminiEmbedding
@@ -20,3 +20,7 @@ intent-classifier:
 semantic-search:
   chunk_size: 400
   chunk_overlap: 10
+
+feedback-system:
+  active: true
+  file_path: "feedbacks.sqlite"

@@ -1,0 +1,497 @@
+id,prompt,intent,entity,type,digit
+1,Kode KBJI buat pekerjaan marketing apa?,cari kode,marketing,KBJI,null
+2,Apakah ada kode KBJI untuk pekerjaan sebagai penjelajah laut dalam?,cari kode,penjelajah laut dalam,KBJI,null
+3,Apakah bisa hidup sehat tanpa olahraga?,lainnya,null,null,null
+4,"assistant: <MSG>...penjelasan panjang...</MSG>
+user: <MSG>Terima kasih, sangat membantu</MSG>",lainnya,null,null,null
+5,Bagaimana cara kerja panel surya?,lainnya,null,null,null
+6,KBJI dan KBLI itu apaan?,lainnya,null,semua,null
+7,Tanggal Proklamasi Indonesia merdeka kapan?,lainnya,null,null,null
+8,Apa saja yang dicakup oleh kode KBJI 8322?,jelaskan kode,8322,KBJI,4
+9,Apa saja pekerjaan yang termasuk dalam KBJI 6543 di dunia virtual?,jelaskan kode,6543,KBJI,4
+10,Kode KBJI 7213 itu untuk pekerjaan apa saja?,jelaskan kode,7213,KBJI,4
+11,Apa manfaat yoga untuk kesehatan?,lainnya,null,null,null
+12,Apa penyebab global warming?,lainnya,null,null,null
+13,Kode KBJI 3114 mencakup pekerjaan apa?,jelaskan kode,3114,KBJI,4
+14,Kode KBLI buat usaha e-commerce apa ya?,cari kode,usaha e-commerce,KBLI,null
+15,Apakah ada kode KBJI untuk peternak sapi?,cari kode,peternak sapi,KBJI,null
+16,apa itu kbji dalam bisnis?,lainnya,null,KBJI,null
+17,Cara membasmi serangga di rumah gimana?,lainnya,null,null,null
+18,Kode KBLI untuk usaha pengiriman antariksa apa?,cari kode,pengiriman antariksa,KBLI,null
+19,Kode KBLI buat usaha catering gimana ya?,cari kode,usaha catering,KBLI,null
+20,Kode KBLI buat usaha apotek gimana ya?,cari kode,usaha apotek,KBLI,null
+21,Film komedi terbaik sepanjang masa apa aja?,lainnya,null,null,null
+22,Kode KBLI buat usaha rental motor gimana?,cari kode,usaha rental motor,KBLI,null
+23,Usaha makanan perlu kode KBLI nggak ya?,lainnya,null,KBLI,null
+24,Kode KBLI untuk usaha penyewaan bintang apa?,cari kode,penyewaan bintang,KBLI,null
+25,Kode KBLI buat usaha toko buku gimana?,cari kode,usaha toko buku,KBLI,null
+26,Bagaimana cara memilih sepeda yang baik?,lainnya,null,null,null
+27,"Gue punya usaha katering, gimana caranya tau kode KBLI yang pas?",lainnya,null,KBLI,null
+28,Bagaimana cara membuat serum keabadian?,lainnya,null,null,null
+29,Apa perbedaan antara KBJI dan KBLI dan mengapa harus tahu?,lainnya,null,semua,null
+30,Jelaskan kode KBLI 53201 untuk pengiriman,jelaskan kode,53201,KBLI,5
+31,Apa saja pekerjaan dalam kode KBJI 6112?,jelaskan kode,6112,KBJI,4
+32,Kode KBLI untuk perdagangan besar bahan bakar minyak apa?,cari kode,perdagangan bahan bakar minyak,KBLI,null
+33,Kode KBLI buat usaha pertambangan itu berapa digit?,cari kode,usaha pertambangan,KBLI,5
+34,Kode KBJI buat pekerjaan asisten rumah tangga?,cari kode,asisten rumah tangga,KBJI,null
+35,Siapa yang ngerumuskan KBJI dan KBLI?,lainnya,null,semua,null
+36,Apa saja yang dicakup oleh kode KBJI 5311?,jelaskan kode,5311,KBJI,4
+37,"assistant: <MSG>...penjelasan rinci...</MSG>
+user: <MSG>Terima kasih</MSG",lainnya,null,null,null
+38,Apa saja yang dicakup oleh kode KBJI 5412?,jelaskan kode,5412,KBJI,4
+39,Jelaskan kode KBLI 45201 secara detail,jelaskan kode,45201,KBLI,5
+40,Tips aman berbelanja online gimana?,lainnya,null,null,null
+41,Bagaimana cara merawat ikan koi?,lainnya,null,null,null
+42,Apa saja pekerjaan yang masuk dalam KBJI 9001 di Mars?,jelaskan kode,9001 di Mars,KBJI,4
+43,"Untuk usaha periklanan, kode KBLI-nya apa?",cari kode,usaha periklanan,KBLI,null
+44,Kode KBJI 4211 mencakup pekerjaan apa?,jelaskan kode,4211,KBJI,4
+45,Jelaskan kode KBLI 86909 untuk kesehatan,jelaskan kode,86909,KBLI,5
+46,Jenis pekerjaan apa yang nggak masuk KBJI?,lainnya,null,KBJI,null
+47,Resep pancake fluffy gimana ya?,lainnya,null,null,null
+48,Apakah ada kode KBJI untuk pekerjaan sebagai arsitek virtual reality?,cari kode,arsitek virtual reality,KBJI,null
+49,Kode KBLI buat usaha ternak ikan gimana?,cari kode,usaha ternak ikan,KBLI,null
+50,"Untuk usaha konsultan IT, kodenya apa di KBLI?",cari kode,usaha konsultan IT,KBLI,null
+51,Gimana cara bikin soto ayam enak?,lainnya,null,null,null
+52,Detail lengkap kode KBLI 95291 apa saja?,jelaskan kode,95291,KBLI,5
+53,Apa itu cryptocurrency?,lainnya,null,null,null
+54,Gimana tau usaha perlu KBJI atau nggak?,lainnya,null,KBJI,null
+55,KBLI ada di undang-undang nggak sih?,lainnya,null,KBJI,null
+56,Kode KBJI 4212 mencakup pekerjaan apa?,jelaskan kode,4212,KBJI,4
+57,"assistant: <MSG>...penjelasan rinci...</MSG>
+user: <MSG>Sangat membantu</MSG>",lainnya,null,null,null
+58,Kode KBJI buat pekerjaan pembuat perhiasan?,cari kode,pembuat perhiasan,KBJI,null
+59,Kode KBLI untuk usaha pencetakan 3D organ manusia apa?,cari kode,pencetakan 3D organ manusia,KBLI,null
+60,"assistant: <MSG>...penjelasan kode kbli buat toko online... </MSG>
+user: <MSG>kode 5 digitnya dong</MSG>",cari kode,toko online,KBLI,5
+61,Bagaimana cara memelihara fauna dari planet lain?,lainnya,null,null,null
+62,Kode KBJI buat pekerjaan desainer interior?,cari kode,desainer interior,KBJI,null
+63,Bagaimana cara membuat mesin waktu?,lainnya,null,null,null
+64,Apa kode KBLI untuk usaha jual beli planet?,cari kode,jual beli planet,KBLI,null
+65,Kode KBJI buat pekerjaan teknisi jaringan?,cari kode,teknisi jaringan,KBJI,null
+66,Kode KBLI buat usaha rental alat camping?,cari kode,usaha rental alat camping,KBLI,null
+67,KBJI itu gunanya buat apa sih?,lainnya,null,KBJI,null
+68,Pemenang Piala Dunia 2022 siapa?,lainnya,null,null,null
+69,Jenis pekerjaan apa yang tidak masuk dalam KBJI?,lainnya,null,KBJI,null
+70,Profesi yang masuk kode KBJI 5321 itu apa aja?,jelaskan kode,5321,KBJI,4
+71,Apakah KBJI ada dalam peraturan pemerintah?,lainnya,null,KBJI,null
+72,Rekomendasi buku self-help terbaik?,lainnya,null,null,null
+73,Kode KBJI 1234 itu buat profesi apa sih?,jelaskan kode,1234,KBJI,4
+74,Kode KBJI buat pekerjaan dosen ada nggak?,cari kode,dosen,KBJI,null
+75,"Kalau mau hire akuntan, ada nggak kode KBJI buat itu?",cari kode,akuntan,KBJI,null
+76,Cara memperbaiki mesin mobil yang rusak?,lainnya,null,null,null
+77,Apakah ada kode KBJI untuk pekerjaan sebagai penjelajah waktu?,cari kode,penjelajah waktu,KBJI,null
+78,Kode KBJI buat pekerjaan makeup artist?,cari kode,makeup artist,KBJI,null
+79,Apa itu kode KBJI untuk pemburu hantu?,cari kode,pemburu hantu,KBJI,null
+80,Cara menyeduh teh yang benar gimana?,lainnya,null,null,null
+81,Kode KBLI buat usaha salon mobil gimana?,cari kode,usaha salon mobil,KBLI,null
+82,Jelaskan kode KBLI 68100 untuk properti,jelaskan kode,68100,KBLI,5
+83,Jelaskan kode KBLI 80100 untuk keamanan,jelaskan kode,80100,KBLI,5
+84,Apa saja pekerjaan dalam kode KBJI 3112?,jelaskan kode,3112,KBJI,4
+85,Bagaimana cara menghilangkan noda di baju?,lainnya,null,null,null
+86,Apa saja pekerjaan yang termasuk dalam KBJI 54321 di dimensi waktu?,jelaskan kode,54321,KBJI,4
+87,Apa manfaat lari pagi setiap hari?,lainnya,null,null,null
+88,Kode KBLI buat usaha konstruksi gedung?,cari kode,usaha konstruksi gedung,KBLI,null
+89,Kode KBLI buat usaha manufaktur itu berapa digit?,cari kode,usaha manufaktur,KBLI,5
+90,Kode KBJI buat pekerjaan dokter gigi?,cari kode,dokter gigi,KBJI,null
+91,Cara mengatur pola makan yang sehat gimana?,lainnya,null,null,null
+92,Jelaskan kode KBLI 73100 untuk periklanan,jelaskan kode,73100,KBLI,5
+93,"Gue punya toko kelontong, perlu kode KBLI nggak?",lainnya,null,KBLI,null
+94,Kode KBJI buat pekerjaan fotografer gimana?,cari kode,fotografer,KBJI,null
+95,"Bro, tahu nggak kode KBLI buat usaha jualan es krim keliling?",cari kode,usaha es krim keliling,KBLI,null
+96,"assistant: <MSG>...penjelasan kode kbli buat restoran...</MSG>
+user: <MSG>kode 5 digitnya dong</MSG>",cari kode,restoran,KBLI,5
+97,Apa saja yang dicakup oleh kode KBJI 2136?,jelaskan kode,2136,KBJI,4
+98,Apa saja pekerjaan dalam kode KBJI 3117?,jelaskan kode,3117,KBJI,4
+99,Apa kode KBJI untuk pekerjaan mekanik mobil?,cari kode,mengar mobil,KBJI,null
+100,Apakah ada kode KBJI untuk pekerjaan sebagai penjaga kutub utara?,cari kode,penjaga kutub utara,KBJI,null
+101,Gimana cara membuat presentasi yang menarik?,lainnya,null,null,null
+102,Harga iPhone terbaru berapa?,lainnya,null,null,null
+103,Pekerjaan apa yang tidak termasuk dalam cakupan KBLI?,lainnya,null,KBLI,null
+104,Tren fashion tahun ini apa aja?,lainnya,null,null,null
+105,Apa saja pekerjaan yang masuk dalam KBJI 5311?,jelaskan kode,5311,KBJI,4
+106,"Saya ingin membuka usaha taman dinosaurus, apakah ada kode KBLI yang sesuai?",cari kode,taman dinosaurus,KBLI,null
+107,Apakah ada kode KBJI untuk pekerjaan sebagai pengendali cuaca?,cari kode,pengendali cuaca,KBJI,null
+108,Jelaskan kode KBLI 69200 untuk akuntansi,jelaskan kode,69200,KBLI,5
+109,Kode KBLI buat usaha distribusi barang?,cari kode,usaha distribusi barang,KBLI,null
+110,Jenis pekerjaan apa saja yang tercakup dalam KBLI 73200?,jelaskan kode,73200,KBLI,5
+111,Jelaskan kode KBLI 46201 untuk pertanian,jelaskan kode,46201,KBLI,5
+112,Saya ingin memperluas usaha katering saya. Bagaimana cara mencari kode KBLI yang sesuai?,lainnya,null,KBLI,null
+113,Kode KBLI untuk usaha e-commerce apa?,cari kode,usaha e-commerce,KBLI,null
+114,Apa saja yang termasuk dalam kode KBJI 5413?,jelaskan kode,5413,KBJI,4
+115,Siapa yang menetapkan KBJI dan KBLI?,lainnya,null,semua,null
+116,Detail tentang kode KBLI 33130 apa saja?,jelaskan kode,33130,KBLI,5
+117,"assistant: <MSG>...penjelasan kode kbli untuk konstruksi...</MSG>
+user: <MSG>berikan kode 5 digitnya</MSG>",cari kode,konstruksi,KBLI,5
+118,Apakah ada akibat hukum jika tidak memakai KBJI atau KBLI?,lainnya,null,semua,null
+119,Apa saja yang termasuk dalam kode KBJI 9321?,jelaskan kode,9321,KBJI,4
+120,Kode KBLI buat usaha konveksi baju gimana?,cari kode,usaha konveksi baju,KBLI,null
+121,Apa manfaat dari tidur yang cukup?,lainnya,null,null,null
+122,Kode KBJI buat desainer interior apa ya?,cari kode,desainer interior,KBJI,null
+123,Kode KBJI buat pekerjaan pembuat kue?,cari kode,pembuat kue,KBJI,null
+124,Gimana caranya tau usaha pelatihan perlu kode KBLI?,lainnya,null,KBLI,null
+125,Kenapa langit berwarna biru?,lainnya,null,null,null
+126,Bagaimana cara menjaga kesehatan jantung?,lainnya,null,null,null
+127,Apa saja pekerjaan dalam kode KBJI 3116?,jelaskan kode,3116,KBJI,4
+128,Jelaskan kode KBLI 64201 untuk investasi,jelaskan kode,64201,KBLI,5
+129,"Kalau nggak pakai KBJI atau KBLI, kena sanksi nggak sih?",lainnya,null,semua,null
+130,Bagaimana cara belajar bahasa Spanyol?,lainnya,null,null,null
+131,apa itu kbli dalam bisnis?,lainnya,null,KBLI,null
+132,Jelaskan kode KBLI 81210 untuk kebersihan,jelaskan kode,81210,KBLI,5
+133,Kode KBLI buat usaha salon kecantikan gimana?,cari kode,usaha salon kecantikan,KBLI,null
+134,Cara buat akun Instagram gimana?,lainnya,null,null,null
+135,Apakah Mars bisa dihuni manusia?,lainnya,null,null,null
+136,Kode KBLI buat usaha bakery gimana?,cari kode,usaha bakery,KBLI,null
+137,Bagaimana cara membuat soto ayam?,lainnya,null,null,null
+138,Detail lengkap kode KBLI 66191 apa saja?,jelaskan kode,66191,KBLI,5
+139,Kode KBLI untuk usaha penyedia jasa teleportasi apa?,cari kode,jasa teleportasi,KBLI,null
+140,Aplikasi edit foto yang bagus apa aja?,lainnya,null,null,null
+141,Kode KBLI apa yang digunakan untuk usaha salon kecantikan?,cari kode,usaha salon kecantikan,KBLI,null
+142,apa definisi dari kbli?,lainnya,null,KBLI,null
+143,Apa itu blockchain dan cara kerjanya?,lainnya,null,null,null
+144,Sebutan kode KBLI 4711 itu untuk jenis usaha apa?,jelaskan kode,4711,KBLI,4
+145,Apakah ada sanksi jika tidak menggunakan KBJI atau KBLI dalam bisnis?,lainnya,null,semua,null
+146,Apa saja yang dicakup oleh kode KBJI 2135?,jelaskan kode,2135,KBJI,4
+147,Apakah ada kode KBJI untuk pekerjaan sebagai penulis kode Matrix?,cari kode,penulis kode Matrix,KBJI,null
+148,Apakah ada kode KBJI untuk peternak kambing?,cari kode,peternak kambing,KBJI,null
+149,Kode KBLI untuk usaha penangkap energi matahari apa?,cari kode,penangkap energi matahari,KBLI,null
+150,Kode KBLI buat usaha pengolahan limbah?,cari kode,usaha pengolahan limbah,KBLI,null
+151,Bagaimana cara merawat kulit berjerawat?,lainnya,null,null,null
+152,Jelaskan kode KBLI 56100 untuk usaha makanan,jelaskan kode,56100,KBLI,5
+153,Berapa kode KBLI untuk bisnis real estate di dunia paralel?,cari kode,real estate dunia paralel,KBLI,null
+154,Bagaimana cara membuat teleportasi?,lainnya,null,null,null
+155,Apa saja pekerjaan dalam kode KBJI 7221?,jelaskan kode,7221,KBJI,4
+156,Kode KBJI untuk pekerjaan arsitek ada nggak?,cari kode,arsitek,KBJI,null
+157,"assistant: <MSG>...penjelasan rinci...</MSG>
+user: <MSG>Wah, makasih ya</MSG>",lainnya,null,null,null
+158,Kode KBLI untuk usaha ritel apa?,cari kode,usaha ritel,KBLI,null
+159,Kode KBJI 2142 mencakup profesi apa?,jelaskan kode,2142,KBJI,4
+160,"Saya punya toko kelontong, apakah perlu kode KBLI?",lainnya,null,KBLI,null
+161,Apa beda antara KBJI dan KBLI dan pentingnya?,lainnya,null,semua,null
+162,Apa saja jenis olahraga kardio?,lainnya,null,null,null
+163,Saya ingin mempekerjakan akuntan. Adakah kode KBJI yang relevan?,cari kode,akuntan,KBJI,null
+164,Gimana cara menyimpan daging di freezer?,lainnya,null,null,null
+165,Kode KBLI buat usaha toko mainan gimana?,cari kode,usaha toko mainan,KBLI,null
+166,Apa saja yang termasuk dalam kode KBJI 8321?,jelaskan kode,8321,KBJI,4
+167,Fakta menarik tentang anjing Chihuahua?,lainnya,null,null,null
+168,Berapa digit kode KBLI untuk usaha sihir modern?,cari kode,usaha sihir modern,KBLI,5
+169,Film terbaru di bioskop apa aja nih?,lainnya,null,null,null
+170,Kode KBJI buat tukang bangunan ada nggak?,cari kode,tukang bangunan,KBJI,null
+171,Bagaimana cara memulai bisnis startup?,lainnya,null,null,null
+172,Apa itu KBLI dalam bisnis?,lainnya,null,KBLI,null
+173,Apa saja gejala diabetes?,lainnya,null,null,null
+174,Cara merawat tanaman indoor gimana?,lainnya,null,null,null
+175,Perbedaan KBJI sama KBLI apaan sih? Penting nggak?,lainnya,null,semua,null
+176,Apa saja yang termasuk dalam kode KBJI 6113?,jelaskan kode,6113,KBJI,4
+177,Siapa yang bertanggung jawab menerbitkan KBJI dan KBLI?,lainnya,null,semua,null
+178,Apa saja pekerjaan yang termasuk dalam KBJI 9322?,jelaskan kode,9322,KBJI,4
+179,Detail lengkap kode KBLI 87302 apa saja?,jelaskan kode,87302,KBLI,5
+180,Tips menabung untuk liburan gimana?,lainnya,null,null,null
+181,Apa saja jenis-jenis kopi?,lainnya,null,null,null
+182,Apakah KBLI relevan untuk usaha kecil?,lainnya,null,KBLI,null
+183,Kode KBLI buat usaha manufaktur plastik?,cari kode,usaha manufaktur plastik,KBLI,null
+184,Cara memperbaiki keran yang bocor gimana?,lainnya,null,null,null
+185,Jelaskan kode KBLI 70200 untuk konsultasi,jelaskan kode,70200,KBLI,5
+186,Apa saja yang dicakup oleh kode KBJI 2141?,jelaskan kode,2141,KBJI,4
+187,Bagaimana cara membuat es krim homemade?,lainnya,null,null,null
+188,Kode KBLI buat usaha peternakan kambing?,cari kode,usaha peternakan kambing,KBLI,null
+189,"Saya ingin memulai bisnis jasa, bagaimana cara mengetahui kode KBJI atau KBLI yang tepat?",lainnya,null,semua,null
+190,Saya ingin mempekerjakan desainer interior. Adakah kode KBJI yang relevan?,cari kode,desainer interior,KBJI,null
+191,Trik mengatur keuangan pribadi gimana?,lainnya,null,null,null
+192,Berapa digit kode KBLI untuk usaha pertambangan?,cari kode,usaha pertambangan,KBLI,5
+193,Cara mengajukan pinjaman ke bank gimana?,lainnya,null,null,null
+194,Bagaimana cara membuat rendang padang?,lainnya,null,null,null
+195,Apakah ada kode KBJI untuk profesi penulis?,cari kode,profesi penulis,KBJI,null
+196,Bagaimana cara memulai bisnis makanan?,lainnya,null,null,null
+197,Langkah-langkah membersihkan sepatu sneakers?,lainnya,null,null,null
+198,Tips menjaga kesehatan gigi dan mulut?,lainnya,null,null,null
+199,Tips menjaga kesehatan mata?,lainnya,null,null,null
+200,Lokasi wisata di Bali yang wajib dikunjungi?,lainnya,null,null,null
+201,Gimana cara merawat anjing golden retriever?,lainnya,null,null,null
+202,Kode KBJI buat pekerjaan pembuat kopi?,cari kode,pembuat kopi,KBJI,null
+203,Profesi desainer grafis masuk kode KBJI apa ya?,cari kode,desainer grafis,KBJI,null
+204,Apakah KBJI tercantum dalam undang-undang?,lainnya,null,KBJI,null
+205,Bagaimana cara membuat kue bolu?,lainnya,null,null,null
+206,Kode KBJI buat pekerjaan pengacara ada?,cari kode,pengacara,KBJI,null
+207,Apa manfaat meditasi setiap hari?,lainnya,null,null,null
+208,Bagaimana cara merawat kucing?,lainnya,null,null,null
+209,Kode KBLI buat usaha bengkel ada nggak?,cari kode,usaha bengkel,KBLI,null
+210,Bagaimana cara membuat website dari nol?,lainnya,null,null,null
+211,Bagaimana mengetahui apakah usaha pelatihan saya perlu kode KBLI?,lainnya,null,KBLI,null
+212,Tips sukses wawancara kerja gimana?,lainnya,null,null,null
+213,Apakah ada kode KBJI untuk pekerjaan sebagai penyelam mutiara di Antartika?,cari kode,penyelam mutiara Antartika,KBJI,null
+214,Detail tentang kode KBLI 11010 apa saja?,jelaskan kode,11010,KBLI,5
+215,Apakah ada kode KBJI untuk pekerjaan sebagai penjelajah antariksa?,cari kode,penjelajah antariksa,KBJI,null
+216,Apa saja yang dicakup oleh kode KBJI 2137?,jelaskan kode,2137,KBJI,4
+217,Siapa presiden Amerika Serikat saat ini?,lainnya,null,null,null
+218,Kerjaan apa aja yang termasuk dalam KBLI 56100?,jelaskan kode,56100,KBLI,5
+219,KBLI 6201 itu buat usaha apa?,jelaskan kode,6201,KBLI,4
+220,Kapan sih hari kemerdekaan Indonesia?,lainnya,null,null,null
+221,Apa perbedaan antara KBJI dan KBLI dan mengapa penting?,lainnya,null,semua,null
+222,Kode KBJI 4214 mencakup pekerjaan apa?,jelaskan kode,4214,KBJI,4
+223,Kode KBLI buat usaha penyewaan alat pesta?,cari kode,usaha penyewaan alat pesta,KBLI,null
+224,Resep salad sayur yang segar gimana?,lainnya,null,null,null
+225,Kode KBLI buat usaha warung makan apa?,cari kode,usaha warung makan,KBLI,null
+226,Kode KBLI buat usaha tour dan travel apa?,cari kode,usaha tour dan travel,KBLI,null
+227,Cara memulai usaha dropshipping gimana?,lainnya,null,null,null
+228,Gimana cara masak rendang yang enak?,lainnya,null,null,null
+229,Kode KBLI untuk usaha jasa konstruksi apa?,cari kode,usaha jasa konstruksi,KBLI,null
+230,Berapa kode KBLI untuk usaha pertanian?,cari kode,usaha pertanian,KBLI,null
+231,Jelaskan kode KBLI 64130 untuk keuangan,jelaskan kode,64130,KBLI,5
+232,Jelaskan kode KBLI 56301 untuk bar dan pub,jelaskan kode,56301,KBLI,5
+233,Cara membuat keripik kentang homemade?,lainnya,null,null,null
+234,Bagaimana cara menghilangkan kebiasaan buruk?,lainnya,null,null,null
+235,Bagaimana cara memelihara naga?,lainnya,null,null,null
+236,Penjelasan tentang KBLI 6201 itu apa?,jelaskan kode,6201,KBLI,4
+237,Kode KBLI buat bisnis butik apa ya?,cari kode,bisnis butik,KBLI,null
+238,Bagaimana cara menanam sayuran di rumah?,lainnya,null,null,null
+239,KBJI termasuk dalam kebijakan nasional nggak sih?,lainnya,null,KBJI,null
+240,Apakah ada kode KBJI untuk pekerjaan sebagai arsitek dunia maya?,cari kode,arsitek dunia maya,KBJI,null
+241,Kode KBJI buat pekerjaan pengembang web?,cari kode,pengembang web,KBJI,null
+242,Jelaskan kode KBLI 46412 untuk grosir,jelaskan kode,46412,KBLI,5
+243,Kode KBLI buat usaha bengkel sepeda motor?,cari kode,usaha bengkel sepeda motor,KBLI,null
+244,"Saya punya warung makan, apakah saya perlu mendaftarkan kode KBLI?",lainnya,null,KBLI,null
+245,Kode KBLI buat usaha produksi film apa?,cari kode,usaha produksi film,KBLI,null
+246,Gimana caranya tau usaha jasa perlu kode KBLI nggak?,lainnya,null,KBLI,null
+247,Apa itu VR dan bagaimana cara kerjanya?,lainnya,null,null,null
+248,Jenis pekerjaan apa yang nggak masuk KBLI?,lainnya,null,KBLI,null
+249,Apa itu KBJI dan KBLI?,lainnya,null,semua,null
+250,Kode KBJI 8412 mencakup pekerjaan apa?,jelaskan kode,8412,KBJI,4
+251,Kode KBLI buat usaha sewa mobil apa?,cari kode,usaha sewa mobil,KBLI,null
+252,Kode KBJI buat pekerjaan teknisi listrik?,cari kode,teknisi listrik,KBJI,null
+253,Apa itu mindfulness dan manfaatnya?,lainnya,null,null,null
+254,Apa itu efek rumah kaca?,lainnya,null,null,null
+255,Jenis pekerjaan apa yang termasuk dalam KBLI 84120?,jelaskan kode,84120,KBLI,5
+256,Kode KBJI buat pekerjaan manajer proyek ada?,cari kode,manajer proyek,KBJI,null
+257,Penjelasan tentang KBLI 5821 apa?,jelaskan kode,5821,KBLI,4
+258,Apa saja yang termasuk dalam kode KBJI 2131?,jelaskan kode,2131,KBJI,4
+259,Kode KBJI buat pekerjaan ahli bedah?,cari kode,ahli bedah,KBJI,null
+260,Jelaskan kode KBLI 52100 untuk logistik,jelaskan kode,52100,KBLI,5
+261,Kode KBJI 5312 mencakup profesi apa?,jelaskan kode,5312,KBJI,4
+262,Kode KBJI 4212 itu buat kerjaan apa aja?,jelaskan kode,4212,KBJI,4
+263,Siapa yang menetapkan kode KBLI untuk planet lain?,lainnya,null,KBLI,null
+264,Kapan Proklamasi Kemerdekaan Indonesia?,lainnya,null,null,null
+265,Kode KBLI untuk usaha pabrik coklat ajaib apa?,cari kode,pabrik coklat ajaib,KBLI,null
+266,Lokasi restoran sushi terbaik di Tokyo?,lainnya,null,null,null
+267,Detail tentang kode KBLI 51202 apa saja?,jelaskan kode,51202,KBLI,5
+268,Kode KBLI untuk usaha makanan alien apa?,cari kode,makanan alien,KBLI,null
+269,Apakah KBLI berguna untuk saya?,lainnya,null,KBLI,null
+270,Bagaimana cara membuat kue lapis legit?,lainnya,null,null,null
+271,Bagaimana cara mengetahui apakah bisnis jasa saya memerlukan kode KBLI?,lainnya,null,KBLI,null
+272,Kode KBJI buat pekerjaan instruktur yoga?,cari kode,instruktur yoga,KBJI,null
+273,Gimana cara investasi saham untuk pemula?,lainnya,null,null,null
+274,"assistant: <MSG>...penjelasan panjang...</MSG>
+user: <MSG>Terima kasih atas bantuannya</MSG>",lainnya,null,null,null
+275,KBLI itu penting nggak buat usaha kecil?,lainnya,null,KBLI,null
+276,Detail tentang kode KBLI 42900 apa saja?,jelaskan kode,42900,KBLI,5
+277,Apa kegunaan dari KBJI dan KBLI?,lainnya,null,semua,null
+278,Tips agar tidur lebih nyenyak gimana?,lainnya,null,null,null
+279,Apa saja pekerjaan dalam kode KBJI 2133?,jelaskan kode,2133,KBJI,4
+280,Bagaimana cara memelihara hewan dari dimensi lain?,lainnya,null,null,null
+281,Cara merawat kucing anggora gimana ya?,lainnya,null,null,null
+282,"Saya punya usaha cuci mobil, apakah perlu kode KBLI?",lainnya,null,KBLI,null
+283,"Saya ingin memulai bisnis baru, bagaimana cara mengetahui kode KBJI atau KBLI yang cocok?",lainnya,null,semua,null
+284,Apa kode KBLI untuk usaha penyewaan pesawat luar angkasa?,cari kode,penyewaan pesawat luar angkasa,KBLI,null
+285,Kode KBLI untuk usaha pertanian di bulan apa?,cari kode,pertanian di bulan,KBLI,null
+286,Apakah ada kode KBJI untuk pekerjaan sebagai pengamat galaksi?,cari kode,pengamat galaksi,KBJI,null
+287,"Kalau mau jualan kopi kekinian, kodenya apa ya di KBLI?",cari kode,jualan kopi kekinian,KBLI,null
+288,"Kalau nyari teknisi komputer, ada nggak kode KBJI yang cocok?",cari kode,teknisi komputer,KBJI,null
+289,Cara memotret dengan smartphone biar keren?,lainnya,null,null,null
+290,Apakah ada kode KBJI untuk pekerjaan sebagai kapten kapal luar angkasa?,cari kode,kapten kapal luar angkasa,KBJI,null
+291,Kode KBJI buat pekerjaan editor majalah?,cari kode,editor majalah,KBJI,null
+292,Berapa digit kode KBLI untuk usaha manufaktur?,cari kode,usaha manufaktur,KBLI,5
+293,"Gue punya kebun di kampung, usaha pertanian kecil-kecilan, perlu daftar KBLI nggak sih?",lainnya,null,KBLI,null
+294,Kode KBJI untuk pekerjaan jurnalis ada nggak?,cari kode,jurnalis,KBJI,null
+295,Tanggal berapa Hari Kemerdekaan Indonesia?,lainnya,null,null,null
+296,Apa beda KBJI dan KBLI? Penting nggak sih buat bisnis?,lainnya,null,semua,null
+297,Kode KBLI untuk usaha robot pembantu rumah tangga apa?,cari kode,robot pembantu rumah tangga,KBLI,null
+298,Kode KBJI buat pekerjaan pemandu wisata?,cari kode,pemandu wisata,KBJI,null
+299,Kode KBLI untuk toko elektronik apa ya?,cari kode,toko elektronik,KBLI,null
+300,Resep smoothie sehat untuk sarapan?,lainnya,null,null,null
+301,Bagaimana cara mengetahui apakah suatu usaha perlu menggunakan KBJI?,lainnya,null,KBJI,null
+302,Kode KBLI buat usaha pabrik sepatu apa?,cari kode,usaha pabrik sepatu,KBLI,null
+303,KBJI ada di peraturan pemerintah nggak?,lainnya,null,KBJI,null
+304,Kode pos Jakarta Pusat berapa ya?,lainnya,null,null,null
+305,Apa itu cloud computing?,lainnya,null,null,null
+306,Jenis pekerjaan apa yang tidak termasuk dalam KBJI?,lainnya,null,KBJI,null
+307,Apa saja manfaat dari vitamin C?,lainnya,null,null,null
+308,Apa saja pekerjaan yang termasuk dalam KBJI 9876 di galaksi lain?,jelaskan kode,9876 di galaksi lain,KBJI,4
+309,Kode KBJI buat peternak ikan ada nggak?,cari kode,peternak ikan,KBJI,null
+310,Gimana cara upgrade RAM di laptop?,lainnya,null,null,null
+311,Apa saja yang termasuk dalam kode KBJI 6111?,jelaskan kode,6111,KBJI,4
+312,"assistant: <MSG>...penjelasan detil...</MSG>
+user: <MSG>Terima kasih banyak</MSG>",lainnya,null,null,null
+313,Detail lengkap kode KBLI 86100 apa saja?,jelaskan kode,86100,KBLI,5
+314,Detail tentang kode KBLI 62010 apa saja?,jelaskan kode,62010,KBLI,5
+315,Kode KBLI buat usaha minimarket apa?,cari kode,usaha minimarket,KBLI,null
+316,Gimana cara mengatasi stress?,lainnya,null,null,null
+317,"assistant: <MSG>...penjelasan kode KBLI untuk pabrik...</MSG>
+user: <MSG>berikan kode 5 digitnya</MSG>",cari kode,pabrik,KBLI,5
+318,Kode KBLI buat usaha percetakan gimana?,cari kode,usaha percetakan,KBLI,null
+319,"Gue punya usaha katering, gimana cara tau kode KBLI yang pas?",lainnya,null,KBLI,null
+320,Bagaimana cara memelihara unicorn?,lainnya,null,null,null
+321,Detail tentang kode KBLI 23911 apa saja?,jelaskan kode,23911,KBLI,5
+322,Kode KBJI buat pekerjaan instruktur gym?,cari kode,instruktur gym,KBJI,null
+323,Gimana cara bikin martabak yang mantap?,lainnya,null,null,null
+324,Kode KBJI 7112 mencakup profesi apa?,jelaskan kode,7112,KBJI,4
+325,Kode KBJI buat pekerjaan tukang las?,cari kode,tukang las,KBJI,null
+326,Kode KBLI buat usaha pembuatan mainan?,cari kode,usaha pembuatan mainan,,
+327,Kode KBLI buat usaha jasa pengiriman barang?,cari kode,usaha jasa pengiriman barang,KBLI,null
+328,Kode KBLI untuk usaha jual beli bintang?,cari kode,jual beli bintang,KBLI,null
+329,Kode KBLI buat usaha jual beli rumah?,cari kode,usaha jual beli rumah,KBLI,null
+330,Kode KBJI buat pekerjaan ahli gizi ada?,cari kode,ahli gizi,KBJI,null
+331,Apakah ada kode KBJI untuk pekerjaan sebagai penjaga portal dimensi?,cari kode,penjaga portal dimensi,KBJI,null
+332,Apa saja pekerjaan dalam KBJI 4212?,jelaskan kode,4212,KBJI,4
+333,Detail lengkap kode KBLI 84110 apa saja?,jelaskan kode,84110,KBLI,5
+334,Bagaimana mengetahui apakah usaha perlu kode KBJI atau tidak?,lainnya,null,KBJI,null
+335,Kode KBJI buat pekerjaan videografer?,cari kode,videografer,KBJI,null
+336,Kode KBLI untuk usaha pabrik robot penyanyi apa?,cari kode,pabrik robot penyanyi,KBLI,null
+337,Apakah ada kode KBJI untuk peternak ikan?,cari kode,peternak ikan,KBJI,null
+338,"Gue punya usaha cuci mobil, perlu kode KBLI nggak sih?",lainnya,null,KBLI,null
+339,Kapan Indonesia menyatakan kemerdekaannya?,lainnya,null,null,null
+340,Apakah KBLI penting untuk bisnis saya?,lainnya,null,KBLI,null
+341,Cara membersihkan karpet yang kotor gimana?,lainnya,null,null,null
+342,Bagaimana cara menyusun anggaran rumah tangga?,lainnya,null,null,null
+343,Bagaimana cara kerja microwave?,lainnya,null,null,null
+344,Bagaimana cara membuat teknologi anti gravitasi?,lainnya,null,null,null
+345,Apakah ada kode KBJI untuk pekerjaan sebagai pengembang AI cerdas?,cari kode,pengembang AI cerdas,KBJI,null
+346,Kode KBJI 3111 mencakup pekerjaan apa?,jelaskan kode,3111,KBJI,4
+347,Jelaskan kode KBLI 64110 untuk bank,jelaskan kode,64110,KBLI,5
+348,Apakah ada kode KBJI untuk profesi fotografer?,cari kode,profesi fotografer,KBJI,null
+349,Apa penyebab rambut rontok?,lainnya,null,null,null
+350,Kode KBLI untuk bisnis kafe gimana ya?,cari kode,bisnis kafe,KBLI,null
+351,Lagu paling hits tahun 2023 apa aja?,lainnya,null,null,null
+352,Gimana cara daftar kuliah di luar negeri?,lainnya,null,null,null
+353,Jelaskan kode KBLI 82920 untuk pengemasan,jelaskan kode,82920,KBLI,5
+354,Kode KBJI buat pekerjaan pengembang aplikasi?,cari kode,pengembang aplikasi,KBJI,null
+355,Jelaskan kode KBLI 47911 untuk ritel,jelaskan kode,47911,KBLI,5
+356,Kode KBJI buat pekerjaan sopir truk?,cari kode,sopir truk,KBJI,null
+357,Kode KBLI untuk usaha bengkel apa?,cari kode,usaha bengkel,KBLI,null
+358,Saya ingin memperluas usaha kafe saya. Bagaimana cara mencari kode KBLI yang relevan?,lainnya,null,KBLI,null
+359,Kode KBJI 7214 mencakup profesi apa?,jelaskan kode,7214,KBJI,4
+360,Apa kode KBLI buat usaha laundry kiloan?,cari kode,usaha laundry kiloan,KBLI,null
+361,Apa saja pekerjaan dalam kode KBJI 3115?,jelaskan kode,3115,KBJI,4
+362,Tips mempercepat koneksi internet?,lainnya,null,null,null
+363,Apa kode KBJI untuk pekerjaan guru les privat?,cari kode,guru les privat,KBJI,null
+364,Kode KBJI buat profesi fotografer ada nggak?,cari kode,fotografer,KBJI,null
+365,Gimana cara ngerawat tanaman kaktus?,lainnya,null,null,null
+366,Kode KBLI untuk usaha penyedia tenaga kerja kloning apa?,cari kode,tenaga kerja kloning,KBLI,null
+367,Gimana tau usaha butuh kode KBJI atau nggak?,lainnya,null,KBJI,null
+368,KBJI dan KBLI itu siapa yang buat?,lainnya,null,semua,null
+369,Kode KBJI buat pekerjaan editor video apa ya?,cari kode,editor video,KBJI,null
+370,Apa itu KBJI dan KBLI?,lainnya,null,semua,null
+371,Apa saja pekerjaan dalam kode KBJI 7222?,jelaskan kode,7222,KBJI,4
+372,Saya ingin memperluas usaha catering. Bagaimana cara mencari kode KBLI yang relevan?,lainnya,null,KBLI,null
+373,Tips mengatur waktu yang efektif gimana?,lainnya,null,null,null
+374,Bagaimana cara membuat ramuan hidup abadi?,lainnya,null,null,null
+375,Apa saja pekerjaan dalam kode KBJI 2132?,jelaskan kode,2132,KBJI,4
+376,Apa sih KBJI itu dalam dunia bisnis?,lainnya,null,KBJI,null
+377,Kode KBJI buat pekerjaan teknisi AC?,cari kode,teknisi AC,KBJI,null
+378,Kode KBJI buat pekerjaan pembuat mebel?,cari kode,pembuat mebel,KBJI,null
+379,Kode KBJI 2139 mencakup pekerjaan apa?,jelaskan kode,2139,KBJI,4
+380,Apa saja pekerjaan yang termasuk dalam KBLI 12345 di dimensi lain?,jelaskan kode,12345,KBLI,5
+381,"Saya ingin memulai bisnis baru, bagaimana cara mengetahui kode KBJI atau KBLI yang sesuai?",lainnya,null,semua,null
+382,Siapa yang merumuskan KBJI dan KBLI?,lainnya,null,semua,null
+383,Apa fungsi dari KBJI dan KBLI?,lainnya,null,semua,null
+384,Apa saja yang termasuk dalam kode KBJI 2143?,jelaskan kode,2143,KBJI,4
+385,Apa itu KBJI dan KBLI dalam bisnis?,lainnya,null,semua,null
+386,Kode KBJI buat pekerjaan pembuat cokelat?,cari kode,pembuat cokelat,KBJI,null
+387,Resep masakan tradisional Indonesia apa aja?,lainnya,null,null,null
+388,Jelaskan kode KBLI 93111 untuk olahraga,jelaskan kode,93111,KBLI,5
+389,Tips menjaga baterai smartphone awet?,lainnya,null,null,null
+390,Cara merawat rambut yang rusak gimana?,lainnya,null,null,null
+391,"Buat usaha jual beli motor bekas, kodenya apa ya di KBLI?",cari kode,jual beli motor bekas,KBLI,null
+392,"assistant: <MSG>...penjelasan panjang...</MSG>
+user: <MSG>Terima kasih banyak</MSG",lainnya,null,null,null
+393,Apa saja pekerjaan yang termasuk dalam KBJI 7890 di era futuristik?,jelaskan kode,7890,KBJI,4
+394,"assistant: <MSG>...penjelasan panjang...</MSG>
+user: <MSG>Oke, makasih ya</MSG>",lainnya,null,null,null
+395,"Mau bisnis jasa nih, gimana cara tau kode KBJI atau KBLI yang cocok?",lainnya,null,semua,null
+396,Cara memasak nasi goreng yang enak?,lainnya,null,null,null
+397,Apakah ada kode KBJI untuk pekerjaan sebagai pengendali mesin waktu?,cari kode,pengendali mesin waktu,KBJI,null
+398,Kode KBLI buat usaha ritel apa ya?,cari kode,usaha ritel,KBLI,null
+399,Cara reset password Gmail gimana?,lainnya,null,null,null
+400,KBJI sama KBLI itu apa sih? Denger-denger sih penting katanya.,lainnya,null,semua,null
+401,KBJI itu apaan sih sebenernya?,lainnya,null,KBJI,null
+402,"assistant: <MSG>...penjelasan panjang...</MSG>
+user: <MSG>Terima kasih</MSG",lainnya,null,null,null
+403,Kode KBJI buat tukang kayu ada nggak?,cari kode,tukang kayu,KBJI,null
+404,Bagaimana cara membuat portal dimensi?,lainnya,null,null,null
+405,Bagaimana cara memelihara tanaman alien?,lainnya,null,null,null
+406,"assistant: <MSG>...penjelasan panjang...</MSG>
+user: <MSG>Terima kasih banyak</MSG",lainnya,null,null,null
+407,"Gue mau tau deh, turunan kode KBLI 46515 apaan aja?",jelaskan kode,46515,KBLI,5
+408,Kode KBJI buat desainer grafis apa sih?,cari kode,desainer grafis,KBJI,null
+409,Apa aja kerjaan yang termasuk dalam KBLI 62020?,jelaskan kode,62020,KBLI,5
+410,Beli tiket konser Coldplay di mana ya?,lainnya,null,null,null
+411,Apakah ada kode KBJI untuk pekerjaan sebagai pengamat lubang hitam?,cari kode,pengamat lubang hitam,KBJI,null
+412,Kode KBLI buat usaha pencucian mobil?,cari kode,usaha pencucian mobil,KBLI,null
+413,Kode KBLI buat usaha salon ada nggak?,cari kode,usaha salon,KBLI,null
+414,Jelaskan kode KBLI 56302 untuk kafe,jelaskan kode,56302,KBLI,5
+415,Kode KBLI buat usaha toko roti apa?,cari kode,usaha toko roti,KBLI,null
+416,"Kalau nggak pakai KBJI atau KBLI, ada dampak hukum nggak sih?",lainnya,null,semua,null
+417,Kode KBJI 8323 mencakup profesi apa?,jelaskan kode,8323,KBJI,4
+418,Bagaimana mengetahui apakah usaha konsultasi saya perlu kode KBLI?,lainnya,null,KBLI,null
+419,Bagaimana cara membersihkan layar laptop?,lainnya,null,null,null
+420,Apa manfaat minum air putih?,lainnya,null,null,null
+421,Apa itu KBJI dan KBLI dalam dunia bisnis?,lainnya,null,semua,null
+422,Detail lengkap kode KBLI 74100 apa saja?,jelaskan kode,74100,KBLI,5
+423,Saya ingin mempekerjakan guru les. Adakah kode KBJI yang cocok?,cari kode,guru les,KBJI,null
+424,Jelaskan kode KBLI 90010 untuk hiburan,jelaskan kode,90010,KBLI,5
+425,Kode KBLI usaha pet shop apa ya?,cari kode,usaha pet shop,KBLI,null
+426,Bagaimana cara setting kamera DSLR?,lainnya,null,null,null
+427,Kode KBJI untuk pekerjaan supir pribadi?,cari kode,supir pribadi,KBJI,null
+428,Jelaskan kode KBLI 45101 untuk otomotif,jelaskan kode,45101,KBLI,5
+429,Siapa sih yang bikin aturan KBJI sama KBLI?,lainnya,null,semua,null
+430,Apa manfaat dari KBJI dan KBLI?,lainnya,null,semua,null
+431,Kode KBLI buat usaha peternakan ayam?,cari kode,usaha peternakan ayam,KBLI,null
+432,Rekomendasi drama Korea terbaik apa aja?,lainnya,null,null,null
+433,Kode KBJI buat pekerjaan akuntan publik?,cari kode,akuntan publik,KBJI,null
+434,Kode KBJI buat pekerjaan pembuat roti?,cari kode,pembuat roti,KBJI,null
+435,Kode KBLI buat usaha jual beli mobil bekas?,cari kode,usaha jual beli mobil bekas,KBLI,null
+436,Kode KBLI untuk usaha tambang asteroid apa?,cari kode,tambang asteroid,KBLI,null
+437,Jelaskan kode KBLI 62090 untuk teknologi,jelaskan kode,62090,KBLI,5
+438,Apakah ada kode KBJI untuk pekerjaan sebagai pengendali gravitasi?,cari kode,pengendali gravitasi,KBJI,null
+439,Kode KBLI buat usaha waralaba makanan?,cari kode,usaha waralaba makanan,KBLI,null
+440,Hari Proklamasi Indonesia kapan sih?,lainnya,null,null,null
+441,Adakah kode KBJI untuk profesi desainer grafis?,cari kode,profesi desainer grafis,KBJI,null
+442,Bagaimana mengetahui apakah usaha butuh kode KBJI?,lainnya,null,KBJI,null
+443,Detail tentang kode KBLI 41100 apa saja?,jelaskan kode,41100,KBLI,5
+444,Fungsi KBJI dan KBLI buat apa sih?,lainnya,null,semua,null
+445,Cara memilih laptop untuk gaming gimana?,lainnya,null,null,null
+446,Kode KBJI 4213 mencakup pekerjaan apa?,jelaskan kode,4213,KBJI,4
+447,Kode KBLI untuk usaha penyedia teknologi alien apa?,cari kode,teknologi alien,KBLI,null
+448,Cara setting Wi-Fi di rumah gimana?,lainnya,null,null,null
+449,Kode KBLI buat usaha servis komputer?,cari kode,usaha servis komputer,KBLI,null
+450,Cara kerja mesin cuci gimana?,lainnya,null,null,null
+451,Apakah ada dampak hukum jika tidak mengikuti KBJI atau KBLI?,lainnya,null,semua,null
+452,Kode KBJI buat pekerjaan perawat ada nggak?,cari kode,perawat,KBJI,null
+453,Jelaskan kode KBLI 56210 untuk katering,jelaskan kode,56210,KBLI,5
+454,Apa itu protein dan fungsinya apa?,lainnya,null,null,null
+455,Jenis pekerjaan yang masuk dalam KBLI 84120 apa aja?,jelaskan kode,84120,KBLI,5
+456,Bagaimana cara merawat anjing?,lainnya,null,null,null
+457,KBLI 5821 itu buat usaha apa aja?,jelaskan kode,5821,KBLI,4
+458,Jenis pekerjaan apa saja yang masuk dalam KBLI 56100?,jelaskan kode,56100,KBLI,5
+459,Kode KBJI buat peternak ayam ada nggak?,cari kode,peternak ayam,KBJI,null
+460,Detail tentang kode KBLI 45202 apa saja?,jelaskan kode,45202,KBLI,5
+461,Bagaimana cara menyusun CV yang menarik?,lainnya,null,null,null
+462,Tips traveling hemat ke Eropa gimana?,lainnya,null,null,null
+463,"assistant: <MSG>...penjelasan kode kbli untuk restoran...</MSG>
+user: <MSG>berikan kode 5 digitnya</MSG>",cari kode,restoran,KBLI,5
+464,Detail lengkap kode KBLI 71201 apa saja?,jelaskan kode,71201,KBLI,5
+465,Bagaimana cara membuat kerajinan tangan?,lainnya,null,null,null
+466,"assistant: <MSG>...penjelasan panjang...</MSG>
+user: <MSG>Keren banget, makasih</MSG",lainnya,null,null,null
+467,Kode KBJI 2134 mencakup profesi apa?,jelaskan kode,2134,KBJI,4
+468,Bagaimana cara membersihkan kaca jendela?,lainnya,null,null,null
+469,Apa saja yang dicakup oleh kode KBJI 3113?,jelaskan kode,3113,KBJI,4
+470,Kode KBLI untuk usaha manufaktur perangkat teleportasi apa?,cari kode,manufaktur perangkat teleportasi,KBLI,null
+471,Berapa harga tiket pesawat ke Jepang?,lainnya,null,null,null
+472,Tips menjaga kesehatan mental apa aja?,lainnya,null,null,null
+473,"Gue mau bisnis, tapi nggak tau kode KBJI atau KBLI yang cocok. Gimana dong?",lainnya,null,semua,null
+474,Apa itu AI dan bagaimana cara kerjanya?,lainnya,null,null,null
+475,Apakah KBJI termasuk dalam kebijakan nasional?,lainnya,null,KBJI,null
+476,Apa saja yang termasuk dalam kode KBJI 2138?,jelaskan kode,2138,KBJI,4
+477,"Buat usaha boba, kode KBLI yang bener apa ya?",cari kode,usaha boba,KBLI,null
+478,Apakah ada kode KBJI untuk pekerjaan sebagai teknisi ruang angkasa?,cari kode,teknisi ruang angkasa,KBJI,null
+479,Resep pasta carbonara yang simpel gimana?,lainnya,null,null,null
+480,Jelaskan kode KBLI 55101 untuk penginapan,jelaskan kode,55101,KBLI,5

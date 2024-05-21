@@ -87,7 +87,7 @@ def for_mencari_kode(
 ) -> list[dict]:
     history = read_chat_history(chat_id)
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang informatif. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan friendly. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
@@ -99,12 +99,10 @@ User meminta untuk melakukan pencarian kode '{"KBLI 2020" if type == "kbli2020" 
 {search_outputs}
 ---
 PENTING:
-JAWAB KEPADA USER MENGENAI HAL HASIL PENCARIAN TERSEBUT.
 JIKA ADA INTEPRETASI DARI PENCARIAN TERSEBUT, JELASKAN JUGA KEPADA USER.
 JELASKAN DENGAN KATA-KATA YANG LENGKAP.
 DATA DISINI HANYA BERASAL DARI KBLI 2020 DAN KBJI 2014, SELAIN SUMBER TERSEBUT BERARTI TIDAK VALID JANGAN DIBERIKAN KE USER!
 JIKA TERNYATA TIDAK DITEMUKAN DI HASIL PENCARIAN, KATAKAN HASIL TIDAK DITEMUKAN!
-LIST SEMUA HASIL PENCARIANNYA TERLEBIH DAHULU AGAR USER MENGETAHUI! 
 """}
     ]
     for item in history:
@@ -117,7 +115,7 @@ def for_menjelaskan_kode(
 ) -> list[dict]:
     history = read_chat_history(chat_id)
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan . Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan friendly. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia).
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).
 - menjelaskan kode kbli ataupun kbji (dengan memberikan informasi kode yang ingin dicari)
@@ -129,9 +127,7 @@ User meminta untuk melakukan penjelasan kode {"KBLI 2020" if type == "kbli2020" 
 {search_outputs}
 ---
 PENTING:
-JAWAB KEPADA USER MENGENAI HAL HASIL PENCARIAN TERSEBUT. 
 JIKA ADA INTEPRETASI DARI PENCARIAN TERSEBUT, JELASKAN JUGA KEPADA USER.
-JELASKAN DENGAN KATA-KATA YANG PANJANG.
 DATA DISINI HANYA BERASAL DARI KBLI 2020 DAN KBJI 2014, SELAIN SUMBER TERSEBUT BERARTI TIDAK VALID JANGAN DIBERIKAN KE USER!
 JIKA TERNYATA TIDAK DITEMUKAN DI HASIL PENCARIAN, KATAKAN HASIL TIDAK DITEMUKAN!
 """}
@@ -152,7 +148,7 @@ Berikut adalah informasi (unstructured) yang diambil dari semantic retrieval pad
 ``"""
     
     response = [
-        {"role": "system", "content": f"""Anda adalah chatbot yang informatif. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
+        {"role": "system", "content": f"""Anda adalah chatbot yang informatif dan friendly. Tugas Anda adalah untuk memberi informasi terkait KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) dan KBJI (Klasifikasi Baku Jabatan Indonesia)
 
 Anda dapat melayani beberapa task yaitu,
 - mencari kode kbli ataupun kbji (dengan memberikan informasi query yang ingin dicari).

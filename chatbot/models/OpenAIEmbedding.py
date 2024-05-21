@@ -23,7 +23,7 @@ class OpenAIEmbedding(EmbeddingModel):
         return db
 
     def load_faiss_embedding(self, faiss_folder: str) -> FAISS:
-        db = FAISS.load_local(faiss_folder, self.model)
+        db = FAISS.load_local(faiss_folder, self.model, allow_dangerous_deserialization=True)
         return db
 
     def get_model(self):
