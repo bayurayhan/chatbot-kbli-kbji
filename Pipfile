@@ -28,6 +28,7 @@ uvicorn = "*"
 faiss-cpu = "*"
 mysql-connector-python = "*"
 scikit-learn = "*"
+matplotlib = "*"
 
 [dev-packages]
 
