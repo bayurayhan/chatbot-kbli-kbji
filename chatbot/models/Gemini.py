@@ -83,7 +83,9 @@ class Gemini(GenerativeModel):
             prompt = self._generate_string(prompt)
             response = self.model.generate_content(prompt)
             cleaned_res = cleanup_text(response.text)
-            logger.debug("RESPONSE FROM gemini.py: `cleaned_res` -> " + cleaned_res)
+            logger.debug("PROMPT INPUT GEMINI `prompt` -> ")
+            logger.debug(prompt)
+            logger.debug("RESPONSE FROM gemini.py: `cleaned_res` -> \n" + cleaned_res)
             return cleaned_res
         except Exception as e:
             error_message = f"Error generating text with Gemini: {e}"
