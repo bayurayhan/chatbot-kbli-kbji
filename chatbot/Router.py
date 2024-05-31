@@ -64,7 +64,8 @@ class Router(APIRouter):
 
                 # Now you can handle the callback query
                 original_message_id = callback_query["message"]["message_id"]
-                self.bot.to(user_id).edit_message(original_message_id, "Thank you for your feedback!")
+                chat_id = callback_query["message"]["chat"]["id"]
+                self.bot.edit_message_sync(chat_id, original_message_id, "Thank you for your feedback!")
 
                 return
 
@@ -83,11 +84,11 @@ class Router(APIRouter):
                 except:
                     pass
 
-                self.bot.to(chat_id).send_text("History telah dihapus!", False)
+                self.bot.send_text_sync("History telah dihapus!", to=chat_id, set_history=False)
                 return
             elif text == "/start":
-                self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-                self.bot.to(chat_id).send_text(prompt_templates.START_INSTRUCTION, set_history=False)
+                self.bot.send_action_sync(chat_id, TelegramAction.TYPING)
+                self.bot.send_text_sync(prompt_templates.START_INSTRUCTION, to=chat_id, set_history=False)
                 return
 
             save_chat_history(chat_id, "user", text)
@@ -100,7 +101,7 @@ class Router(APIRouter):
 
     def handleProcess(self, chat_id, text, message_id, debug: dict):
         # ===========================================================================
-        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        self.bot.send_action_sync(chat_id, TelegramAction.TYPING)
         history = read_chat_history(chat_id, use_dict=True, n=5)
         history = "\n".join([f'{data["role"]}: <MSG>{data["content"]}</MSG>' for data in history])
         prediction = self.intent_classifier.predict(history)
@@ -119,16 +120,16 @@ class Router(APIRouter):
             informations = self.semantic_search.information_retrieval(text, type)
 
             if informations != "":
-                info_message = self.bot.to(chat_id).send_text("Mencari informasi dari database...", False)
+                info_message = self.bot.send_text_sync("Mencari informasi dari database...", to=chat_id, set_history=False)
                 info_message = info_message.get("result")
 
-            self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+            self.bot.send_action_sync(chat_id, TelegramAction.TYPING)
             answer = self.text_generator.generate(
                 prompt_templates.for_tidak_relevan(text, chat_id, informations),
                 generation_config={"temperature": 0.5},
             )
 
-            answer_message = self.bot.to(chat_id).reply(message_id).send_text(answer)
+            answer_message = self.bot.send_text_sync(answer, to=chat_id, reply=message_id)
             answer_message = answer_message.get("result")
 
             if informations != "":
@@ -144,7 +145,7 @@ class Router(APIRouter):
                 },
             )
         else:
-            answer_message = self.bot.to(chat_id).send_text("Maaf, terjadi error di sistem!")
+            answer_message = self.bot.send_text_sync("Maaf, terjadi error di sistem!", to=chat_id, set_history=False)
 
             dispatch(
                 "queryHandled/success",
@@ -181,8 +182,8 @@ class Router(APIRouter):
         except Exception as e:
             digit = None
 
-        info_message = self.bot.to(chat_id).send_text(
-            f"Sedang mencari kode {dataname} untuk {query}...", set_history=False
+        info_message = self.bot.send_text_sync(
+            f"Sedang mencari kode {dataname} untuk {query}...", to=chat_id, set_history=False
         )
         info_message = info_message.get("result")
 
@@ -194,7 +195,7 @@ class Router(APIRouter):
             response += doc + "\n"
 
         # Generate answer
-        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        self.bot.send_action_sync(chat_id, TelegramAction.TYPING)
         answer = self.text_generator.generate(
             prompt_templates.for_mencari_kode(response, text, dataname, query, chat_id)
         )
@@ -203,8 +204,8 @@ class Router(APIRouter):
         logger.debug(response)
         logger.debug(answer)
 
-        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        answer_message = self.bot.to(chat_id).reply(message_id).send_text(answer)
+        self.bot.send_action_sync(chat_id, TelegramAction.TYPING)
+        answer_message = self.bot.send_text_sync(answer, to=chat_id, reply=message_id)
         answer_message = answer_message.get("result")
         self.bot.to(chat_id).delete_message(info_message.get("message_id"))
         dispatch(
@@ -240,8 +241,8 @@ class Router(APIRouter):
         except Exception as e:
             digit = None
 
-        info_message = self.bot.to(chat_id).send_text(
-            f"Mencari penjelasan kode {query} di database...", set_history=False
+        info_message = self.bot.send_text_sync(
+            f"Mencari penjelasan kode {query} di database...", set_history=False, to=chat_id
         )
         info_message = info_message.get("result")
 
@@ -253,7 +254,7 @@ class Router(APIRouter):
         for doc in raw_response:
             response += doc + "\n"
 
-        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
+        self.bot.send_action_sync(chat_id, TelegramAction.TYPING)
         answer = self.text_generator.generate(
             prompt_templates.for_menjelaskan_kode(response, text, dataname, query, chat_id)
         )
@@ -262,8 +263,8 @@ class Router(APIRouter):
         logger.debug(response)
         logger.debug(answer)
 
-        self.bot.to(chat_id).send_action(TelegramAction.TYPING)
-        answer_message = self.bot.to(chat_id).reply(message_id).send_text(answer)
+        self.bot.send_action_sync(chat_id, TelegramAction.TYPING)
+        answer_message = self.bot.send_text_sync(answer, to=chat_id, reply=message_id)
         answer_message = answer_message.get("result")
         self.bot.to(chat_id).delete_message(info_message.get("message_id"))
         dispatch(

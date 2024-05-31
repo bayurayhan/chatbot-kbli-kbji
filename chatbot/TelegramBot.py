@@ -1,3 +1,4 @@
+from copy import copy
 import logging
 import os
 from urllib.parse import urljoin
@@ -108,17 +109,68 @@ class TelegramBot:
 
         return info_message
 
+    def send_text_sync(self, message: str, to, reply=None, set_history: bool = True):
+        chat_id = to
+        message_id = reply
+
+        # Same as send_text but change the chat_id and message_id
+        if set_history:
+            save_chat_history(chat_id, "assistant", message)
+        message = gemini_markdown_to_markdown(message)
+
+        # Devide the message into chunks
+        chunks = self.divide_message(message)
+        logging.getLogger("app").debug(chunks)
+
+        info_message = None
+
+        if message_id:
+            for i, chunk in enumerate(chunks):
+                if i == 0:
+                    info_message = self.send_api_request_with_chat_id(
+                        "POST",
+                        "sendMessage",
+                        chat_id,
+                        data={"text": chunk, "parse_mode": PARSE_MODE, "reply_to_message_id": message_id},
+                    )
+                else:
+                    self.send_api_request_with_chat_id(
+                        "POST", "sendMessage", chat_id, data={"text": chunk, "parse_mode": PARSE_MODE}
+                    )
+
+        else:
+            for i, chunk in enumerate(chunks):
+                if i == 0:
+                    info_message = self.send_api_request_with_chat_id(
+                        "POST", "sendMessage", chat_id, data={"text": chunk, "parse_mode": PARSE_MODE}
+                    )
+                else:
+                    self.send_api_request_with_chat_id(
+                        "POST", "sendMessage", chat_id, data={"text": chunk, "parse_mode": PARSE_MODE}
+                    )
+
+        return info_message
+
     def edit_message(self, message_id: int, message: str):
         message = gemini_markdown_to_markdown(message)
         return self.send_api_request(
             "POST", "editMessageText", data={"text": message, "message_id": message_id, "parse_mode": PARSE_MODE}
         )
-
+    
+    def edit_message_sync(self, chat_id, message_id, message: str):
+        message = gemini_markdown_to_markdown(message)
+        return self.send_api_request_with_chat_id(
+            "POST", "editMessageText", chat_id, data={"text": message, "message_id": message_id, "parse_mode": PARSE_MODE}
+        )
+    
     def delete_message(self, message_id: int):
         return self.send_api_request("POST", "deleteMessage", data={"message_id": message_id})
 
     def send_action(self, action: str):
         return self.send_api_request("POST", "sendChatAction", data={"action": action})
+    
+    def send_action_sync(self, chat_id, action: str):
+        return self.send_api_request_with_chat_id("POST", "sendChatAction", chat_id, data={"action": action})
 
     def send_api_request(self, method, name, data):
         res = requests.api.request(method, self.get_url(name), data={"chat_id": self.chat_id, **data})
@@ -129,7 +181,17 @@ class TelegramBot:
         logging.error(res.text)
 
         raise res.raise_for_status()
-    
+
+    def send_api_request_with_chat_id(self, method, name, chat_id, data):
+        res = requests.api.request(method, self.get_url(name), data={"chat_id": chat_id, **data})
+
+        if res.status_code == 200:
+            # logging.getLogger("app").info(f"Request {method} successfully sent for {name}!")
+            return res.json()
+        logging.error(res.text)
+
+        raise res.raise_for_status()
+
     def send_poll(
         self, question: str, options: list, is_anonymous=False, type="regular", allows_multiple_answers=False
     ):

@@ -103,6 +103,11 @@ class Application:
         #     # add rotating file handler to all loggers
         #     logging.getLogger(logger_name).addHandler(root_file_handler)
 
+        error_handler = RotatingFileHandler("err.log", maxBytes=1e6, backupCount=5, encoding="utf-8")
+        error_handler.setLevel(logging.ERROR)  # Only handle errors (WARNING and above)
+        error_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)")
+        error_handler.setFormatter(error_formatter)
+
         root_logger = logging.getLogger()
         root_logger.removeHandler(root_logger.handlers[0])
         root_logger.setLevel(logging.NOTSET)  # Set root logger level to DEBUG
@@ -112,6 +117,7 @@ class Application:
         root_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)")
         root_file_handler.setFormatter(root_formatter)
         root_logger.addHandler(root_file_handler)
+        root_logger.addHandler(error_handler)
 
         # Create a logger for the application
         app_logger = logging.getLogger("app")
@@ -121,6 +127,7 @@ class Application:
         app_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)")
         app_file_handler.setFormatter(app_formatter)
         app_logger.addHandler(app_file_handler)
+        app_logger.addHandler(error_handler)
 
         app_stream_handler = logging.StreamHandler(stream=sys.stdout)
         app_stream_handler.setLevel(logging.INFO)  # Set stream handler level to INFO

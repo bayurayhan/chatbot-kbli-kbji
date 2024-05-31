@@ -45,6 +45,7 @@ server.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 LOG_FILE_PATH = get_path("app.log")
+ERROR_FILE_PATH = get_path("err.log")
 MAX_LINES = 700
 
 
@@ -52,6 +53,9 @@ MAX_LINES = 700
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@server.get("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0/error", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("error.html", {"request": request})
 
 @server.get("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0/logs", response_class=HTMLResponse)
 async def get_logs():
@@ -62,6 +66,14 @@ async def get_logs():
         logs = "".join(lines)
     return f"<pre>{logs}</pre>"
 
+@server.get("/3gVSFXgCqguc3PgHfSfJT2DfEp5Px0/logs/error", response_class=HTMLResponse)
+async def get_error_logs():
+    with open(ERROR_FILE_PATH, "r") as file:
+        # Read the last MAX_LINES lines
+        lines = file.readlines()[-MAX_LINES:]
+        # Reverse the order of lines to show newest lines at the top
+        logs = "".join(lines)
+    return f"<pre>{logs}</pre>"
 
 server.include_router(router)
 
