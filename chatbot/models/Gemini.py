@@ -9,20 +9,34 @@ import re
 logger = logging.getLogger("app")
 
 SAFETY_SETTINGS = [
-    {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_ONLY_HIGH"},
-    {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_ONLY_HIGH"},
-    {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_ONLY_HIGH"},
-    {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_ONLY_HIGH"},
+    {
+        "category": "HARM_CATEGORY_HARASSMENT",
+        "threshold": "BLOCK_NONE",
+    },
+    {
+        "category": "HARM_CATEGORY_HATE_SPEECH",
+        "threshold": "BLOCK_NONE",
+    },
+    {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "threshold": "BLOCK_NONE",
+    },
+    {
+        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE",
+    },
 ]
+
 
 def cleanup_text(text):
     # Define the regex pattern to match the specific strings at the beginning and end
-    pattern = r'(<\|assistant\|>: )?(<MSG>)?(.*?)(\n)?<\/MSG>'
-    
+    pattern = r"(<\|assistant\|>: )?(<MSG>)?(.*?)(\n)?<\/MSG>"
+
     # Use re.sub to replace the pattern with the captured group (the message content)
-    cleaned_text = re.sub(pattern, r'\3', text, flags=re.DOTALL)
-    
+    cleaned_text = re.sub(pattern, r"\3", text, flags=re.DOTALL)
+
     return cleaned_text
+
 
 class Gemini(GenerativeModel):
     def __init__(
@@ -60,9 +74,7 @@ class Gemini(GenerativeModel):
         generated_string.append(f"assistant: <MSG>")
         return generated_string
 
-    def generate_text(
-        self, prompt: list[dict], generation_config: dict = None
-    ) -> str:
+    def generate_text(self, prompt: list[dict], generation_config: dict = None) -> str:
         """Generates text using the Google Gemini model with error handling.
 
         Args:
@@ -74,11 +86,7 @@ class Gemini(GenerativeModel):
         Raises:
             genai.APIError: If an error occurs with the Google API.
         """
-        generation_config = (
-            self.generation_config
-            if not generation_config
-            else GenerationConfig(**generation_config)
-        )
+        generation_config = self.generation_config if not generation_config else GenerationConfig(**generation_config)
         try:
             prompt = self._generate_string(prompt)
             response = self.model.generate_content(prompt)
