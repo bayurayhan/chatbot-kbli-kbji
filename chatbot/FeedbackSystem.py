@@ -71,11 +71,12 @@ class FeedbackSystem:
             Response from the Telegram API after sending the poll with the inline keyboard.
         """
         keyboard = [[{"text": "Relevan", "callback_data": 1}, {"text": "Tidak relevan", "callback_data": 0}]]
-        return (
-            self.telegram_bot.to(chat_id)
-            .reply(message_id)
-            .send_message_with_inline_keyboard("Bagaimana respon dari chatbot?", keyboard)
-        )
+        # return (
+        #     self.telegram_bot.to(chat_id)
+        #     .reply(message_id)
+        #     .send_message_with_inline_keyboard("Bagaimana respon dari chatbot?", keyboard)
+        # )
+        return self.telegram_bot.send_message_with_inline_keyboard_sync(chat_id, message_id, "Bagaimana respon dari chatbot?", keyboard)
 
     def send_edit_feedback_poll(self, chat_id, message_id):
         """
@@ -88,7 +89,8 @@ class FeedbackSystem:
         Returns:
             Response from the Telegram API after sending the edited message with thank you message.
         """
-        return self.telegram_bot.to(chat_id).edit_message(message_id, "Terima kasih!")
+        # return self.telegram_bot.to(chat_id).edit_message(message_id, "Terima kasih!")
+        return self.telegram_bot.edit_message_sync(chat_id, message_id, "Terima kasih!")
 
 
     def add_feedback(self, id, poll_id, user_prompt, response, response_time, is_relevant, is_error):

@@ -230,3 +230,16 @@ class TelegramBot:
         """
         data = {"text": message, "reply_markup": json.dumps({"inline_keyboard": keyboard})}
         return self.send_api_request("POST", "sendMessage", data)
+
+    def send_message_with_inline_keyboard_sync(self, to, reply, message: str, keyboard: list):
+        """
+        Send a message with an inline keyboard.
+
+        Parameters:
+        message (str): Message text.
+        
+        Returns:
+        dict: Response from Telegram API.
+        """
+        data = {"text": message, "reply_markup": json.dumps({"inline_keyboard": keyboard})}
+        return self.send_api_request_with_chat_id("POST", "sendMessage", to, data)
