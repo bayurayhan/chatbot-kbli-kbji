@@ -23,35 +23,7 @@ pre-formatted fixed-width code block written in the Python programming language
 >The second block quotation started right after the previous\r
 >The third block quotation started right after the previous"""
 
-START_INSTRUCTION = """**Bantu Kembangkan Chatbot Sistem Informasi KBLI dan KBJI!**
-
-Halo! 
-
-Kami sedang mengembangkan chatbot sistem informasi tentang KBLI dan KBJI untuk membantu para pengusaha dan pelaku bisnis. Chatbot ini akan memberikan informasi lengkap dan akurat tentang kode-kode klasifikasi tersebut, serta membantu Anda memilih kode yang tepat untuk usaha Anda.
-
-**Kami membutuhkan bantuan Anda!**
-
-Untuk memastikan chatbot ini memberikan informasi yang bermanfaat dan mudah dipahami, kami mohon bantuan Anda untuk memberikan feedback terhadap setiap respon yang diberikan oleh chatbot. Feedback Anda sangat penting untuk membantu kami meningkatkan performa chatbot dan membuatnya lebih bermanfaat bagi pengguna.
-
-**Bagaimana cara memberikan feedback?**
-
-**1. Interaksi dengan chatbot**
-
-Coba ajukan pertanyaan, berikan perintah, atau lakukan percakapan dengan chatbot. Perhatikan bagaimana chatbot merespon dan apakah informasi yang diberikan sesuai dengan kebutuhan Anda.
-
-**2. Berikan feedback**
-
-Setelah berinteraksi dengan chatbot, Anda akan diminta untuk memberikan feedback. Feedback Anda dapat berupa:
-
-* **Feedback relevan:** Jika Anda merasa informasi yang diberikan chatbot sesuai dengan kebutuhan Anda, pilihlah "Feedback relevan".
-* **Feedback tidak relevan:** Jika Anda merasa informasi yang diberikan chatbot tidak sesuai dengan kebutuhan Anda, pilihlah "Feedback tidak relevan".
-
-**Contoh feedback:**
-
-* **Feedback relevan:** "Informasi yang diberikan chatbot sangat lengkap dan mudah dipahami. Saya puas dengan respon chatbot."
-* **Feedback tidak relevan:** "Informasi yang diberikan chatbot tidak sesuai dengan pertanyaan saya. Saya ingin tahu tentang kode KBLI untuk usaha kuliner."
-
-Terima kasih atas bantuan Anda!
+START_INSTRUCTION = """Halo, selamat datang di layanan informasi KBLI dan KBJI. Saya adalah chatot yang siap untuk membantu Anda. Silakan ketikkan pertanyaan Anda terkait KBLI dan KBJI, dan saya akan memberikan informasi yang anda butuhkan.
 """
 
 def intent_classification():
